@@ -13,6 +13,8 @@ import { serviceResourceToSpec }            from '@monstrs/k8s-resource-utils'
 
 import { PreviewAutomationResourceVersion } from './preview-automation.types'
 import { PreviewAutomationResourceGroup }   from './preview-automation.types'
+import { PreviewAutomationResource }        from './preview-automation.types'
+import { ImageRepositoryResource }          from './image-repository.interfaces'
 import { PreviewVersionResourceVersion }    from './preview-version.types'
 import { PreviewVersionResourceGroup }      from './preview-version.types'
 import { PreviewVersionStatusPhase }        from './preview-version.types'
@@ -35,14 +37,16 @@ export class PreviewOperator extends Operator {
     this.k8sAppApi = this.kubeConfig.makeApiClient(AppsV1Api)
   }
 
-  async getAutomationResources(automation): Promise<Array<KubernetesObject>> {
+  async getAutomationResources(
+    automation: PreviewAutomationResource
+  ): Promise<Array<KubernetesObject>> {
     return Promise.all(
       // eslint-disable-next-line consistent-return
       automation.spec.resources.map(async (resource) => {
         if (resource.kind === 'Service') {
           const service = await this.k8sApi.readNamespacedService(
             resource.name,
-            automation.metadata.namespace
+            automation.metadata?.namespace || 'default'
           )
 
           return serviceResourceToSpec(service.body)
@@ -51,7 +55,7 @@ export class PreviewOperator extends Operator {
         if (resource.kind === 'Deployment') {
           const deployment = await this.k8sAppApi.readNamespacedDeployment(
             resource.name,
-            automation.metadata.namespace
+            automation.metadata?.namespace || 'default'
           )
 
           return deploymentResourceToSpec(deployment.body)
@@ -60,8 +64,10 @@ export class PreviewOperator extends Operator {
     )
   }
 
-  async buildPreview(previewVersion: PreviewVersionResource) {
-    const { body: automation }: any = await this.k8sCustomObjectsApi.getNamespacedCustomObject(
+  private async getPreviewAutomation(
+    previewVersion: PreviewVersionResource
+  ): Promise<PreviewAutomationResource> {
+    const { body } = await this.k8sCustomObjectsApi.getNamespacedCustomObject(
       PreviewOperator.DOMAIN_GROUP,
       PreviewAutomationResourceVersion.v1alpha1,
       previewVersion.spec.previewAutomationRef.namespace ||
@@ -71,15 +77,27 @@ export class PreviewOperator extends Operator {
       previewVersion.spec.previewAutomationRef.name
     )
 
-    const resources = await this.getAutomationResources(automation)
+    return body as PreviewAutomationResource
+  }
 
-    const { body: imageRepository }: any = await this.k8sCustomObjectsApi.getNamespacedCustomObject(
+  private async getImageRepository(
+    automation: PreviewAutomationResource
+  ): Promise<ImageRepositoryResource> {
+    const { body } = await this.k8sCustomObjectsApi.getNamespacedCustomObject(
       'image.toolkit.fluxcd.io',
       'v1alpha1',
-      automation.spec.imageRepositoryRef.namespace || automation.metadata.namespace,
+      automation.spec.imageRepositoryRef.namespace || automation.metadata?.namespace || 'default',
       'imagerepositories',
       automation.spec.imageRepositoryRef.name
     )
+
+    return body as ImageRepositoryResource
+  }
+
+  async buildPreview(previewVersion: PreviewVersionResource) {
+    const automation = await this.getPreviewAutomation(previewVersion)
+    const resources = await this.getAutomationResources(automation)
+    const imageRepository = await this.getImageRepository(automation)
 
     const transformations = {
       images: [
