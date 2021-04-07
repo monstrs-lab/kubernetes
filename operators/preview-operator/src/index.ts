@@ -1,21 +1,23 @@
-/* eslint-disable no-console */
+import { PreviewImageReflectorOperator } from '@monstrs/k8s-preview-image-reflector-operator'
+import { PreviewAutomationOperator }     from '@monstrs/k8s-preview-automation-operator'
 
-// TODO: move to bootstrap
-import { PreviewOperator } from './preview.operator'
+const bootstrap = async () => {
+  const previewImageReflectorOperator = new PreviewImageReflectorOperator()
+  const previewAutomationOperator = new PreviewAutomationOperator()
 
-const operator = new PreviewOperator()
+  await Promise.all([previewImageReflectorOperator.start(), previewAutomationOperator.start()])
 
-const exit = (reason: string) => {
-  console.log('askdlfjlasdjf')
-  console.log(reason)
+  const exit = (reason: string) => {
+    console.log(reason) // eslint-disable-line no-console
 
-  operator.stop()
-  process.exit(0)
+    previewImageReflectorOperator.stop()
+    previewAutomationOperator.stop()
+
+    process.exit(0)
+  }
+
+  process.on('SIGTERM', () => exit('SIGTERM')).on('SIGINT', () => exit('SIGINT'))
 }
 
-operator.start().catch((error) => {
-  console.log(error)
-  exit(error.message)
-})
-
-process.on('SIGTERM', () => exit('SIGTERM')).on('SIGINT', () => exit('SIGINT'))
+// eslint-disable-next-line no-console
+bootstrap().catch(console.error)

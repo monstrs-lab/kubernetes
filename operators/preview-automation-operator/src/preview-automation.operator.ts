@@ -21,17 +21,17 @@ import { PreviewVersionStatusPhase }        from './preview-version.types'
 import { PreviewVersionResource }           from './preview-version.types'
 import { PreviewVersionStatus }             from './preview-version.types'
 
-export class PreviewOperator extends Operator {
+export class PreviewAutomationOperator extends Operator {
   public static DOMAIN_GROUP = 'preview.monstrs.tech'
 
-  private readonly log = new Logger(PreviewOperator.name)
+  private readonly log = new Logger(PreviewAutomationOperator.name)
 
   private readonly k8sCustomObjectsApi: CustomObjectsApi
 
   private readonly k8sAppApi: AppsV1Api
 
   constructor() {
-    super(new Logger(PreviewOperator.name))
+    super(new Logger(PreviewAutomationOperator.name))
 
     this.k8sCustomObjectsApi = this.kubeConfig.makeApiClient(CustomObjectsApi)
     this.k8sAppApi = this.kubeConfig.makeApiClient(AppsV1Api)
@@ -68,7 +68,7 @@ export class PreviewOperator extends Operator {
     previewVersion: PreviewVersionResource
   ): Promise<PreviewAutomationResource> {
     const { body } = await this.k8sCustomObjectsApi.getNamespacedCustomObject(
-      PreviewOperator.DOMAIN_GROUP,
+      PreviewAutomationOperator.DOMAIN_GROUP,
       PreviewAutomationResourceVersion.v1alpha1,
       previewVersion.spec.previewAutomationRef.namespace ||
         previewVersion.metadata?.namespace ||
@@ -124,7 +124,7 @@ export class PreviewOperator extends Operator {
     if (!resource.metadata?.name || !resource.metadata.namespace) return
 
     await this.k8sCustomObjectsApi.patchNamespacedCustomObjectStatus(
-      PreviewOperator.DOMAIN_GROUP,
+      PreviewAutomationOperator.DOMAIN_GROUP,
       PreviewVersionResourceVersion.v1alpha1,
       resource.metadata.namespace,
       kind2Plural(PreviewVersionResourceGroup.PreviewVersion),
@@ -183,14 +183,14 @@ export class PreviewOperator extends Operator {
 
   protected async init() {
     await this.watchResource(
-      PreviewOperator.DOMAIN_GROUP,
+      PreviewAutomationOperator.DOMAIN_GROUP,
       PreviewVersionResourceVersion.v1alpha1,
       kind2Plural(PreviewVersionResourceGroup.PreviewVersion),
       async (event) => {
         try {
           if (event.type === ResourceEventType.Added || event.type === ResourceEventType.Modified) {
             const finalizer = `${kind2Plural(PreviewVersionResourceGroup.PreviewVersion)}.${
-              PreviewOperator.DOMAIN_GROUP
+              PreviewAutomationOperator.DOMAIN_GROUP
             }`
 
             if (
