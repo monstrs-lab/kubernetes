@@ -12,7 +12,14 @@ spec:
     singular: previewversion
   scope: Namespaced
   versions:
-    - name: v1alpha1
+    - additionalPrinterColumns:
+        - jsonPath: .status.message
+          name: Status
+          type: string
+        - jsonPath: .status.phase
+          name: Phase
+          type: string
+      name: v1alpha1
       schema:
         openAPIV3Schema:
           description: PreviewVersion is the Schema for the previewversions API
@@ -31,6 +38,21 @@ spec:
                     id:
                       type: string
                   type: object
+              type: object
+            status:
+              description: PreviewVersionStatus defines the observed state of PreviewVersion
+              properties:
+                observedGeneration:
+                  type: number
+                message:
+                  description: preview version status message
+                  type: string
+                phase:
+                  description: preview version phase (Pending, Succeeded, Failed, Unknown)
+                  type: string
+                ready:
+                  description: preview version ready
+                  type: boolean
               type: object
           type: object
       served: true

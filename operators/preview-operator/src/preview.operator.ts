@@ -15,6 +15,9 @@ import { PreviewAutomationResourceVersion } from './preview-automation.types'
 import { PreviewAutomationResourceGroup }   from './preview-automation.types'
 import { PreviewVersionResourceVersion }    from './preview-version.types'
 import { PreviewVersionResourceGroup }      from './preview-version.types'
+import { PreviewVersionStatusPhase }        from './preview-version.types'
+import { PreviewVersionResource }           from './preview-version.types'
+import { PreviewVersionStatus }             from './preview-version.types'
 
 export class PreviewOperator extends Operator {
   public static DOMAIN_GROUP = 'preview.monstrs.tech'
@@ -57,13 +60,15 @@ export class PreviewOperator extends Operator {
     )
   }
 
-  async buildPreview(event) {
+  async buildPreview(previewVersion: PreviewVersionResource) {
     const { body: automation }: any = await this.k8sCustomObjectsApi.getNamespacedCustomObject(
       PreviewOperator.DOMAIN_GROUP,
       PreviewAutomationResourceVersion.v1alpha1,
-      event.object.spec.previewAutomationRef.namespace || event.object.metadata.namespace,
+      previewVersion.spec.previewAutomationRef.namespace ||
+        previewVersion.metadata?.namespace ||
+        'default',
       kind2Plural(PreviewAutomationResourceGroup.PreviewAutomation),
-      event.object.spec.previewAutomationRef.name
+      previewVersion.spec.previewAutomationRef.name
     )
 
     const resources = await this.getAutomationResources(automation)
@@ -80,18 +85,82 @@ export class PreviewOperator extends Operator {
       images: [
         {
           name: imageRepository.spec.image,
-          newTag: event.object.spec.tag,
+          newTag: previewVersion.spec.tag,
         },
       ],
       namePrefix: 'preview-',
-      nameSuffix: `-${event.object.spec.scope.id}`,
+      nameSuffix: `-${previewVersion.spec.scope.id}`,
       commonLabels: {
-        app: `preview-${event.object.spec.scope.id}`,
-        'preview.monstrs.tech/scope.id': event.object.spec.scope.id,
+        app: `preview-${previewVersion.spec.scope.id}`,
+        'preview.monstrs.tech/scope.id': previewVersion.spec.scope.id,
       },
     }
 
     return kustomize.build(resources, transformations)
+  }
+
+  async updateStatus(
+    status: PreviewVersionStatus,
+    resource: PreviewVersionResource
+  ): Promise<void> {
+    if (!resource.metadata?.name || !resource.metadata.namespace) return
+
+    await this.k8sCustomObjectsApi.patchNamespacedCustomObjectStatus(
+      PreviewOperator.DOMAIN_GROUP,
+      PreviewVersionResourceVersion.v1alpha1,
+      resource.metadata.namespace,
+      kind2Plural(PreviewVersionResourceGroup.PreviewVersion),
+      resource.metadata.name,
+      [
+        {
+          op: 'replace',
+          path: '/status',
+          value: status,
+        },
+      ],
+      undefined,
+      undefined,
+      undefined,
+      {
+        headers: { 'Content-Type': 'application/json-patch+json' },
+      }
+    )
+  }
+
+  protected async resourceModified(event) {
+    const resource = event.object as PreviewVersionResource
+
+    if (!resource.status || resource.status.observedGeneration !== resource.metadata?.generation) {
+      this.updateStatus(
+        {
+          observedGeneration: resource.metadata?.generation,
+          message: 'Updating preview version',
+          phase: PreviewVersionStatusPhase.Pending,
+          ready: false,
+        },
+        event.object as PreviewVersionResource
+      )
+
+      const preview = await this.buildPreview(event.object as PreviewVersionResource)
+
+      await kubectl.apply(preview)
+
+      await this.updateStatus(
+        {
+          observedGeneration: resource.metadata?.generation,
+          message: 'Preview version updated',
+          phase: PreviewVersionStatusPhase.Succeeded,
+          ready: true,
+        },
+        event.object as PreviewVersionResource
+      )
+    }
+  }
+
+  protected async resourceDeleted(event) {
+    const preview = await this.buildPreview(event.object as PreviewVersionResource)
+
+    await kubectl.delete(preview)
   }
 
   protected async init() {
@@ -101,21 +170,31 @@ export class PreviewOperator extends Operator {
       kind2Plural(PreviewVersionResourceGroup.PreviewVersion),
       async (event) => {
         try {
-          if (event.type === ResourceEventType.Added) {
-            const preview = await this.buildPreview(event)
+          if (event.type === ResourceEventType.Added || event.type === ResourceEventType.Modified) {
+            const finalizer = `${kind2Plural(PreviewVersionResourceGroup.PreviewVersion)}.${
+              PreviewOperator.DOMAIN_GROUP
+            }`
 
-            await kubectl.apply(preview)
-          } else if (event.type === ResourceEventType.Modified) {
-            const preview = await this.buildPreview(event)
-
-            await kubectl.apply(preview)
-          } else if (event.type === ResourceEventType.Deleted) {
-            const preview = await this.buildPreview(event)
-
-            await kubectl.delete(preview)
+            if (
+              !(await this.handleResourceFinalizer(event, finalizer, (finalizerEvent) =>
+                this.resourceDeleted(finalizerEvent)
+              ))
+            ) {
+              await this.resourceModified(event)
+            }
           }
         } catch (error) {
           this.log.error(error)
+
+          await this.updateStatus(
+            {
+              observedGeneration: event.object.metadata?.generation,
+              message: error.message?.toString() || '',
+              phase: PreviewVersionStatusPhase.Failed,
+              ready: false,
+            },
+            event.object as PreviewVersionResource
+          )
         }
       }
     )
