@@ -23,6 +23,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:."
       },
       {
+        "name": "@monstrs/k8s-preview-automation-operator",
+        "reference": "workspace:operators/preview-automation-operator"
+      },
+      {
+        "name": "@monstrs/k8s-preview-image-reflector-operator",
+        "reference": "workspace:operators/preview-image-reflector-operator"
+      },
+      {
         "name": "@monstrs/k8s-preview-operator",
         "reference": "workspace:operators/preview-operator"
       },
@@ -49,6 +57,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@monstrs/k8s-kubectl-tool", ["workspace:tools/kubectl"]],
       ["@monstrs/k8s-kustomize-tool", ["workspace:tools/kustomize"]],
       ["@monstrs/k8s-operator-logger", ["workspace:utils/operator-logger"]],
+      ["@monstrs/k8s-preview-automation-operator", ["workspace:operators/preview-automation-operator"]],
+      ["@monstrs/k8s-preview-image-reflector-operator", ["workspace:operators/preview-image-reflector-operator"]],
       ["@monstrs/k8s-preview-operator", ["workspace:operators/preview-operator"]],
       ["@monstrs/k8s-resource-utils", ["workspace:utils/resource-utils"]],
       ["kubernetes", ["workspace:."]]
@@ -1312,17 +1322,45 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "SOFT",
         }]
       ]],
-      ["@monstrs/k8s-preview-operator", [
-        ["workspace:operators/preview-operator", {
-          "packageLocation": "./operators/preview-operator/",
+      ["@monstrs/k8s-preview-automation-operator", [
+        ["workspace:operators/preview-automation-operator", {
+          "packageLocation": "./operators/preview-automation-operator/",
           "packageDependencies": [
-            ["@monstrs/k8s-preview-operator", "workspace:operators/preview-operator"],
+            ["@monstrs/k8s-preview-automation-operator", "workspace:operators/preview-automation-operator"],
             ["@dot-i/k8s-operator", "npm:1.1.1"],
             ["@kubernetes/client-node", "npm:0.14.1"],
             ["@monstrs/k8s-kubectl-tool", "workspace:tools/kubectl"],
             ["@monstrs/k8s-kustomize-tool", "workspace:tools/kustomize"],
             ["@monstrs/k8s-operator-logger", "workspace:utils/operator-logger"],
             ["@monstrs/k8s-resource-utils", "workspace:utils/resource-utils"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@monstrs/k8s-preview-image-reflector-operator", [
+        ["workspace:operators/preview-image-reflector-operator", {
+          "packageLocation": "./operators/preview-image-reflector-operator/",
+          "packageDependencies": [
+            ["@monstrs/k8s-preview-image-reflector-operator", "workspace:operators/preview-image-reflector-operator"],
+            ["@dot-i/k8s-operator", "npm:1.1.1"],
+            ["@kubernetes/client-node", "npm:0.14.1"],
+            ["@monstrs/k8s-kubectl-tool", "workspace:tools/kubectl"],
+            ["@monstrs/k8s-kustomize-tool", "workspace:tools/kustomize"],
+            ["@monstrs/k8s-operator-logger", "workspace:utils/operator-logger"],
+            ["@monstrs/k8s-preview-automation-operator", "workspace:operators/preview-automation-operator"],
+            ["@monstrs/k8s-resource-utils", "workspace:utils/resource-utils"],
+            ["parse-docker-image-name", "npm:3.0.0"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@monstrs/k8s-preview-operator", [
+        ["workspace:operators/preview-operator", {
+          "packageLocation": "./operators/preview-operator/",
+          "packageDependencies": [
+            ["@monstrs/k8s-preview-operator", "workspace:operators/preview-operator"],
+            ["@monstrs/k8s-preview-automation-operator", "workspace:operators/preview-automation-operator"],
+            ["@monstrs/k8s-preview-image-reflector-operator", "workspace:operators/preview-image-reflector-operator"]
           ],
           "linkType": "SOFT",
         }]
@@ -9632,6 +9670,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["parent-module", "npm:1.0.1"],
             ["callsites", "npm:3.1.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["parse-docker-image-name", [
+        ["npm:3.0.0", {
+          "packageLocation": "./.yarn/cache/parse-docker-image-name-npm-3.0.0-70373e1881-9fff2c7dd3.zip/node_modules/parse-docker-image-name/",
+          "packageDependencies": [
+            ["parse-docker-image-name", "npm:3.0.0"]
           ],
           "linkType": "HARD",
         }]

@@ -1007,9 +1007,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@monstrs/k8s-preview-operator@workspace:operators/preview-operator":
+"@monstrs/k8s-preview-automation-operator@workspace:0.0.1, @monstrs/k8s-preview-automation-operator@workspace:operators/preview-automation-operator":
   version: 0.0.0-use.local
-  resolution: "@monstrs/k8s-preview-operator@workspace:operators/preview-operator"
+  resolution: "@monstrs/k8s-preview-automation-operator@workspace:operators/preview-automation-operator"
   dependencies:
     "@dot-i/k8s-operator": ^1.1.1
     "@kubernetes/client-node": ^0.14.1
@@ -1017,6 +1017,30 @@ __metadata:
     "@monstrs/k8s-kustomize-tool": "workspace:0.0.1"
     "@monstrs/k8s-operator-logger": "workspace:0.0.1"
     "@monstrs/k8s-resource-utils": "workspace:0.0.1"
+  languageName: unknown
+  linkType: soft
+
+"@monstrs/k8s-preview-image-reflector-operator@workspace:0.0.1, @monstrs/k8s-preview-image-reflector-operator@workspace:operators/preview-image-reflector-operator":
+  version: 0.0.0-use.local
+  resolution: "@monstrs/k8s-preview-image-reflector-operator@workspace:operators/preview-image-reflector-operator"
+  dependencies:
+    "@dot-i/k8s-operator": ^1.1.1
+    "@kubernetes/client-node": ^0.14.1
+    "@monstrs/k8s-kubectl-tool": "workspace:0.0.1"
+    "@monstrs/k8s-kustomize-tool": "workspace:0.0.1"
+    "@monstrs/k8s-operator-logger": "workspace:0.0.1"
+    "@monstrs/k8s-preview-automation-operator": "workspace:0.0.1"
+    "@monstrs/k8s-resource-utils": "workspace:0.0.1"
+    parse-docker-image-name: ^3.0.0
+  languageName: unknown
+  linkType: soft
+
+"@monstrs/k8s-preview-operator@workspace:operators/preview-operator":
+  version: 0.0.0-use.local
+  resolution: "@monstrs/k8s-preview-operator@workspace:operators/preview-operator"
+  dependencies:
+    "@monstrs/k8s-preview-automation-operator": "workspace:0.0.1"
+    "@monstrs/k8s-preview-image-reflector-operator": "workspace:0.0.1"
   languageName: unknown
   linkType: soft
 
@@ -7978,6 +8002,13 @@ fsevents@^2.1.2:
   dependencies:
     callsites: ^3.0.0
   checksum: 58714b9699f8e84340aaf0781b7cbd82f1c357f6ce9c035c151d0e8c1e9b869c51b95b680882f0d21b4751e817a6c936d4bb2952a1a1d9d9fb27e5a84baec2aa
+  languageName: node
+  linkType: hard
+
+"parse-docker-image-name@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "parse-docker-image-name@npm:3.0.0"
+  checksum: 9fff2c7dd3170d8b5ada0d448e445cea191999d6dab2f6c2e90ee26ea04e579d1152b30e1a55831df36ea31e7dca101bc3b13d701064221a692567d4182bd522
   languageName: node
   linkType: hard
 
