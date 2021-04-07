@@ -1,0 +1,19 @@
+{
+  "name": "@monstrs/k8s-kustomize-tool",
+  "version": "0.0.1",
+  "license": "MIT",
+  "private": true,
+  "main": "src/index.ts",
+  "files": [
+    "dist/"
+  ],
+  "dependencies": {
+    "@monstrs/k8s-resource-utils": "workspace:0.0.1",
+    "execa": "^5.0.0",
+    "tempy": "^1.0.1",
+    "yaml": "^1.10.2"
+  },
+  "devDependencies": {
+    "@kubernetes/client-node": "^0.14.1"
+  }
+}
