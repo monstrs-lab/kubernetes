@@ -1,0 +1,24 @@
+{
+  "name": "@monstrs/k8s-preview-ingress-operator",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "prepack": "yarn app service build",
+    "dev": "yarn app service dev",
+    "build": "yarn app service build",
+    "start": "node dist/index.js"
+  },
+  "devDependencies": {
+    "@dot-i/k8s-operator": "^1.1.1",
+    "@kubernetes/client-node": "^0.14.1",
+    "@monstrs/k8s-kubectl-tool": "workspace:0.0.1",
+    "@monstrs/k8s-kustomize-tool": "workspace:0.0.1",
+    "@monstrs/k8s-operator-logger": "workspace:0.0.1",
+    "@monstrs/k8s-preview-automation-operator": "workspace:0.0.1",
+    "@monstrs/k8s-resource-utils": "workspace:0.0.1"
+  }
+}

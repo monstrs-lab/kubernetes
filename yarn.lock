@@ -560,6 +560,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hapi/bourne@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@hapi/bourne@npm:2.0.0"
+  checksum: 97a3e6d44c63debbb170f5966a8076022e2855f1c4fa81edc8c6fd255ba56ce047c3dcce5055858188610eafd77e6420c67ece7fd17e3192830e2fbca7766fd0
+  languageName: node
+  linkType: hard
+
 "@istanbuljs/load-nyc-config@npm:^1.0.0":
   version: 1.1.0
   resolution: "@istanbuljs/load-nyc-config@npm:1.1.0"
@@ -1035,12 +1042,27 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@monstrs/k8s-preview-ingress-operator@workspace:0.0.1, @monstrs/k8s-preview-ingress-operator@workspace:operators/preview-ingress-operator":
+  version: 0.0.0-use.local
+  resolution: "@monstrs/k8s-preview-ingress-operator@workspace:operators/preview-ingress-operator"
+  dependencies:
+    "@dot-i/k8s-operator": ^1.1.1
+    "@kubernetes/client-node": ^0.14.1
+    "@monstrs/k8s-kubectl-tool": "workspace:0.0.1"
+    "@monstrs/k8s-kustomize-tool": "workspace:0.0.1"
+    "@monstrs/k8s-operator-logger": "workspace:0.0.1"
+    "@monstrs/k8s-preview-automation-operator": "workspace:0.0.1"
+    "@monstrs/k8s-resource-utils": "workspace:0.0.1"
+  languageName: unknown
+  linkType: soft
+
 "@monstrs/k8s-preview-operator@workspace:operators/preview-operator":
   version: 0.0.0-use.local
   resolution: "@monstrs/k8s-preview-operator@workspace:operators/preview-operator"
   dependencies:
     "@monstrs/k8s-preview-automation-operator": "workspace:0.0.1"
     "@monstrs/k8s-preview-image-reflector-operator": "workspace:0.0.1"
+    "@monstrs/k8s-preview-ingress-operator": "workspace:0.0.1"
   languageName: unknown
   linkType: soft
 
@@ -2609,6 +2631,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"args@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "args@npm:5.0.1"
+  dependencies:
+    camelcase: 5.0.0
+    chalk: 2.4.2
+    leven: 2.1.0
+    mri: 1.1.4
+  checksum: 2c322bff707f140744c4296fe5fb38b0111fc67f9e2433d6a4e5685b2697ec25ac6d9afe1938f8947b1badd89db870d99cbfeb1376d37b41081fe96d082613df
+  languageName: node
+  linkType: hard
+
 "aria-query@npm:^4.2.2":
   version: 4.2.2
   resolution: "aria-query@npm:4.2.2"
@@ -3177,6 +3211,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"camelcase@npm:5.0.0":
+  version: 5.0.0
+  resolution: "camelcase@npm:5.0.0"
+  checksum: 73567fa11f981cf6b6f282bf87197172771dccef7a8b1574115058e3f5266f8e0523541b629ba14ee05c269e743f516238862d32812afd6759dbb5fa5080da8e
+  languageName: node
+  linkType: hard
+
 "camelcase@npm:^5.0.0, camelcase@npm:^5.3.1":
   version: 5.3.1
   resolution: "camelcase@npm:5.3.1"
@@ -3214,7 +3255,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^2.0.0, chalk@npm:^2.4.1, chalk@npm:^2.4.2":
+"chalk@npm:2.4.2, chalk@npm:^2.0.0, chalk@npm:^2.4.1, chalk@npm:^2.4.2":
   version: 2.4.2
   resolution: "chalk@npm:2.4.2"
   dependencies:
@@ -3784,6 +3825,13 @@ __metadata:
     whatwg-mimetype: ^2.3.0
     whatwg-url: ^8.0.0
   checksum: 42239927c6a202e2d02b7f41c94ca53e3cea036898b97b8bf6120ed1b25e0dd11c48ec7aa5c84cf807c2cb9f3a637df9fb50f3ca25a52863186a4ac46254726b
+  languageName: node
+  linkType: hard
+
+"dateformat@npm:^4.5.1":
+  version: 4.5.1
+  resolution: "dateformat@npm:4.5.1"
+  checksum: d5d08fd36f0987570cacada467145c722b4051285fae32969d62ef4bfc3c392f310bf6982a3ecbe62f0b42a944846d94a2bff53b8051ad1540bcaf118732fbf4
   languageName: node
   linkType: hard
 
@@ -6689,12 +6737,26 @@ fsevents@^2.1.2:
   languageName: node
   linkType: hard
 
+"jmespath@npm:^0.15.0":
+  version: 0.15.0
+  resolution: "jmespath@npm:0.15.0"
+  checksum: b3edb0b9773571d72dc1aa2d5590fa0f82419a0a04d5a0d09aee93219f41d046ea9cf3c36931fc48d9430348ca575530beab5968923544136cc8ddcd49ff7a47
+  languageName: node
+  linkType: hard
+
 "jose@npm:^2.0.4":
   version: 2.0.4
   resolution: "jose@npm:2.0.4"
   dependencies:
     "@panva/asn1.js": ^1.0.0
   checksum: 402054b230df5856278e154d7f4e2707eda9f45e50e0fd273f4b4f0823ff9316ac72438701b0124b58f5927f479722db35a4b204359fe802f9a974b620fca267
+  languageName: node
+  linkType: hard
+
+"joycon@npm:^2.2.5":
+  version: 2.2.5
+  resolution: "joycon@npm:2.2.5"
+  checksum: 7908f551e05aa754d1068053ec1304c12f3abc9c812f7c5a58bef7d35d247c3b1da14e508970bd411191099949756e2190e24c24b3382f818e7cda83e8ea1899
   languageName: node
   linkType: hard
 
@@ -6989,6 +7051,13 @@ fsevents@^2.1.2:
   dependencies:
     language-subtag-registry: ~0.3.2
   checksum: a3d30a911884eadc0f738dedf1c1cb345d8f8dce5c0a8790a75102f02a0b44cbcba325ffa8414cc2f52f599c18583618938a54c62df94638a8682f6e9c4337a1
+  languageName: node
+  linkType: hard
+
+"leven@npm:2.1.0":
+  version: 2.1.0
+  resolution: "leven@npm:2.1.0"
+  checksum: fcd39dd4d7cf26e0144641fd44293e6721d3ef785b5b1e97e8f179eaabbaf3a4aeb794ad6b8ba81de41183905f4f573ac21e783ec1375b6936cc46178087264e
   languageName: node
   linkType: hard
 
@@ -7439,6 +7508,13 @@ fsevents@^2.1.2:
   version: 1.0.1
   resolution: "modify-values@npm:1.0.1"
   checksum: 55165ae8b4ea2aafebe5027dd427d4a833d54606c81546f4d3c04943d99d194ac9481fa076719f326d243c475e2dfa5cf0219e68cffbbf9c44b24e46eb889779
+  languageName: node
+  linkType: hard
+
+"mri@npm:1.1.4":
+  version: 1.1.4
+  resolution: "mri@npm:1.1.4"
+  checksum: 5ea30a4f587afeb69bf51c27fa8bcf9aee96ccb6091bc933a9be78e925d2f823e453f3c3752d89f616658c469882519d6d275babd366f89c209ab8bcd627fdbd
   languageName: node
   linkType: hard
 
@@ -8164,6 +8240,27 @@ fsevents@^2.1.2:
   languageName: node
   linkType: hard
 
+"pino-pretty@npm:*":
+  version: 4.7.1
+  resolution: "pino-pretty@npm:4.7.1"
+  dependencies:
+    "@hapi/bourne": ^2.0.0
+    args: ^5.0.1
+    chalk: ^4.0.0
+    dateformat: ^4.5.1
+    fast-safe-stringify: ^2.0.7
+    jmespath: ^0.15.0
+    joycon: ^2.2.5
+    pump: ^3.0.0
+    readable-stream: ^3.6.0
+    split2: ^3.1.1
+    strip-json-comments: ^3.1.1
+  bin:
+    pino-pretty: bin.js
+  checksum: 7af3913844d07543b4ab1fa52dd335b8f93aaf87d918b5f01e37b0ad2e4c43cffaa7994e476d95def76c98edabe2d5b7e1d65af9b32288ea32bd2bf1584d6cee
+  languageName: node
+  linkType: hard
+
 "pino-std-serializers@npm:^3.1.0":
   version: 3.2.0
   resolution: "pino-std-serializers@npm:3.2.0"
@@ -8605,7 +8702,7 @@ fsevents@^2.1.2:
   languageName: node
   linkType: hard
 
-"readable-stream@npm:3, readable-stream@npm:^3.0.0, readable-stream@npm:^3.1.1, readable-stream@npm:^3.4.0":
+"readable-stream@npm:3, readable-stream@npm:^3.0.0, readable-stream@npm:^3.1.1, readable-stream@npm:^3.4.0, readable-stream@npm:^3.6.0":
   version: 3.6.0
   resolution: "readable-stream@npm:3.6.0"
   dependencies:
@@ -9407,7 +9504,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"split2@npm:^3.0.0":
+"split2@npm:^3.0.0, split2@npm:^3.1.1":
   version: 3.2.2
   resolution: "split2@npm:3.2.2"
   dependencies:

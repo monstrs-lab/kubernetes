@@ -31,6 +31,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:operators/preview-image-reflector-operator"
       },
       {
+        "name": "@monstrs/k8s-preview-ingress-operator",
+        "reference": "workspace:operators/preview-ingress-operator"
+      },
+      {
         "name": "@monstrs/k8s-preview-operator",
         "reference": "workspace:operators/preview-operator"
       },
@@ -59,6 +63,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@monstrs/k8s-operator-logger", ["workspace:utils/operator-logger"]],
       ["@monstrs/k8s-preview-automation-operator", ["workspace:operators/preview-automation-operator"]],
       ["@monstrs/k8s-preview-image-reflector-operator", ["workspace:operators/preview-image-reflector-operator"]],
+      ["@monstrs/k8s-preview-ingress-operator", ["workspace:operators/preview-ingress-operator"]],
       ["@monstrs/k8s-preview-operator", ["workspace:operators/preview-operator"]],
       ["@monstrs/k8s-resource-utils", ["workspace:utils/resource-utils"]],
       ["kubernetes", ["workspace:."]]
@@ -840,6 +845,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@hapi/bourne", [
+        ["npm:2.0.0", {
+          "packageLocation": "./.yarn/cache/@hapi-bourne-npm-2.0.0-8eeda7e0a2-97a3e6d44c.zip/node_modules/@hapi/bourne/",
+          "packageDependencies": [
+            ["@hapi/bourne", "npm:2.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@istanbuljs/load-nyc-config", [
         ["npm:1.1.0", {
           "packageLocation": "./.yarn/cache/@istanbuljs-load-nyc-config-npm-1.1.0-42d17c9cb1-f7f3b1c922.zip/node_modules/@istanbuljs/load-nyc-config/",
@@ -1354,13 +1368,30 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "SOFT",
         }]
       ]],
+      ["@monstrs/k8s-preview-ingress-operator", [
+        ["workspace:operators/preview-ingress-operator", {
+          "packageLocation": "./operators/preview-ingress-operator/",
+          "packageDependencies": [
+            ["@monstrs/k8s-preview-ingress-operator", "workspace:operators/preview-ingress-operator"],
+            ["@dot-i/k8s-operator", "npm:1.1.1"],
+            ["@kubernetes/client-node", "npm:0.14.1"],
+            ["@monstrs/k8s-kubectl-tool", "workspace:tools/kubectl"],
+            ["@monstrs/k8s-kustomize-tool", "workspace:tools/kustomize"],
+            ["@monstrs/k8s-operator-logger", "workspace:utils/operator-logger"],
+            ["@monstrs/k8s-preview-automation-operator", "workspace:operators/preview-automation-operator"],
+            ["@monstrs/k8s-resource-utils", "workspace:utils/resource-utils"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
       ["@monstrs/k8s-preview-operator", [
         ["workspace:operators/preview-operator", {
           "packageLocation": "./operators/preview-operator/",
           "packageDependencies": [
             ["@monstrs/k8s-preview-operator", "workspace:operators/preview-operator"],
             ["@monstrs/k8s-preview-automation-operator", "workspace:operators/preview-automation-operator"],
-            ["@monstrs/k8s-preview-image-reflector-operator", "workspace:operators/preview-image-reflector-operator"]
+            ["@monstrs/k8s-preview-image-reflector-operator", "workspace:operators/preview-image-reflector-operator"],
+            ["@monstrs/k8s-preview-ingress-operator", "workspace:operators/preview-ingress-operator"]
           ],
           "linkType": "SOFT",
         }]
@@ -3464,6 +3495,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["args", [
+        ["npm:5.0.1", {
+          "packageLocation": "./.yarn/cache/args-npm-5.0.1-cd7b0f9dcc-2c322bff70.zip/node_modules/args/",
+          "packageDependencies": [
+            ["args", "npm:5.0.1"],
+            ["camelcase", "npm:5.0.0"],
+            ["chalk", "npm:2.4.2"],
+            ["leven", "npm:2.1.0"],
+            ["mri", "npm:1.1.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["aria-query", [
         ["npm:4.2.2", {
           "packageLocation": "./.yarn/cache/aria-query-npm-4.2.2-e0c4f1a309-dc7631b6f9.zip/node_modules/aria-query/",
@@ -4138,6 +4182,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["camelcase", [
+        ["npm:5.0.0", {
+          "packageLocation": "./.yarn/cache/camelcase-npm-5.0.0-c808398846-73567fa11f.zip/node_modules/camelcase/",
+          "packageDependencies": [
+            ["camelcase", "npm:5.0.0"]
+          ],
+          "linkType": "HARD",
+        }],
         ["npm:5.3.1", {
           "packageLocation": "./.yarn/cache/camelcase-npm-5.3.1-5db8af62c5-6a3350c4ea.zip/node_modules/camelcase/",
           "packageDependencies": [
@@ -4830,6 +4881,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["abab", "npm:2.0.5"],
             ["whatwg-mimetype", "npm:2.3.0"],
             ["whatwg-url", "npm:8.5.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["dateformat", [
+        ["npm:4.5.1", {
+          "packageLocation": "./.yarn/cache/dateformat-npm-4.5.1-ee0ca75464-d5d08fd36f.zip/node_modules/dateformat/",
+          "packageDependencies": [
+            ["dateformat", "npm:4.5.1"]
           ],
           "linkType": "HARD",
         }]
@@ -8210,12 +8270,30 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["jmespath", [
+        ["npm:0.15.0", {
+          "packageLocation": "./.yarn/cache/jmespath-npm-0.15.0-df80ed6dd1-b3edb0b977.zip/node_modules/jmespath/",
+          "packageDependencies": [
+            ["jmespath", "npm:0.15.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["jose", [
         ["npm:2.0.4", {
           "packageLocation": "./.yarn/cache/jose-npm-2.0.4-8e257b3aaa-402054b230.zip/node_modules/jose/",
           "packageDependencies": [
             ["jose", "npm:2.0.4"],
             ["@panva/asn1.js", "npm:1.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["joycon", [
+        ["npm:2.2.5", {
+          "packageLocation": "./.yarn/cache/joycon-npm-2.2.5-fff23ab519-7908f551e0.zip/node_modules/joycon/",
+          "packageDependencies": [
+            ["joycon", "npm:2.2.5"]
           ],
           "linkType": "HARD",
         }]
@@ -8544,6 +8622,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["leven", [
+        ["npm:2.1.0", {
+          "packageLocation": "./.yarn/cache/leven-npm-2.1.0-19f0a16606-fcd39dd4d7.zip/node_modules/leven/",
+          "packageDependencies": [
+            ["leven", "npm:2.1.0"]
+          ],
+          "linkType": "HARD",
+        }],
         ["npm:3.1.0", {
           "packageLocation": "./.yarn/cache/leven-npm-3.1.0-b7697736a3-6ebca75298.zip/node_modules/leven/",
           "packageDependencies": [
@@ -9051,6 +9136,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/modify-values-npm-1.0.1-9b2377e166-55165ae8b4.zip/node_modules/modify-values/",
           "packageDependencies": [
             ["modify-values", "npm:1.0.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["mri", [
+        ["npm:1.1.4", {
+          "packageLocation": "./.yarn/cache/mri-npm-1.1.4-d22a399f26-5ea30a4f58.zip/node_modules/mri/",
+          "packageDependencies": [
+            ["mri", "npm:1.1.4"]
           ],
           "linkType": "HARD",
         }]
@@ -9868,9 +9962,30 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["fast-redact", "npm:3.0.0"],
             ["fast-safe-stringify", "npm:2.0.7"],
             ["flatstr", "npm:1.0.12"],
+            ["pino-pretty", "npm:4.7.1"],
             ["pino-std-serializers", "npm:3.2.0"],
             ["quick-format-unescaped", "npm:4.0.1"],
             ["sonic-boom", "npm:1.4.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["pino-pretty", [
+        ["npm:4.7.1", {
+          "packageLocation": "./.yarn/cache/pino-pretty-npm-4.7.1-0885be86f1-7af3913844.zip/node_modules/pino-pretty/",
+          "packageDependencies": [
+            ["pino-pretty", "npm:4.7.1"],
+            ["@hapi/bourne", "npm:2.0.0"],
+            ["args", "npm:5.0.1"],
+            ["chalk", "npm:4.1.0"],
+            ["dateformat", "npm:4.5.1"],
+            ["fast-safe-stringify", "npm:2.0.7"],
+            ["jmespath", "npm:0.15.0"],
+            ["joycon", "npm:2.2.5"],
+            ["pump", "npm:3.0.0"],
+            ["readable-stream", "npm:3.6.0"],
+            ["split2", "npm:3.2.2"],
+            ["strip-json-comments", "npm:3.1.1"]
           ],
           "linkType": "HARD",
         }]
