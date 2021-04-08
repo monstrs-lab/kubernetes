@@ -26,6 +26,11 @@ spec:
                     namespace:
                       type: string
                   type: object
+                endpoint:
+                  properties:
+                    domain:
+                      type: string
+                  type: object
                 resources:
                   description: Resources refers to kubernetes resources subject to kustomization.
                   items:

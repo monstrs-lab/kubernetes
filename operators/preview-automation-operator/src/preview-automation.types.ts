@@ -25,7 +25,12 @@ export interface PreviewAutomationImageRepositoryRef {
   namespace?: string
 }
 
+export interface PreviewAutomationEndpoint {
+  domain: string
+}
+
 export interface PreviewAutomationSpec {
+  endpoint: PreviewAutomationEndpoint
   resources: Array<PreviewAutomationResourceSpec>
   imageRepositoryRef: PreviewAutomationImageRepositoryRef
 }

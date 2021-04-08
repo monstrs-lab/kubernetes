@@ -112,7 +112,7 @@ export class PreviewAutomationOperator extends Operator {
         app: `preview-${previewVersion.spec.scope.id}`,
       },
       commonAnnotations: {
-        'preview.monstrs.tech/automated': 'true',
+        'preview.monstrs.tech/automation': automation.metadata!.name,
       },
     }
 
