@@ -43,4 +43,8 @@ jobs:
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
         run: |
-          yarn workspaces changed foreach app pack --publish --tag-policy hash-timestamp --registry 'eu.gcr.io/${{ secrets.GCR_PROJECT_ID }}/k8s-'
+          yarn workspaces changed foreach app pack \
+            --registry 'eu.gcr.io/${{ secrets.GCR_PROJECT_ID }}/k8s-' \
+            --builder monstrs/builder-operator:buster \
+            --tag-policy hash-timestamp \
+            --publish 

@@ -12,8 +12,8 @@
     "start": "node dist/index.js"
   },
   "devDependencies": {
-    "@monstrs/k8s-preview-image-reflector-operator": "workspace:0.0.1",
     "@monstrs/k8s-preview-automation-operator": "workspace:0.0.1",
+    "@monstrs/k8s-preview-image-reflector-operator": "workspace:0.0.1",
     "@monstrs/k8s-preview-ingress-operator": "workspace:0.0.1"
   },
   "dependencies": {
