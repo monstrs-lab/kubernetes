@@ -110,7 +110,9 @@ export class PreviewAutomationOperator extends Operator {
       nameSuffix: `-${previewVersion.spec.scope.id}`,
       commonLabels: {
         app: `preview-${previewVersion.spec.scope.id}`,
-        'preview.monstrs.tech/scope.id': previewVersion.spec.scope.id,
+      },
+      commonAnnotations: {
+        'preview.monstrs.tech/automated': 'true',
       },
     }
 
@@ -178,6 +180,7 @@ export class PreviewAutomationOperator extends Operator {
   protected async resourceDeleted(event) {
     const preview = await this.buildPreview(event.object as PreviewVersionResource)
 
+    // TODO: check exists
     await kubectl.delete(preview)
   }
 
