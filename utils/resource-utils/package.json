@@ -12,6 +12,6 @@
     "yaml": "^1.10.2"
   },
   "devDependencies": {
-    "@kubernetes/client-node": "^0.14.1"
+    "@kubernetes/client-node": "^0.14.2"
   }
 }
