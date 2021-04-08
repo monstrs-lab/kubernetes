@@ -1411,7 +1411,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/k8s-preview-operator", "workspace:operators/preview-operator"],
             ["@monstrs/k8s-preview-automation-operator", "workspace:operators/preview-automation-operator"],
             ["@monstrs/k8s-preview-image-reflector-operator", "workspace:operators/preview-image-reflector-operator"],
-            ["@monstrs/k8s-preview-ingress-operator", "workspace:operators/preview-ingress-operator"]
+            ["@monstrs/k8s-preview-ingress-operator", "workspace:operators/preview-ingress-operator"],
+            ["ffi-napi", "npm:4.0.3"],
+            ["ref-napi", "npm:3.0.2"]
           ],
           "linkType": "SOFT",
         }]
