@@ -5,9 +5,7 @@ import { PreviewIngressOperator }        from '@monstrs/k8s-preview-ingress-oper
 const bootstrap = async () => {
   const previewImageReflectorOperator = new PreviewImageReflectorOperator()
   const previewAutomationOperator = new PreviewAutomationOperator()
-  const previewIngressOperator = new PreviewIngressOperator({
-    endpoint: process.env.PREVIEW_INGRESS_ENDPOINT || 'localhost:8080',
-  })
+  const previewIngressOperator = new PreviewIngressOperator()
 
   await Promise.all([
     previewImageReflectorOperator.start(),
