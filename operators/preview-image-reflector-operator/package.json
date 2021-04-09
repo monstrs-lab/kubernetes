@@ -19,6 +19,7 @@
     "@monstrs/k8s-operator-logger": "workspace:0.0.1",
     "@monstrs/k8s-preview-automation-operator": "workspace:0.0.1",
     "@monstrs/k8s-resource-utils": "workspace:0.0.1",
+    "@monstrs/logger": "^0.0.4",
     "parse-docker-image-name": "^3.0.0"
   }
 }

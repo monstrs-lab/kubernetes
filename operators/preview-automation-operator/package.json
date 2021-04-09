@@ -17,6 +17,7 @@
     "@monstrs/k8s-kubectl-tool": "workspace:0.0.1",
     "@monstrs/k8s-kustomize-tool": "workspace:0.0.1",
     "@monstrs/k8s-operator-logger": "workspace:0.0.1",
-    "@monstrs/k8s-resource-utils": "workspace:0.0.1"
+    "@monstrs/k8s-resource-utils": "workspace:0.0.1",
+    "@monstrs/logger": "^0.0.4"
   }
 }
