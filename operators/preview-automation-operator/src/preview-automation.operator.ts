@@ -201,10 +201,14 @@ export class PreviewAutomationOperator extends Operator {
   }
 
   protected async resourceDeleted(event) {
-    const preview = await this.buildPreview(event.object as PreviewVersionResource)
+    try {
+      const preview = await this.buildPreview(event.object as PreviewVersionResource)
 
-    // TODO: check exists
-    await kubectl.delete(preview)
+      // TODO: check exists
+      await kubectl.delete(preview)
+    } catch (error) {
+      this.log.error(error.body || error)
+    }
   }
 
   protected async init() {
