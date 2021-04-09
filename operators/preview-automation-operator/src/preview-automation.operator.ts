@@ -16,6 +16,7 @@ import { PreviewAutomationResourceVersion } from './preview-automation.types'
 import { PreviewAutomationResourceGroup }   from './preview-automation.types'
 import { PreviewAutomationResource }        from './preview-automation.types'
 import { ImageRepositoryResource }          from './image-repository.interfaces'
+import { GitRepositoryResource }            from './source.interfaces'
 import { PreviewVersionResourceVersion }    from './preview-version.types'
 import { PreviewVersionResourceGroup }      from './preview-version.types'
 import { PreviewVersionStatusPhase }        from './preview-version.types'
@@ -95,10 +96,23 @@ export class PreviewAutomationOperator extends Operator {
     return body as ImageRepositoryResource
   }
 
+  private async getSource(automation: PreviewAutomationResource): Promise<GitRepositoryResource> {
+    const { body } = await this.k8sCustomObjectsApi.getNamespacedCustomObject(
+      'source.toolkit.fluxcd.io',
+      'v1beta1',
+      automation.spec.sourceRef.namespace || automation.metadata?.namespace || 'default',
+      'gitrepositories',
+      automation.spec.sourceRef.name
+    )
+
+    return body as GitRepositoryResource
+  }
+
   async buildPreview(previewVersion: PreviewVersionResource) {
     const automation = await this.getPreviewAutomation(previewVersion)
     const resources = await this.getAutomationResources(automation)
     const imageRepository = await this.getImageRepository(automation)
+    const source = await this.getSource(automation)
 
     const transformations = {
       images: [
@@ -108,12 +122,20 @@ export class PreviewAutomationOperator extends Operator {
         },
       ],
       namePrefix: 'preview-',
-      nameSuffix: `-${previewVersion.spec.scope.id}`,
+      nameSuffix: `-${previewVersion.spec.context.number}`,
       commonLabels: {
-        app: `preview-${previewVersion.spec.scope.id}`,
+        app: `preview-${previewVersion.spec.context.number}`,
       },
       commonAnnotations: {
         'preview.monstrs.tech/automation': automation.metadata!.name,
+        'preview.monstrs.tech/host': `${automation.metadata!.name}-${
+          previewVersion.spec.context.number
+        }.${automation.spec.endpoint.domain}`,
+        'preview.monstrs.tech/context': JSON.stringify(previewVersion.spec.context),
+        'preview.monstrs.tech/source': JSON.stringify({
+          kind: 'GitRepository',
+          url: source.spec.url,
+        }),
       },
     }
 
