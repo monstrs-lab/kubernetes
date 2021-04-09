@@ -132,7 +132,7 @@ export class IstioIngressGenerator implements IngressGenerator {
     }
   }
 
-  private async patchGateway(namespace: string, name: string, host: string, tls: boolean = false) {
+  private async patchGateway(namespace: string, name: string, host: string, tls?: string) {
     this.logger.info(`Patch istio gateway ${namespace}.${name} for host ${host}`)
 
     return this.k8sCustomObjectsApi.patchNamespacedCustomObject(
@@ -163,7 +163,7 @@ export class IstioIngressGenerator implements IngressGenerator {
                       protocol: 'HTTP',
                     },
                 hosts: [host],
-                ...(tls ? { tls: { mode: 'SIMPLE', credentialName: name } } : {}),
+                ...(tls ? { tls: { mode: 'SIMPLE', credentialName: tls } } : {}),
               },
             ],
           },
@@ -178,7 +178,7 @@ export class IstioIngressGenerator implements IngressGenerator {
     )
   }
 
-  private async createGateway(namespace: string, name: string, host: string, tls: boolean = false) {
+  private async createGateway(namespace: string, name: string, host: string, tls?: string) {
     this.logger.info(`Create istio gateway ${namespace}.${name} for host ${host}`)
 
     return this.k8sCustomObjectsApi.createNamespacedCustomObject(
@@ -211,7 +211,7 @@ export class IstioIngressGenerator implements IngressGenerator {
                     protocol: 'HTTP',
                   },
               hosts: [host],
-              ...(tls ? { tls: { mode: 'SIMPLE', credentialName: name } } : {}),
+              ...(tls ? { tls: { mode: 'SIMPLE', credentialName: tls } } : {}),
             },
           ],
         },
@@ -231,7 +231,7 @@ export class IstioIngressGenerator implements IngressGenerator {
     )
   }
 
-  async apply(namespace: string, name: string, host: string, port: number, tls?: boolean) {
+  async apply(namespace: string, name: string, host: string, port: number, tls?: string) {
     if (await this.getVirtualService(namespace, name)) {
       await this.patchVirtualService(namespace, name, host, port)
     } else {
