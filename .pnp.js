@@ -1399,7 +1399,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/k8s-kustomize-tool", "workspace:tools/kustomize"],
             ["@monstrs/k8s-operator-logger", "workspace:utils/operator-logger"],
             ["@monstrs/k8s-preview-automation-operator", "workspace:operators/preview-automation-operator"],
-            ["@monstrs/k8s-resource-utils", "workspace:utils/resource-utils"]
+            ["@monstrs/k8s-resource-utils", "workspace:utils/resource-utils"],
+            ["@monstrs/logger", "npm:0.0.4"]
           ],
           "linkType": "SOFT",
         }]

@@ -1,8 +1,12 @@
 import { CustomObjectsApi } from '@kubernetes/client-node'
 
+import { Logger }           from '@monstrs/logger'
+
 import { IngressGenerator } from './ingress-generator.interfaces'
 
 export class IstioIngressGenerator implements IngressGenerator {
+  private readonly logger = new Logger(IstioIngressGenerator.name)
+
   constructor(private readonly k8sCustomObjectsApi: CustomObjectsApi) {}
 
   private async getVirtualService(namespace: string, name: string) {
@@ -22,6 +26,8 @@ export class IstioIngressGenerator implements IngressGenerator {
   }
 
   private async patchVirtualService(namespace: string, name: string, host: string, port: number) {
+    this.logger.info(`Patch istio virtual service ${namespace}.${name} for host ${host}`)
+
     return this.k8sCustomObjectsApi.patchNamespacedCustomObject(
       'networking.istio.io',
       'v1alpha3',
@@ -62,6 +68,8 @@ export class IstioIngressGenerator implements IngressGenerator {
   }
 
   private async createVirtualService(namespace: string, name: string, host: string, port: number) {
+    this.logger.info(`Create istio virtual service ${namespace}.${name} for host ${host}`)
+
     return this.k8sCustomObjectsApi.createNamespacedCustomObject(
       'networking.istio.io',
       'v1alpha3',
@@ -97,6 +105,8 @@ export class IstioIngressGenerator implements IngressGenerator {
   }
 
   private async deleteVirtualService(namespace: string, name: string) {
+    this.logger.info(`Delete istio virtual service ${namespace}.${name}`)
+
     return this.k8sCustomObjectsApi.deleteNamespacedCustomObject(
       'networking.istio.io',
       'v1alpha3',
@@ -123,6 +133,8 @@ export class IstioIngressGenerator implements IngressGenerator {
   }
 
   private async patchGateway(namespace: string, name: string, host: string, tls: boolean = false) {
+    this.logger.info(`Patch istio gateway ${namespace}.${name} for host ${host}`)
+
     return this.k8sCustomObjectsApi.patchNamespacedCustomObject(
       'networking.istio.io',
       'v1alpha3',
@@ -167,6 +179,8 @@ export class IstioIngressGenerator implements IngressGenerator {
   }
 
   private async createGateway(namespace: string, name: string, host: string, tls: boolean = false) {
+    this.logger.info(`Create istio gateway ${namespace}.${name} for host ${host}`)
+
     return this.k8sCustomObjectsApi.createNamespacedCustomObject(
       'networking.istio.io',
       'v1alpha3',
@@ -206,6 +220,8 @@ export class IstioIngressGenerator implements IngressGenerator {
   }
 
   private async deleteGateway(namespace: string, name: string) {
+    this.logger.info(`Delete istio gateway ${namespace}.${name}`)
+
     return this.k8sCustomObjectsApi.deleteNamespacedCustomObject(
       'networking.istio.io',
       'v1alpha3',

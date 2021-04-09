@@ -1,8 +1,12 @@
 import { CustomObjectsApi } from '@kubernetes/client-node'
 
+import { Logger }           from '@monstrs/logger'
+
 import { TlsGenerator }     from './tls-generator.interfaces'
 
 export class CertManagerTlsGenerator implements TlsGenerator {
+  private readonly logger = new Logger(CertManagerTlsGenerator.name)
+
   constructor(private readonly k8sCustomObjectsApi: CustomObjectsApi) {}
 
   private async getCertificate(namespace: string, name: string) {
@@ -22,6 +26,8 @@ export class CertManagerTlsGenerator implements TlsGenerator {
   }
 
   private async patchCertificat(namespace: string, name: string, host: string) {
+    this.logger.info(`Patch cert manager certificate ${namespace}.${name} for host ${host}`)
+
     return this.k8sCustomObjectsApi.patchNamespacedCustomObject(
       'cert-manager.io',
       'v1alpha2',
@@ -53,6 +59,8 @@ export class CertManagerTlsGenerator implements TlsGenerator {
   }
 
   private async createCertificate(namespace: string, name: string, host: string) {
+    this.logger.info(`Create cert manager certificate ${namespace}.${name} for host ${host}`)
+
     return this.k8sCustomObjectsApi.createNamespacedCustomObject(
       'cert-manager.io',
       'v1alpha2',
@@ -79,6 +87,8 @@ export class CertManagerTlsGenerator implements TlsGenerator {
   }
 
   private async deleteCertificate(namespace: string, name: string) {
+    this.logger.info(`Delete cert manager certificate ${namespace}.${name}`)
+
     return this.k8sCustomObjectsApi.deleteNamespacedCustomObject(
       'cert-manager.io',
       'v1alpha2',

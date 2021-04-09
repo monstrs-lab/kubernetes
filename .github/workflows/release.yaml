@@ -47,4 +47,4 @@ jobs:
             --registry 'eu.gcr.io/${{ secrets.GCR_PROJECT_ID }}/k8s-' \
             --builder monstrs/builder-operator:buster \
             --tag-policy hash-timestamp \
-            --publish 
+            --publish
