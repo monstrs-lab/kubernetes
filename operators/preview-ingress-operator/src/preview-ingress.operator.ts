@@ -1,9 +1,10 @@
 import Operator                             from '@dot-i/k8s-operator'
 import { ResourceEventType }                from '@dot-i/k8s-operator'
 import { CustomObjectsApi }                 from '@kubernetes/client-node'
+import { Logger }                           from '@monstrs/logger'
 
 import { kind2Plural }                      from '@monstrs/k8s-resource-utils'
-import { Logger }                           from '@monstrs/k8s-operator-logger'
+import { OperatorLogger }                   from '@monstrs/k8s-operator-logger'
 import { PreviewAutomationResource }        from '@monstrs/k8s-preview-automation-operator'
 import { PreviewAutomationResourceVersion } from '@monstrs/k8s-preview-automation-operator'
 import { PreviewAutomationResourceGroup }   from '@monstrs/k8s-preview-automation-operator'
@@ -25,7 +26,7 @@ export class PreviewIngressOperator extends Operator {
   private readonly tlsGenerator: TlsGenerator
 
   constructor() {
-    super(new Logger(PreviewIngressOperator.name))
+    super(new OperatorLogger(PreviewIngressOperator.name))
 
     this.k8sCustomObjectsApi = this.kubeConfig.makeApiClient(CustomObjectsApi)
     this.ingressGenerator = new IstioIngressGenerator(this.k8sCustomObjectsApi)
@@ -72,7 +73,7 @@ export class PreviewIngressOperator extends Operator {
             await this.tlsGenerator.delete('istio-system', name)
           }
         } catch (error) {
-          this.log.error(error.body?.message || error.message)
+          this.log.error(error.body || error)
         }
       }
     })

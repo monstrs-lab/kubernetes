@@ -2,6 +2,7 @@ import Operator                             from '@dot-i/k8s-operator'
 import { ResourceEventType }                from '@dot-i/k8s-operator'
 import { CustomObjectsApi }                 from '@kubernetes/client-node'
 import parseDockerImage                     from 'parse-docker-image-name'
+import { Logger }                           from '@monstrs/logger'
 
 import { kind2Plural }                      from '@monstrs/k8s-resource-utils'
 import { PreviewAutomationResourceVersion } from '@monstrs/k8s-preview-automation-operator'
@@ -10,7 +11,7 @@ import { PreviewVersionResourceGroup }      from '@monstrs/k8s-preview-automatio
 import { PreviewAutomationResourceGroup }   from '@monstrs/k8s-preview-automation-operator'
 import { PreviewVersionResource }           from '@monstrs/k8s-preview-automation-operator'
 import { PreviewAutomationResource }        from '@monstrs/k8s-preview-automation-operator'
-import { Logger }                           from '@monstrs/k8s-operator-logger'
+import { OperatorLogger }                   from '@monstrs/k8s-operator-logger'
 
 import { PreviewAutomationsRegistry }       from './preview-automations.registry'
 import { ImagePolicyResource }              from './image-policy.interfaces'
@@ -25,7 +26,7 @@ export class PreviewImageReflectorOperator extends Operator {
   private readonly automationRegistry = new PreviewAutomationsRegistry()
 
   constructor() {
-    super(new Logger(PreviewImageReflectorOperator.name))
+    super(new OperatorLogger(PreviewImageReflectorOperator.name))
 
     this.k8sCustomObjectsApi = this.kubeConfig.makeApiClient(CustomObjectsApi)
   }

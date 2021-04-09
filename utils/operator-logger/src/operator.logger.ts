@@ -1,7 +1,7 @@
-import { OperatorLogger }       from '@dot-i/k8s-operator'
-import { Logger as BaseLogger } from '@monstrs/logger'
+import { OperatorLogger as BaseOperatorLogger } from '@dot-i/k8s-operator'
+import { Logger as BaseLogger }                 from '@monstrs/logger'
 
-export class Logger implements OperatorLogger {
+export class OperatorLogger implements BaseOperatorLogger {
   private readonly logger: BaseLogger
 
   constructor(scope) {
