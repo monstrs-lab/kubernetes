@@ -9,7 +9,7 @@ const bootstrap = async () => {
   const ingressOperator = new PreviewIngressOperator()
   const notificationOperator = new PreviewNotificationOperator({
     type: 'github',
-    token: process.env.GITHUB_TOKEN,
+    token: process.env.GITHUB_TOKEN!,
   })
 
   await Promise.all([
