@@ -73,6 +73,9 @@ export class PreviewIngressOperator extends Operator {
           }
         } catch (error) {
           this.log.error(error)
+
+          // eslint-disable-next-line
+          console.log(error)
         }
       }
     })
