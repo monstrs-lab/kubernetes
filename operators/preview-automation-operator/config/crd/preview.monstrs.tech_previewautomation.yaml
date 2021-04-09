@@ -26,6 +26,15 @@ spec:
                     namespace:
                       type: string
                   type: object
+                sourceRef:
+                  properties:
+                    kind:
+                      type: string
+                    name:
+                      type: string
+                    namespace:
+                      type: string
+                  type: object
                 endpoint:
                   properties:
                     domain:

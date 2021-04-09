@@ -34,13 +34,14 @@ export interface PreviewVersionSpecAutomationRef {
   namespace: string
 }
 
-export interface PreviewVersionSpecScope {
-  id: string
+export interface PreviewVersionSpecContext {
+  kind: string
+  number: string
 }
 
 export interface PreviewVersionSpec {
   previewAutomationRef: PreviewVersionSpecAutomationRef
-  scope: PreviewVersionSpecScope
+  context: PreviewVersionSpecContext
   tag: string
 }
 

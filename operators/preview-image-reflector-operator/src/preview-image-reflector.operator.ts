@@ -105,16 +105,17 @@ export class PreviewImageReflectorOperator extends Operator {
           const { tag } = parseDockerImage(latestImage)
 
           if (tag) {
-            const [scopeId] = tag.split('-')
-            const name = `${automation.metadata!.name}-${scopeId}`
+            const [contextNumber] = tag.split('-')
+            const name = `${automation.metadata!.name}-${contextNumber}`
 
             const spec = {
               previewAutomationRef: {
                 name: automation.metadata!.name,
               },
               tag,
-              scope: {
-                id: scopeId,
+              context: {
+                kind: 'GitHubPullRequest',
+                number: contextNumber,
               },
             }
 
