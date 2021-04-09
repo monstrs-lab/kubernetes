@@ -25,8 +25,10 @@ export class CertManagerTlsGenerator implements TlsGenerator {
     }
   }
 
-  private async patchCertificat(namespace: string, name: string, host: string) {
-    this.logger.info(`Patch cert manager certificate ${namespace}.${name} for host ${host}`)
+  private async patchCertificat(namespace: string, name: string, host: string, wildcard: string) {
+    this.logger.info(
+      `Patch cert manager certificate ${namespace}.${name} for host ${host} and ${wildcard}`
+    )
 
     return this.k8sCustomObjectsApi.patchNamespacedCustomObject(
       'cert-manager.io',
@@ -45,7 +47,7 @@ export class CertManagerTlsGenerator implements TlsGenerator {
               kind: 'ClusterIssuer',
             },
             commonName: host,
-            dnsNames: [host],
+            dnsNames: [host, wildcard],
           },
         },
       ],
@@ -58,8 +60,10 @@ export class CertManagerTlsGenerator implements TlsGenerator {
     )
   }
 
-  private async createCertificate(namespace: string, name: string, host: string) {
-    this.logger.info(`Create cert manager certificate ${namespace}.${name} for host ${host}`)
+  private async createCertificate(namespace: string, name: string, host: string, wildcard: string) {
+    this.logger.info(
+      `Create cert manager certificate ${namespace}.${name} for host ${host} and ${wildcard}`
+    )
 
     return this.k8sCustomObjectsApi.createNamespacedCustomObject(
       'cert-manager.io',
@@ -80,7 +84,7 @@ export class CertManagerTlsGenerator implements TlsGenerator {
             kind: 'ClusterIssuer',
           },
           commonName: host,
-          dnsNames: [host],
+          dnsNames: [host, wildcard],
         },
       }
     )
@@ -99,10 +103,14 @@ export class CertManagerTlsGenerator implements TlsGenerator {
   }
 
   async apply(namespace: string, name: string, host: string) {
-    if (await this.getCertificate(namespace, name)) {
-      await this.patchCertificat(namespace, name, host)
+    const endpoint = host.split('.').slice(1).join('.')
+    const certName = endpoint.replace(/\./g, '-')
+    const wildcard = `*.${endpoint}`
+
+    if (await this.getCertificate(namespace, certName)) {
+      await this.patchCertificat(namespace, certName, endpoint, wildcard)
     } else {
-      await this.createCertificate(namespace, name, host)
+      await this.createCertificate(namespace, certName, endpoint, wildcard)
     }
   }
 

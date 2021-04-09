@@ -47,7 +47,6 @@ export class PreviewIngressOperator extends Operator {
             }
           } else if (event.type === ResourceEventType.Deleted) {
             await this.ingressGenerator.delete(namespace, name)
-            await this.tlsGenerator.delete('istio-system', name)
           }
         } catch (error) {
           this.log.error(error.body || error)
