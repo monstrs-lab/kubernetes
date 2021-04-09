@@ -72,10 +72,7 @@ export class PreviewIngressOperator extends Operator {
             await this.tlsGenerator.delete('istio-system', name)
           }
         } catch (error) {
-          this.log.error(error)
-
-          // eslint-disable-next-line
-          console.log(error)
+          this.log.error(error.body?.message || error.message)
         }
       }
     })
