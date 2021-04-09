@@ -42,8 +42,8 @@ export class PreviewIngressOperator extends Operator {
             const [port] = (event.object as any).spec.ports
 
             if (port) {
-              await this.tlsGenerator.apply('istio-system', name, host)
-              await this.ingressGenerator.apply(namespace, name, host, port.port, true)
+              const cert = await this.tlsGenerator.apply('istio-system', name, host)
+              await this.ingressGenerator.apply(namespace, name, host, port.port, cert)
             }
           } else if (event.type === ResourceEventType.Deleted) {
             await this.ingressGenerator.delete(namespace, name)

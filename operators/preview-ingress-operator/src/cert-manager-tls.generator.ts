@@ -112,6 +112,8 @@ export class CertManagerTlsGenerator implements TlsGenerator {
     } else {
       await this.createCertificate(namespace, certName, endpoint, wildcard)
     }
+
+    return certName
   }
 
   async delete(namespace: string, name: string) {
