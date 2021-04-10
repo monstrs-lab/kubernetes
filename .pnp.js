@@ -23,6 +23,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:."
       },
       {
+        "name": "@monstrs/k8s-flux-toolkit-api",
+        "reference": "workspace:apis/flux-toolkit-api"
+      },
+      {
+        "name": "@monstrs/k8s-preview-automation-api",
+        "reference": "workspace:apis/preview-automation-api"
+      },
+      {
         "name": "@monstrs/k8s-preview-automation-operator",
         "reference": "workspace:operators/preview-automation-operator"
       },
@@ -66,9 +74,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "enableTopLevelFallback": true,
     "ignorePatternData": "(^(?:\\.yarn\\/sdks(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)|$))$)",
     "fallbackExclusionList": [
+      ["@monstrs/k8s-flux-toolkit-api", ["workspace:apis/flux-toolkit-api"]],
       ["@monstrs/k8s-kubectl-tool", ["workspace:tools/kubectl"]],
       ["@monstrs/k8s-kustomize-tool", ["workspace:tools/kustomize"]],
       ["@monstrs/k8s-operator-logger", ["workspace:utils/operator-logger"]],
+      ["@monstrs/k8s-preview-automation-api", ["workspace:apis/preview-automation-api"]],
       ["@monstrs/k8s-preview-automation-operator", ["workspace:operators/preview-automation-operator"]],
       ["@monstrs/k8s-preview-image-reflector-operator", ["workspace:operators/preview-image-reflector-operator"]],
       ["@monstrs/k8s-preview-ingress-operator", ["workspace:operators/preview-ingress-operator"]],
@@ -777,7 +787,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@dot-i-k8s-operator-npm-1.1.1-ae1acb5e6c-95fc7e954c.zip/node_modules/@dot-i/k8s-operator/",
           "packageDependencies": [
             ["@dot-i/k8s-operator", "npm:1.1.1"],
-            ["@kubernetes/client-node", "npm:0.14.1"],
+            ["@kubernetes/client-node", "npm:0.14.2"],
             ["async", "npm:3.2.0"],
             ["axios", "npm:0.21.1"],
             ["js-yaml", "npm:3.14.1"],
@@ -1091,35 +1101,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@kubernetes/client-node", [
-        ["npm:0.14.1", {
-          "packageLocation": "./.yarn/cache/@kubernetes-client-node-npm-0.14.1-80151e22fe-65b14d2a22.zip/node_modules/@kubernetes/client-node/",
-          "packageDependencies": [
-            ["@kubernetes/client-node", "npm:0.14.1"],
-            ["@types/js-yaml", "npm:3.12.6"],
-            ["@types/node", "npm:10.17.56"],
-            ["@types/request", "npm:2.48.5"],
-            ["@types/stream-buffers", "npm:3.0.3"],
-            ["@types/tar", "npm:4.0.4"],
-            ["@types/underscore", "npm:1.11.0"],
-            ["@types/ws", "npm:6.0.4"],
-            ["byline", "npm:5.0.0"],
-            ["execa", "npm:1.0.0"],
-            ["isomorphic-ws", "virtual:80151e22fe5969e9dd48a68cf9fe4ab6eb947326ca8756133fe4cdea1694dc654a410a49d6d81b44c50985f2719db822f57b1abbbfd1c05e28c96f699fca3803#npm:4.0.1"],
-            ["js-yaml", "npm:3.14.1"],
-            ["jsonpath-plus", "npm:0.19.0"],
-            ["openid-client", "npm:4.6.0"],
-            ["request", "npm:2.88.2"],
-            ["rfc4648", "npm:1.4.0"],
-            ["shelljs", "npm:0.8.4"],
-            ["stream-buffers", "npm:3.0.2"],
-            ["tar", "npm:6.1.0"],
-            ["tmp-promise", "npm:3.0.2"],
-            ["tslib", "npm:1.14.1"],
-            ["underscore", "npm:1.12.1"],
-            ["ws", "virtual:0f845b373cef5f286cf82c4cad3e87f5d00535ccebdf1017b4fa32f39cd0336817587ba2819d8b1f99d3d77ecd87291cd0d4b5a2430548bc37254fde99d1b030#npm:7.4.4"]
-          ],
-          "linkType": "HARD",
-        }],
         ["npm:0.14.2", {
           "packageLocation": "./.yarn/cache/@kubernetes-client-node-npm-0.14.2-2f5711f6bb-1966f14a32.zip/node_modules/@kubernetes/client-node/",
           "packageDependencies": [
@@ -1133,7 +1114,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/ws", "npm:6.0.4"],
             ["byline", "npm:5.0.0"],
             ["execa", "npm:1.0.0"],
-            ["isomorphic-ws", "virtual:80151e22fe5969e9dd48a68cf9fe4ab6eb947326ca8756133fe4cdea1694dc654a410a49d6d81b44c50985f2719db822f57b1abbbfd1c05e28c96f699fca3803#npm:4.0.1"],
+            ["isomorphic-ws", "virtual:2f5711f6bb2d95899f9ee2f57667704518a1faea441b606b94b3142bdb42dcc7a057040a1743351917fe67123c25b220981bc7ca2d73b3a5cfaf8f1968403f6c#npm:4.0.1"],
             ["js-yaml", "npm:3.14.1"],
             ["jsonpath-plus", "npm:0.19.0"],
             ["net-keepalive", "npm:2.0.4"],
@@ -1326,6 +1307,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@monstrs/k8s-flux-toolkit-api", [
+        ["workspace:apis/flux-toolkit-api", {
+          "packageLocation": "./apis/flux-toolkit-api/",
+          "packageDependencies": [
+            ["@monstrs/k8s-flux-toolkit-api", "workspace:apis/flux-toolkit-api"],
+            ["@kubernetes/client-node", "npm:0.14.2"],
+            ["@monstrs/k8s-resource-utils", "workspace:utils/resource-utils"],
+            ["@monstrs/logger", "npm:0.0.4"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
       ["@monstrs/k8s-kubectl-tool", [
         ["workspace:tools/kubectl", {
           "packageLocation": "./tools/kubectl/",
@@ -1366,16 +1359,29 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "SOFT",
         }]
       ]],
+      ["@monstrs/k8s-preview-automation-api", [
+        ["workspace:apis/preview-automation-api", {
+          "packageLocation": "./apis/preview-automation-api/",
+          "packageDependencies": [
+            ["@monstrs/k8s-preview-automation-api", "workspace:apis/preview-automation-api"],
+            ["@kubernetes/client-node", "npm:0.14.2"],
+            ["@monstrs/k8s-resource-utils", "workspace:utils/resource-utils"],
+            ["@monstrs/logger", "npm:0.0.4"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
       ["@monstrs/k8s-preview-automation-operator", [
         ["workspace:operators/preview-automation-operator", {
           "packageLocation": "./operators/preview-automation-operator/",
           "packageDependencies": [
             ["@monstrs/k8s-preview-automation-operator", "workspace:operators/preview-automation-operator"],
             ["@dot-i/k8s-operator", "npm:1.1.1"],
-            ["@kubernetes/client-node", "npm:0.14.2"],
+            ["@monstrs/k8s-flux-toolkit-api", "workspace:apis/flux-toolkit-api"],
             ["@monstrs/k8s-kubectl-tool", "workspace:tools/kubectl"],
             ["@monstrs/k8s-kustomize-tool", "workspace:tools/kustomize"],
             ["@monstrs/k8s-operator-logger", "workspace:utils/operator-logger"],
+            ["@monstrs/k8s-preview-automation-api", "workspace:apis/preview-automation-api"],
             ["@monstrs/k8s-resource-utils", "workspace:utils/resource-utils"],
             ["@monstrs/logger", "npm:0.0.4"]
           ],
@@ -8050,10 +8056,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:80151e22fe5969e9dd48a68cf9fe4ab6eb947326ca8756133fe4cdea1694dc654a410a49d6d81b44c50985f2719db822f57b1abbbfd1c05e28c96f699fca3803#npm:4.0.1", {
-          "packageLocation": "./.yarn/$$virtual/isomorphic-ws-virtual-abd49f9c52/0/cache/isomorphic-ws-npm-4.0.1-aa39192848-9012eec8ea.zip/node_modules/isomorphic-ws/",
+        ["virtual:2f5711f6bb2d95899f9ee2f57667704518a1faea441b606b94b3142bdb42dcc7a057040a1743351917fe67123c25b220981bc7ca2d73b3a5cfaf8f1968403f6c#npm:4.0.1", {
+          "packageLocation": "./.yarn/$$virtual/isomorphic-ws-virtual-fda00358ca/0/cache/isomorphic-ws-npm-4.0.1-aa39192848-9012eec8ea.zip/node_modules/isomorphic-ws/",
           "packageDependencies": [
-            ["isomorphic-ws", "virtual:80151e22fe5969e9dd48a68cf9fe4ab6eb947326ca8756133fe4cdea1694dc654a410a49d6d81b44c50985f2719db822f57b1abbbfd1c05e28c96f699fca3803#npm:4.0.1"],
+            ["isomorphic-ws", "virtual:2f5711f6bb2d95899f9ee2f57667704518a1faea441b606b94b3142bdb42dcc7a057040a1743351917fe67123c25b220981bc7ca2d73b3a5cfaf8f1968403f6c#npm:4.0.1"],
             ["@types/ws", "npm:6.0.4"],
             ["ws", "virtual:0f845b373cef5f286cf82c4cad3e87f5d00535ccebdf1017b4fa32f39cd0336817587ba2819d8b1f99d3d77ecd87291cd0d4b5a2430548bc37254fde99d1b030#npm:7.4.4"]
           ],

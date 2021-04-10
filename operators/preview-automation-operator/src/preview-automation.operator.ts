@@ -1,118 +1,61 @@
-import Operator                             from '@dot-i/k8s-operator'
-import { ResourceEventType }                from '@dot-i/k8s-operator'
-import { CustomObjectsApi }                 from '@kubernetes/client-node'
-import { AppsV1Api }                        from '@kubernetes/client-node'
-import { KubernetesObject }                 from '@kubernetes/client-node'
-import { Logger }                           from '@monstrs/logger'
+import Operator                          from '@dot-i/k8s-operator'
+import { ResourceEventType }             from '@dot-i/k8s-operator'
+import { Logger }                        from '@monstrs/logger'
 
-import { kustomize }                        from '@monstrs/k8s-kustomize-tool'
-import { kubectl }                          from '@monstrs/k8s-kubectl-tool'
-import { OperatorLogger }                   from '@monstrs/k8s-operator-logger'
-import { kind2Plural }                      from '@monstrs/k8s-resource-utils'
-import { deploymentResourceToSpec }         from '@monstrs/k8s-resource-utils'
-import { serviceResourceToSpec }            from '@monstrs/k8s-resource-utils'
+import { PreviewAutomationApi }          from '@monstrs/k8s-preview-automation-api'
+import { PreviewVersionApi }             from '@monstrs/k8s-preview-automation-api'
+import { PreviewAutomationDomain }       from '@monstrs/k8s-preview-automation-api'
+import { PreviewVersionResourceVersion } from '@monstrs/k8s-preview-automation-api'
+import { PreviewVersionResourceGroup }   from '@monstrs/k8s-preview-automation-api'
+import { PreviewVersionStatusPhase }     from '@monstrs/k8s-preview-automation-api'
+import { PreviewVersionResource }        from '@monstrs/k8s-preview-automation-api'
+import { ImageRepositoryApi }            from '@monstrs/k8s-flux-toolkit-api'
+import { SourceApi }                     from '@monstrs/k8s-flux-toolkit-api'
 
-import { PreviewAutomationResourceVersion } from './preview-automation.types'
-import { PreviewAutomationResourceGroup }   from './preview-automation.types'
-import { PreviewAutomationResource }        from './preview-automation.types'
-import { ImageRepositoryResource }          from './image-repository.interfaces'
-import { GitRepositoryResource }            from './source.interfaces'
-import { PreviewVersionResourceVersion }    from './preview-version.types'
-import { PreviewVersionResourceGroup }      from './preview-version.types'
-import { PreviewVersionStatusPhase }        from './preview-version.types'
-import { PreviewVersionResource }           from './preview-version.types'
-import { PreviewVersionStatus }             from './preview-version.types'
+import { kustomize }                     from '@monstrs/k8s-kustomize-tool'
+import { kubectl }                       from '@monstrs/k8s-kubectl-tool'
+import { OperatorLogger }                from '@monstrs/k8s-operator-logger'
+import { kind2Plural }                   from '@monstrs/k8s-resource-utils'
 
 export class PreviewAutomationOperator extends Operator {
-  public static DOMAIN_GROUP = 'preview.monstrs.tech'
-
   private readonly log = new Logger(PreviewAutomationOperator.name)
 
-  private readonly k8sCustomObjectsApi: CustomObjectsApi
+  private readonly previewAutomationApi: PreviewAutomationApi
 
-  private readonly k8sAppApi: AppsV1Api
+  private readonly previewVersionApi: PreviewVersionApi
+
+  private readonly imageRepositoryApi: ImageRepositoryApi
+
+  private readonly sourceApi: SourceApi
 
   constructor() {
     super(new OperatorLogger(PreviewAutomationOperator.name))
 
-    this.k8sCustomObjectsApi = this.kubeConfig.makeApiClient(CustomObjectsApi)
-    this.k8sAppApi = this.kubeConfig.makeApiClient(AppsV1Api)
-  }
-
-  async getAutomationResources(
-    automation: PreviewAutomationResource
-  ): Promise<Array<KubernetesObject>> {
-    return Promise.all(
-      // eslint-disable-next-line consistent-return
-      automation.spec.resources.map(async (resource) => {
-        if (resource.kind === 'Service') {
-          const service = await this.k8sApi.readNamespacedService(
-            resource.name,
-            automation.metadata?.namespace || 'default'
-          )
-
-          return serviceResourceToSpec(service.body)
-        }
-
-        if (resource.kind === 'Deployment') {
-          const deployment = await this.k8sAppApi.readNamespacedDeployment(
-            resource.name,
-            automation.metadata?.namespace || 'default'
-          )
-
-          return deploymentResourceToSpec(deployment.body)
-        }
-      })
-    )
-  }
-
-  private async getPreviewAutomation(
-    previewVersion: PreviewVersionResource
-  ): Promise<PreviewAutomationResource> {
-    const { body } = await this.k8sCustomObjectsApi.getNamespacedCustomObject(
-      PreviewAutomationOperator.DOMAIN_GROUP,
-      PreviewAutomationResourceVersion.v1alpha1,
-      previewVersion.spec.previewAutomationRef.namespace ||
-        previewVersion.metadata?.namespace ||
-        'default',
-      kind2Plural(PreviewAutomationResourceGroup.PreviewAutomation),
-      previewVersion.spec.previewAutomationRef.name
-    )
-
-    return body as PreviewAutomationResource
-  }
-
-  private async getImageRepository(
-    automation: PreviewAutomationResource
-  ): Promise<ImageRepositoryResource> {
-    const { body } = await this.k8sCustomObjectsApi.getNamespacedCustomObject(
-      'image.toolkit.fluxcd.io',
-      'v1alpha1',
-      automation.spec.imageRepositoryRef.namespace || automation.metadata?.namespace || 'default',
-      'imagerepositories',
-      automation.spec.imageRepositoryRef.name
-    )
-
-    return body as ImageRepositoryResource
-  }
-
-  private async getSource(automation: PreviewAutomationResource): Promise<GitRepositoryResource> {
-    const { body } = await this.k8sCustomObjectsApi.getNamespacedCustomObject(
-      'source.toolkit.fluxcd.io',
-      'v1beta1',
-      automation.spec.sourceRef.namespace || automation.metadata?.namespace || 'default',
-      'gitrepositories',
-      automation.spec.sourceRef.name
-    )
-
-    return body as GitRepositoryResource
+    this.previewAutomationApi = new PreviewAutomationApi(this.kubeConfig)
+    this.previewVersionApi = new PreviewVersionApi(this.kubeConfig)
+    this.imageRepositoryApi = new ImageRepositoryApi(this.kubeConfig)
+    this.sourceApi = new SourceApi(this.kubeConfig)
   }
 
   async buildPreview(previewVersion: PreviewVersionResource) {
-    const automation = await this.getPreviewAutomation(previewVersion)
-    const resources = await this.getAutomationResources(automation)
-    const imageRepository = await this.getImageRepository(automation)
-    const source = await this.getSource(automation)
+    const automation = await this.previewAutomationApi.getPreviewAutomation(
+      previewVersion.spec.previewAutomationRef.namespace ||
+        previewVersion.metadata?.namespace ||
+        'default',
+      previewVersion.spec.previewAutomationRef.name
+    )
+
+    const imageRepository = await this.imageRepositoryApi.getImageRepository(
+      automation.spec.imageRepositoryRef.namespace || automation.metadata?.namespace || 'default',
+      automation.spec.imageRepositoryRef.name
+    )
+
+    const source = await this.sourceApi.getGitRepository(
+      automation.spec.sourceRef.namespace || automation.metadata?.namespace || 'default',
+      automation.spec.sourceRef.name
+    )
+
+    const resources = await this.previewAutomationApi.getPreviewAutomationResources(automation)
 
     const transformations = {
       images: [
@@ -142,60 +85,34 @@ export class PreviewAutomationOperator extends Operator {
     return kustomize.build(resources, transformations)
   }
 
-  async updateStatus(
-    status: PreviewVersionStatus,
-    resource: PreviewVersionResource
-  ): Promise<void> {
-    if (!resource.metadata?.name || !resource.metadata.namespace) return
-
-    await this.k8sCustomObjectsApi.patchNamespacedCustomObjectStatus(
-      PreviewAutomationOperator.DOMAIN_GROUP,
-      PreviewVersionResourceVersion.v1alpha1,
-      resource.metadata.namespace,
-      kind2Plural(PreviewVersionResourceGroup.PreviewVersion),
-      resource.metadata.name,
-      [
-        {
-          op: 'replace',
-          path: '/status',
-          value: status,
-        },
-      ],
-      undefined,
-      undefined,
-      undefined,
-      {
-        headers: { 'Content-Type': 'application/json-patch+json' },
-      }
-    )
-  }
-
   protected async resourceModified(event) {
     const resource = event.object as PreviewVersionResource
 
     if (!resource.status || resource.status.observedGeneration !== resource.metadata?.generation) {
-      this.updateStatus(
+      await this.previewVersionApi.updatePreviewVersionStatus(
+        resource.metadata?.namespace || 'default',
+        resource.metadata!.name!,
         {
           observedGeneration: resource.metadata?.generation,
           message: 'Updating preview version',
           phase: PreviewVersionStatusPhase.Pending,
           ready: false,
-        },
-        event.object as PreviewVersionResource
+        }
       )
 
-      const preview = await this.buildPreview(event.object as PreviewVersionResource)
+      const preview = await this.buildPreview(resource)
 
       await kubectl.apply(preview)
 
-      await this.updateStatus(
+      await this.previewVersionApi.updatePreviewVersionStatus(
+        resource.metadata?.namespace || 'default',
+        resource.metadata!.name!,
         {
           observedGeneration: resource.metadata?.generation,
           message: 'Preview version updated',
           phase: PreviewVersionStatusPhase.Succeeded,
           ready: true,
-        },
-        event.object as PreviewVersionResource
+        }
       )
     }
   }
@@ -213,14 +130,14 @@ export class PreviewAutomationOperator extends Operator {
 
   protected async init() {
     await this.watchResource(
-      PreviewAutomationOperator.DOMAIN_GROUP,
+      PreviewAutomationDomain.Group,
       PreviewVersionResourceVersion.v1alpha1,
       kind2Plural(PreviewVersionResourceGroup.PreviewVersion),
       async (event) => {
         try {
           if (event.type === ResourceEventType.Added || event.type === ResourceEventType.Modified) {
             const finalizer = `${kind2Plural(PreviewVersionResourceGroup.PreviewVersion)}.${
-              PreviewAutomationOperator.DOMAIN_GROUP
+              PreviewAutomationDomain.Group
             }`
 
             if (
@@ -232,16 +149,17 @@ export class PreviewAutomationOperator extends Operator {
             }
           }
         } catch (error) {
-          this.log.error(error)
+          this.log.error(error.body || error)
 
-          await this.updateStatus(
+          await this.previewVersionApi.updatePreviewVersionStatus(
+            event.object.metadata?.namespace || 'default',
+            event.object.metadata!.name!,
             {
               observedGeneration: event.object.metadata?.generation,
               message: error.message?.toString() || '',
               phase: PreviewVersionStatusPhase.Failed,
               ready: false,
-            },
-            event.object as PreviewVersionResource
+            }
           )
         }
       }

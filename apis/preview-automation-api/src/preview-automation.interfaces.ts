@@ -1,19 +1,5 @@
 import { KubernetesObject } from '@kubernetes/client-node'
 
-/* eslint-disable no-shadow */
-
-export enum PreviewAutomationResourceVersion {
-  v1alpha1 = 'v1alpha1',
-}
-
-export enum PreviewAutomationResourceKind {
-  PreviewAutomation = 'PreviewAutomation',
-}
-
-export enum PreviewAutomationResourceGroup {
-  PreviewAutomation = 'previewautomation',
-}
-
 export interface PreviewAutomationResourceSpec {
   kind: string
   name: string

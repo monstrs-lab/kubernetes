@@ -1,4 +1,4 @@
 export * from './preview-automation.operator'
-export * from './preview-automation.types'
-export * from './preview-version.types'
-export * from './source.interfaces'
+
+export * from '@monstrs/k8s-preview-automation-api'
+export * from '@monstrs/k8s-flux-toolkit-api'
