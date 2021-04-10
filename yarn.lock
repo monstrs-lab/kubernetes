@@ -1105,8 +1105,25 @@ __metadata:
     "@monstrs/k8s-preview-image-reflector-operator": "workspace:0.0.1"
     "@monstrs/k8s-preview-ingress-operator": "workspace:0.0.1"
     "@monstrs/k8s-preview-notification-operator": "workspace:0.0.1"
+    "@monstrs/k8s-preview-pull-request-sync-operator": "workspace:0.0.1"
     ffi-napi: ^4.0.3
     ref-napi: ^3.0.2
+  languageName: unknown
+  linkType: soft
+
+"@monstrs/k8s-preview-pull-request-sync-operator@workspace:0.0.1, @monstrs/k8s-preview-pull-request-sync-operator@workspace:operators/preview-github-sync-operator":
+  version: 0.0.0-use.local
+  resolution: "@monstrs/k8s-preview-pull-request-sync-operator@workspace:operators/preview-github-sync-operator"
+  dependencies:
+    "@dot-i/k8s-operator": ^1.1.1
+    "@kubernetes/client-node": ^0.14.2
+    "@monstrs/k8s-kubectl-tool": "workspace:0.0.1"
+    "@monstrs/k8s-kustomize-tool": "workspace:0.0.1"
+    "@monstrs/k8s-operator-logger": "workspace:0.0.1"
+    "@monstrs/k8s-preview-automation-operator": "workspace:0.0.1"
+    "@monstrs/k8s-resource-utils": "workspace:0.0.1"
+    "@monstrs/logger": ^0.0.4
+    "@octokit/rest": ^18.5.2
   languageName: unknown
   linkType: soft
 

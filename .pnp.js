@@ -27,6 +27,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:operators/preview-automation-operator"
       },
       {
+        "name": "@monstrs/k8s-preview-pull-request-sync-operator",
+        "reference": "workspace:operators/preview-github-sync-operator"
+      },
+      {
         "name": "@monstrs/k8s-preview-image-reflector-operator",
         "reference": "workspace:operators/preview-image-reflector-operator"
       },
@@ -70,6 +74,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@monstrs/k8s-preview-ingress-operator", ["workspace:operators/preview-ingress-operator"]],
       ["@monstrs/k8s-preview-notification-operator", ["workspace:operators/preview-notification-operator"]],
       ["@monstrs/k8s-preview-operator", ["workspace:operators/preview-operator"]],
+      ["@monstrs/k8s-preview-pull-request-sync-operator", ["workspace:operators/preview-github-sync-operator"]],
       ["@monstrs/k8s-resource-utils", ["workspace:utils/resource-utils"]],
       ["kubernetes", ["workspace:."]]
     ],
@@ -1439,8 +1444,27 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/k8s-preview-image-reflector-operator", "workspace:operators/preview-image-reflector-operator"],
             ["@monstrs/k8s-preview-ingress-operator", "workspace:operators/preview-ingress-operator"],
             ["@monstrs/k8s-preview-notification-operator", "workspace:operators/preview-notification-operator"],
+            ["@monstrs/k8s-preview-pull-request-sync-operator", "workspace:operators/preview-github-sync-operator"],
             ["ffi-napi", "npm:4.0.3"],
             ["ref-napi", "npm:3.0.2"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@monstrs/k8s-preview-pull-request-sync-operator", [
+        ["workspace:operators/preview-github-sync-operator", {
+          "packageLocation": "./operators/preview-github-sync-operator/",
+          "packageDependencies": [
+            ["@monstrs/k8s-preview-pull-request-sync-operator", "workspace:operators/preview-github-sync-operator"],
+            ["@dot-i/k8s-operator", "npm:1.1.1"],
+            ["@kubernetes/client-node", "npm:0.14.2"],
+            ["@monstrs/k8s-kubectl-tool", "workspace:tools/kubectl"],
+            ["@monstrs/k8s-kustomize-tool", "workspace:tools/kustomize"],
+            ["@monstrs/k8s-operator-logger", "workspace:utils/operator-logger"],
+            ["@monstrs/k8s-preview-automation-operator", "workspace:operators/preview-automation-operator"],
+            ["@monstrs/k8s-resource-utils", "workspace:utils/resource-utils"],
+            ["@monstrs/logger", "npm:0.0.4"],
+            ["@octokit/rest", "npm:18.5.2"]
           ],
           "linkType": "SOFT",
         }]
