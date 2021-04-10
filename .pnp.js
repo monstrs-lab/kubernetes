@@ -98,6 +98,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",
           "packageDependencies": [
             ["@monstrs/mctl-cli", "virtual:2b6e44ca409376c5dadba13cf09efe760fabc365122225e1bf235838b86b8c548966606cc1003c3a97a25980eb63c9c5bc057b93f0fd40be3e508ad1b6efa2f9#npm:0.2.101"],
+            ["@types/jest", "npm:26.0.22"],
             ["@types/node", "npm:14.14.37"],
             ["husky", "npm:6.0.0"],
             ["typescript", "patch:typescript@npm%3A4.2.4#builtin<compat/typescript>::version=4.2.4&hash=a45b0e"]
@@ -1377,13 +1378,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@monstrs/k8s-preview-automation-operator", "workspace:operators/preview-automation-operator"],
             ["@dot-i/k8s-operator", "npm:1.1.1"],
+            ["@kubernetes/client-node", "npm:0.14.2"],
             ["@monstrs/k8s-flux-toolkit-api", "workspace:apis/flux-toolkit-api"],
             ["@monstrs/k8s-kubectl-tool", "workspace:tools/kubectl"],
             ["@monstrs/k8s-kustomize-tool", "workspace:tools/kustomize"],
             ["@monstrs/k8s-operator-logger", "workspace:utils/operator-logger"],
             ["@monstrs/k8s-preview-automation-api", "workspace:apis/preview-automation-api"],
             ["@monstrs/k8s-resource-utils", "workspace:utils/resource-utils"],
-            ["@monstrs/logger", "npm:0.0.4"]
+            ["@monstrs/logger", "npm:0.0.4"],
+            ["retry-ignore-abort", "npm:2.2.15"]
           ],
           "linkType": "SOFT",
         }]
@@ -2196,6 +2199,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@types/istanbul-reports", "npm:3.0.0"],
             ["@types/istanbul-lib-report", "npm:3.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/jest", [
+        ["npm:26.0.22", {
+          "packageLocation": "./.yarn/cache/@types-jest-npm-26.0.22-1621c2cb77-4c98ed0585.zip/node_modules/@types/jest/",
+          "packageDependencies": [
+            ["@types/jest", "npm:26.0.22"],
+            ["jest-diff", "npm:26.6.2"],
+            ["pretty-format", "npm:26.6.2"]
           ],
           "linkType": "HARD",
         }]
@@ -5290,6 +5304,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/deepmerge-npm-4.2.2-112165ced2-85abf8e004.zip/node_modules/deepmerge/",
           "packageDependencies": [
             ["deepmerge", "npm:4.2.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["defekt", [
+        ["npm:7.1.0", {
+          "packageLocation": "./.yarn/cache/defekt-npm-7.1.0-e48a10378e-4a124ed21b.zip/node_modules/defekt/",
+          "packageDependencies": [
+            ["defekt", "npm:7.1.0"]
           ],
           "linkType": "HARD",
         }]
@@ -8930,6 +8953,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["kubernetes", "workspace:."],
             ["@monstrs/mctl-cli", "virtual:2b6e44ca409376c5dadba13cf09efe760fabc365122225e1bf235838b86b8c548966606cc1003c3a97a25980eb63c9c5bc057b93f0fd40be3e508ad1b6efa2f9#npm:0.2.101"],
+            ["@types/jest", "npm:26.0.22"],
             ["@types/node", "npm:14.14.37"],
             ["husky", "npm:6.0.0"],
             ["typescript", "patch:typescript@npm%3A4.2.4#builtin<compat/typescript>::version=4.2.4&hash=a45b0e"]
@@ -11237,6 +11261,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/ret-npm-0.1.15-0d3c19de76-749c2fcae7.zip/node_modules/ret/",
           "packageDependencies": [
             ["ret", "npm:0.1.15"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["retry-ignore-abort", [
+        ["npm:2.2.15", {
+          "packageLocation": "./.yarn/cache/retry-ignore-abort-npm-2.2.15-393b47371f-0419555d80.zip/node_modules/retry-ignore-abort/",
+          "packageDependencies": [
+            ["retry-ignore-abort", "npm:2.2.15"],
+            ["defekt", "npm:7.1.0"]
           ],
           "linkType": "HARD",
         }]

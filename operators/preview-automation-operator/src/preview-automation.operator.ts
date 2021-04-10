@@ -67,17 +67,19 @@ export class PreviewAutomationOperator extends Operator {
       namePrefix: 'preview-',
       nameSuffix: `-${previewVersion.spec.context.number}`,
       commonLabels: {
-        app: `preview-${previewVersion.spec.context.number}`,
+        app: `preview-${previewVersion.metadata!.name}-${previewVersion.spec.context.number}`,
       },
       commonAnnotations: {
-        'preview.monstrs.tech/automation': automation.metadata!.name,
-        'preview.monstrs.tech/host': `${automation.metadata!.name}-${
-          previewVersion.spec.context.number
-        }.${automation.spec.endpoint.domain}`,
-        'preview.monstrs.tech/context': JSON.stringify(previewVersion.spec.context),
-        'preview.monstrs.tech/source': JSON.stringify({
-          kind: 'GitRepository',
-          url: source.spec.url,
+        'preview.monstrs.tech/automation': JSON.stringify({
+          name: automation.metadata!.name,
+          host: `${automation.metadata!.name}-${previewVersion.spec.context.number}.${
+            automation.spec.endpoint.domain
+          }`,
+          context: previewVersion.spec.context,
+          source: {
+            kind: source.kind,
+            url: source.spec.url,
+          },
         }),
       },
     }
@@ -85,9 +87,7 @@ export class PreviewAutomationOperator extends Operator {
     return kustomize.build(resources, transformations)
   }
 
-  protected async resourceModified(event) {
-    const resource = event.object as PreviewVersionResource
-
+  protected async resourceModified(resource) {
     if (!resource.status || resource.status.observedGeneration !== resource.metadata?.generation) {
       await this.previewVersionApi.updatePreviewVersionStatus(
         resource.metadata?.namespace || 'default',
@@ -117,12 +117,18 @@ export class PreviewAutomationOperator extends Operator {
     }
   }
 
-  protected async resourceDeleted(event) {
+  protected async resourceDeleted(resource: PreviewVersionResource) {
     try {
-      const preview = await this.buildPreview(event.object as PreviewVersionResource)
+      const output = await kubectl.run([
+        'delete',
+        'all',
+        '-n',
+        resource.metadata?.namespace || 'default',
+        '-l',
+        `app=preview-${resource.metadata!.name}-${resource.spec.context.number}`,
+      ])
 
-      // TODO: check exists
-      await kubectl.delete(preview)
+      this.log.info(output)
     } catch (error) {
       this.log.error(error.body || error)
     }
@@ -142,10 +148,10 @@ export class PreviewAutomationOperator extends Operator {
 
             if (
               !(await this.handleResourceFinalizer(event, finalizer, (finalizerEvent) =>
-                this.resourceDeleted(finalizerEvent)
+                this.resourceDeleted(finalizerEvent.object as PreviewVersionResource)
               ))
             ) {
-              await this.resourceModified(event)
+              await this.resourceModified(event.object as PreviewVersionResource)
             }
           }
         } catch (error) {
