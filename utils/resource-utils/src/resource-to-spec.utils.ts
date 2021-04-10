@@ -74,7 +74,7 @@ export const serviceResourceToSpec = (resource) =>
       },
       ['name', 'namespace', 'labels', 'annotations']
     ),
-    spec: omitKeys(resource.spec, ['clusterIP']),
+    spec: omitKeys(resource.spec, ['clusterIP', 'clusterIPs']),
   })
 
 export const deploymentResourceToSpec = (resource) =>

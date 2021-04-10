@@ -1031,6 +1031,7 @@ __metadata:
   resolution: "@monstrs/k8s-preview-automation-operator@workspace:operators/preview-automation-operator"
   dependencies:
     "@dot-i/k8s-operator": ^1.1.1
+    "@kubernetes/client-node": ^0.14.2
     "@monstrs/k8s-flux-toolkit-api": "workspace:0.0.1"
     "@monstrs/k8s-kubectl-tool": "workspace:0.0.1"
     "@monstrs/k8s-kustomize-tool": "workspace:0.0.1"
@@ -1038,6 +1039,7 @@ __metadata:
     "@monstrs/k8s-preview-automation-api": "workspace:0.0.1"
     "@monstrs/k8s-resource-utils": "workspace:0.0.1"
     "@monstrs/logger": ^0.0.4
+    retry-ignore-abort: ^2.2.15
   languageName: unknown
   linkType: soft
 
@@ -1691,6 +1693,16 @@ __metadata:
   dependencies:
     "@types/istanbul-lib-report": "*"
   checksum: 8aee794ea2e8065aa83e0a1017420068d10110f5e67f8473f5751e74462509306c451f79db3856e6848507519bf1d4de7d101daede6539701cc4d74b4646acd9
+  languageName: node
+  linkType: hard
+
+"@types/jest@npm:^26.0.22":
+  version: 26.0.22
+  resolution: "@types/jest@npm:26.0.22"
+  dependencies:
+    jest-diff: ^26.0.0
+    pretty-format: ^26.0.0
+  checksum: 4c98ed058522f6cc74bcb47b8b7b104b77b2d4e42e087171f3d2d3ae5338c21f43ec26f2a186bc229c1bd72c3f776ad07faba837f0ec27f22cf94e154516c0b3
   languageName: node
   linkType: hard
 
@@ -4122,6 +4134,13 @@ __metadata:
   version: 4.2.2
   resolution: "deepmerge@npm:4.2.2"
   checksum: 85abf8e0045ee280996e7d2396979c877ef0741e413b716e42441110e0a83ac08098b2a49cea035510060bf667c0eae3189b2a52349f5fa4b000c211041637b1
+  languageName: node
+  linkType: hard
+
+"defekt@npm:7.1.0":
+  version: 7.1.0
+  resolution: "defekt@npm:7.1.0"
+  checksum: 4a124ed21b75c2626475f26ab87af54d5cd84340cc641a133fe05bce9c4648cbcc26f96902b498cec454b3b66017d9098ca3a0db8a2fca36c98ca8ca5c3153ae
   languageName: node
   linkType: hard
 
@@ -6607,7 +6626,7 @@ fsevents@^2.1.2:
   languageName: node
   linkType: hard
 
-"jest-diff@npm:^26.6.2":
+"jest-diff@npm:^26.0.0, jest-diff@npm:^26.6.2":
   version: 26.6.2
   resolution: "jest-diff@npm:26.6.2"
   dependencies:
@@ -7278,6 +7297,7 @@ fsevents@^2.1.2:
   resolution: "kubernetes@workspace:."
   dependencies:
     "@monstrs/mctl-cli": ^0.2.101
+    "@types/jest": ^26.0.22
     "@types/node": ^14.14.37
     husky: ^6.0.0
     typescript: ^4.2.4
@@ -8669,7 +8689,7 @@ fsevents@^2.1.2:
   languageName: node
   linkType: hard
 
-"pretty-format@npm:^26.6.2":
+"pretty-format@npm:^26.0.0, pretty-format@npm:^26.6.2":
   version: 26.6.2
   resolution: "pretty-format@npm:26.6.2"
   dependencies:
@@ -9313,6 +9333,15 @@ resolve@^2.0.0-next.3:
   version: 0.1.15
   resolution: "ret@npm:0.1.15"
   checksum: 749c2fcae7071f5ecea4f8a18e35a79a8e8a58e522a16d843ecb9dfe9e647a76d92ae85c22690b02f87d3ab78b6b1f73341efc2fabbf59ed54dcfd9b1bdff883
+  languageName: node
+  linkType: hard
+
+"retry-ignore-abort@npm:^2.2.15":
+  version: 2.2.15
+  resolution: "retry-ignore-abort@npm:2.2.15"
+  dependencies:
+    defekt: 7.1.0
+  checksum: 0419555d801f4c3cfbe0d89e9435edd2afaf6808163b1840c518954d100af2c35e16d69a87142c889ce38086573ab871c81431300f0084dac82a0cce33a11aaf
   languageName: node
   linkType: hard
 

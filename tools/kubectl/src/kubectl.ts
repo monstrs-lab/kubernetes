@@ -9,7 +9,10 @@ import { Logger }            from '@monstrs/logger'
 export class KubeCtl {
   private readonly logger = new Logger(KubeCtl.name)
 
-  private async run(action: 'apply' | 'delete', resources: Array<KubernetesObject>): Promise<void> {
+  private async exec(
+    action: 'apply' | 'delete',
+    resources: Array<KubernetesObject>
+  ): Promise<void> {
     const target = tempy.file({ extension: 'yaml' })
 
     await fs.writeFile(target, resourcesToString(resources))
@@ -30,10 +33,28 @@ export class KubeCtl {
   }
 
   async apply(resources: Array<KubernetesObject>): Promise<void> {
-    return this.run('apply', resources)
+    return this.exec('apply', resources)
   }
 
   async delete(resources: Array<KubernetesObject>): Promise<void> {
-    return this.run('delete', resources)
+    return this.exec('delete', resources)
+  }
+
+  async run(args: Array<string>, options?): Promise<string> {
+    const { stdout, stderr, exitCode } = await execa('kubectl', args, options)
+
+    if (stderr) {
+      this.logger.error(stderr)
+    }
+
+    if (stdout) {
+      this.logger.info(stdout)
+    }
+
+    if (exitCode !== 0) {
+      throw new Error(`Error kubectl ${args.join(' ')}: ${stderr}`)
+    }
+
+    return stdout
   }
 }
