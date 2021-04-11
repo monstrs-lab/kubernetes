@@ -1,13 +1,13 @@
 import { PreviewImageReflectorOperator }  from '@monstrs/k8s-preview-image-reflector-operator'
 import { PreviewNotificationOperator }    from '@monstrs/k8s-preview-notification-operator'
 import { PreviewAutomationOperator }      from '@monstrs/k8s-preview-automation-operator'
-import { PreviewIngressOperator }         from '@monstrs/k8s-preview-ingress-operator'
+import { PreviewRouterOperator }          from '@monstrs/k8s-preview-router-operator'
 import { PreviewPullRequestSyncOperator } from '@monstrs/k8s-preview-pull-request-sync-operator'
 
 const bootstrap = async () => {
   const automationOperator = new PreviewAutomationOperator()
   const imageReflectorOperator = new PreviewImageReflectorOperator()
-  const ingressOperator = new PreviewIngressOperator()
+  const routerOperator = new PreviewRouterOperator()
   const notificationOperator = new PreviewNotificationOperator({
     type: 'github',
     token: process.env.GITHUB_TOKEN!,
@@ -20,7 +20,7 @@ const bootstrap = async () => {
   await Promise.all([
     automationOperator.start(),
     imageReflectorOperator.start(),
-    ingressOperator.start(),
+    routerOperator.start(),
     notificationOperator.start(),
     pullRequestSyncOperator.start(),
   ])
@@ -30,7 +30,7 @@ const bootstrap = async () => {
 
     imageReflectorOperator.stop()
     automationOperator.stop()
-    ingressOperator.stop()
+    routerOperator.stop()
     notificationOperator.stop()
     pullRequestSyncOperator.stop()
 
