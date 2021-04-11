@@ -12,7 +12,6 @@ import { PreviewVersionResource }        from '@monstrs/k8s-preview-automation-a
 import { PreviewEndpointApi }            from '@monstrs/k8s-preview-automation-api'
 import { ImageRepositoryApi }            from '@monstrs/k8s-flux-toolkit-api'
 import { SourceApi }                     from '@monstrs/k8s-flux-toolkit-api'
-
 import { kustomize }                     from '@monstrs/k8s-kustomize-tool'
 import { kubectl }                       from '@monstrs/k8s-kubectl-tool'
 import { OperatorLogger }                from '@monstrs/k8s-operator-logger'
@@ -83,7 +82,12 @@ export class PreviewAutomationOperator extends Operator {
       commonAnnotations: {
         'preview.monstrs.tech/automation': JSON.stringify({
           name: automation.metadata!.name,
-          endpoint: endpoint ? endpoint.spec : null,
+          endpoint: endpoint
+            ? {
+                name: endpoint.metadata!.name,
+                url: endpoint.spec.url,
+              }
+            : null,
           context: previewVersion.spec.context,
           source: {
             kind: source.kind,

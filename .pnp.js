@@ -23,8 +23,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:."
       },
       {
+        "name": "@monstrs/k8s-cert-manager-api",
+        "reference": "workspace:apis/cert-manager-api"
+      },
+      {
         "name": "@monstrs/k8s-flux-toolkit-api",
         "reference": "workspace:apis/flux-toolkit-api"
+      },
+      {
+        "name": "@monstrs/k8s-istio-api",
+        "reference": "workspace:apis/istio-api"
       },
       {
         "name": "@monstrs/k8s-preview-automation-api",
@@ -39,10 +47,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:operators/preview-image-reflector-operator"
       },
       {
-        "name": "@monstrs/k8s-preview-ingress-operator",
-        "reference": "workspace:operators/preview-ingress-operator"
-      },
-      {
         "name": "@monstrs/k8s-preview-notification-operator",
         "reference": "workspace:operators/preview-notification-operator"
       },
@@ -53,6 +57,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       {
         "name": "@monstrs/k8s-preview-pull-request-sync-operator",
         "reference": "workspace:operators/preview-pull-request-sync-operator"
+      },
+      {
+        "name": "@monstrs/k8s-preview-router-operator",
+        "reference": "workspace:operators/preview-router-operator"
       },
       {
         "name": "@monstrs/k8s-kubectl-tool",
@@ -74,17 +82,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "enableTopLevelFallback": true,
     "ignorePatternData": "(^(?:\\.yarn\\/sdks(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)|$))$)",
     "fallbackExclusionList": [
+      ["@monstrs/k8s-cert-manager-api", ["workspace:apis/cert-manager-api"]],
       ["@monstrs/k8s-flux-toolkit-api", ["workspace:apis/flux-toolkit-api"]],
+      ["@monstrs/k8s-istio-api", ["workspace:apis/istio-api"]],
       ["@monstrs/k8s-kubectl-tool", ["workspace:tools/kubectl"]],
       ["@monstrs/k8s-kustomize-tool", ["workspace:tools/kustomize"]],
       ["@monstrs/k8s-operator-logger", ["workspace:utils/operator-logger"]],
       ["@monstrs/k8s-preview-automation-api", ["workspace:apis/preview-automation-api"]],
       ["@monstrs/k8s-preview-automation-operator", ["workspace:operators/preview-automation-operator"]],
       ["@monstrs/k8s-preview-image-reflector-operator", ["workspace:operators/preview-image-reflector-operator"]],
-      ["@monstrs/k8s-preview-ingress-operator", ["workspace:operators/preview-ingress-operator"]],
       ["@monstrs/k8s-preview-notification-operator", ["workspace:operators/preview-notification-operator"]],
       ["@monstrs/k8s-preview-operator", ["workspace:operators/preview-operator"]],
       ["@monstrs/k8s-preview-pull-request-sync-operator", ["workspace:operators/preview-pull-request-sync-operator"]],
+      ["@monstrs/k8s-preview-router-operator", ["workspace:operators/preview-router-operator"]],
       ["@monstrs/k8s-resource-utils", ["workspace:utils/resource-utils"]],
       ["kubernetes", ["workspace:."]]
     ],
@@ -1308,11 +1318,35 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@monstrs/k8s-cert-manager-api", [
+        ["workspace:apis/cert-manager-api", {
+          "packageLocation": "./apis/cert-manager-api/",
+          "packageDependencies": [
+            ["@monstrs/k8s-cert-manager-api", "workspace:apis/cert-manager-api"],
+            ["@kubernetes/client-node", "npm:0.14.2"],
+            ["@monstrs/k8s-resource-utils", "workspace:utils/resource-utils"],
+            ["@monstrs/logger", "npm:0.0.4"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
       ["@monstrs/k8s-flux-toolkit-api", [
         ["workspace:apis/flux-toolkit-api", {
           "packageLocation": "./apis/flux-toolkit-api/",
           "packageDependencies": [
             ["@monstrs/k8s-flux-toolkit-api", "workspace:apis/flux-toolkit-api"],
+            ["@kubernetes/client-node", "npm:0.14.2"],
+            ["@monstrs/k8s-resource-utils", "workspace:utils/resource-utils"],
+            ["@monstrs/logger", "npm:0.0.4"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@monstrs/k8s-istio-api", [
+        ["workspace:apis/istio-api", {
+          "packageLocation": "./apis/istio-api/",
+          "packageDependencies": [
+            ["@monstrs/k8s-istio-api", "workspace:apis/istio-api"],
             ["@kubernetes/client-node", "npm:0.14.2"],
             ["@monstrs/k8s-resource-utils", "workspace:utils/resource-utils"],
             ["@monstrs/logger", "npm:0.0.4"]
@@ -1411,23 +1445,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "SOFT",
         }]
       ]],
-      ["@monstrs/k8s-preview-ingress-operator", [
-        ["workspace:operators/preview-ingress-operator", {
-          "packageLocation": "./operators/preview-ingress-operator/",
-          "packageDependencies": [
-            ["@monstrs/k8s-preview-ingress-operator", "workspace:operators/preview-ingress-operator"],
-            ["@dot-i/k8s-operator", "npm:1.1.1"],
-            ["@kubernetes/client-node", "npm:0.14.2"],
-            ["@monstrs/k8s-kubectl-tool", "workspace:tools/kubectl"],
-            ["@monstrs/k8s-kustomize-tool", "workspace:tools/kustomize"],
-            ["@monstrs/k8s-operator-logger", "workspace:utils/operator-logger"],
-            ["@monstrs/k8s-preview-automation-operator", "workspace:operators/preview-automation-operator"],
-            ["@monstrs/k8s-resource-utils", "workspace:utils/resource-utils"],
-            ["@monstrs/logger", "npm:0.0.4"]
-          ],
-          "linkType": "SOFT",
-        }]
-      ]],
       ["@monstrs/k8s-preview-notification-operator", [
         ["workspace:operators/preview-notification-operator", {
           "packageLocation": "./operators/preview-notification-operator/",
@@ -1453,9 +1470,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/k8s-preview-operator", "workspace:operators/preview-operator"],
             ["@monstrs/k8s-preview-automation-operator", "workspace:operators/preview-automation-operator"],
             ["@monstrs/k8s-preview-image-reflector-operator", "workspace:operators/preview-image-reflector-operator"],
-            ["@monstrs/k8s-preview-ingress-operator", "workspace:operators/preview-ingress-operator"],
             ["@monstrs/k8s-preview-notification-operator", "workspace:operators/preview-notification-operator"],
             ["@monstrs/k8s-preview-pull-request-sync-operator", "workspace:operators/preview-pull-request-sync-operator"],
+            ["@monstrs/k8s-preview-router-operator", "workspace:operators/preview-router-operator"],
             ["ffi-napi", "npm:4.0.3"],
             ["ref-napi", "npm:3.0.2"]
           ],
@@ -1476,6 +1493,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/k8s-resource-utils", "workspace:utils/resource-utils"],
             ["@monstrs/logger", "npm:0.0.4"],
             ["@octokit/rest", "npm:18.5.2"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@monstrs/k8s-preview-router-operator", [
+        ["workspace:operators/preview-router-operator", {
+          "packageLocation": "./operators/preview-router-operator/",
+          "packageDependencies": [
+            ["@monstrs/k8s-preview-router-operator", "workspace:operators/preview-router-operator"],
+            ["@dot-i/k8s-operator", "npm:1.1.1"],
+            ["@monstrs/k8s-cert-manager-api", "workspace:apis/cert-manager-api"],
+            ["@monstrs/k8s-istio-api", "workspace:apis/istio-api"],
+            ["@monstrs/k8s-operator-logger", "workspace:utils/operator-logger"],
+            ["@monstrs/k8s-preview-automation-api", "workspace:apis/preview-automation-api"],
+            ["@monstrs/k8s-resource-utils", "workspace:utils/resource-utils"],
+            ["@monstrs/logger", "npm:0.0.4"],
+            ["deep-equal", "npm:2.0.5"]
           ],
           "linkType": "SOFT",
         }]
