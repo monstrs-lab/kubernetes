@@ -35,10 +35,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:operators/preview-automation-operator"
       },
       {
-        "name": "@monstrs/k8s-preview-pull-request-sync-operator",
-        "reference": "workspace:operators/preview-github-sync-operator"
-      },
-      {
         "name": "@monstrs/k8s-preview-image-reflector-operator",
         "reference": "workspace:operators/preview-image-reflector-operator"
       },
@@ -53,6 +49,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       {
         "name": "@monstrs/k8s-preview-operator",
         "reference": "workspace:operators/preview-operator"
+      },
+      {
+        "name": "@monstrs/k8s-preview-pull-request-sync-operator",
+        "reference": "workspace:operators/preview-pull-request-sync-operator"
       },
       {
         "name": "@monstrs/k8s-kubectl-tool",
@@ -84,7 +84,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@monstrs/k8s-preview-ingress-operator", ["workspace:operators/preview-ingress-operator"]],
       ["@monstrs/k8s-preview-notification-operator", ["workspace:operators/preview-notification-operator"]],
       ["@monstrs/k8s-preview-operator", ["workspace:operators/preview-operator"]],
-      ["@monstrs/k8s-preview-pull-request-sync-operator", ["workspace:operators/preview-github-sync-operator"]],
+      ["@monstrs/k8s-preview-pull-request-sync-operator", ["workspace:operators/preview-pull-request-sync-operator"]],
       ["@monstrs/k8s-resource-utils", ["workspace:utils/resource-utils"]],
       ["kubernetes", ["workspace:."]]
     ],
@@ -1455,7 +1455,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/k8s-preview-image-reflector-operator", "workspace:operators/preview-image-reflector-operator"],
             ["@monstrs/k8s-preview-ingress-operator", "workspace:operators/preview-ingress-operator"],
             ["@monstrs/k8s-preview-notification-operator", "workspace:operators/preview-notification-operator"],
-            ["@monstrs/k8s-preview-pull-request-sync-operator", "workspace:operators/preview-github-sync-operator"],
+            ["@monstrs/k8s-preview-pull-request-sync-operator", "workspace:operators/preview-pull-request-sync-operator"],
             ["ffi-napi", "npm:4.0.3"],
             ["ref-napi", "npm:3.0.2"]
           ],
@@ -1463,10 +1463,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@monstrs/k8s-preview-pull-request-sync-operator", [
-        ["workspace:operators/preview-github-sync-operator", {
-          "packageLocation": "./operators/preview-github-sync-operator/",
+        ["workspace:operators/preview-pull-request-sync-operator", {
+          "packageLocation": "./operators/preview-pull-request-sync-operator/",
           "packageDependencies": [
-            ["@monstrs/k8s-preview-pull-request-sync-operator", "workspace:operators/preview-github-sync-operator"],
+            ["@monstrs/k8s-preview-pull-request-sync-operator", "workspace:operators/preview-pull-request-sync-operator"],
             ["@dot-i/k8s-operator", "npm:1.1.1"],
             ["@kubernetes/client-node", "npm:0.14.2"],
             ["@monstrs/k8s-kubectl-tool", "workspace:tools/kubectl"],
