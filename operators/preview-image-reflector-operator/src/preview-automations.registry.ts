@@ -1,4 +1,4 @@
-import { PreviewAutomationResource } from '@monstrs/k8s-preview-automation-operator'
+import { PreviewAutomationResource } from '@monstrs/k8s-preview-automation-api'
 
 export class PreviewAutomationsRegistry {
   private readonly automations = new Map<string, PreviewAutomationResource>()

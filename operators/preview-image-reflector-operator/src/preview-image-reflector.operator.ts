@@ -1,138 +1,112 @@
 import Operator                             from '@dot-i/k8s-operator'
 import { ResourceEventType }                from '@dot-i/k8s-operator'
-import { CustomObjectsApi }                 from '@kubernetes/client-node'
 import parseDockerImage                     from 'parse-docker-image-name'
 import { Logger }                           from '@monstrs/logger'
+import deepEqual                            from 'deep-equal'
 
 import { kind2Plural }                      from '@monstrs/k8s-resource-utils'
-import { PreviewAutomationResourceVersion } from '@monstrs/k8s-preview-automation-operator'
-import { PreviewVersionResourceVersion }    from '@monstrs/k8s-preview-automation-operator'
-import { PreviewVersionResourceGroup }      from '@monstrs/k8s-preview-automation-operator'
-import { PreviewAutomationResourceGroup }   from '@monstrs/k8s-preview-automation-operator'
-import { PreviewVersionResource }           from '@monstrs/k8s-preview-automation-operator'
-import { PreviewAutomationResource }        from '@monstrs/k8s-preview-automation-operator'
+import { PreviewAutomationResourceVersion } from '@monstrs/k8s-preview-automation-api'
+import { PreviewAutomationResourceGroup }   from '@monstrs/k8s-preview-automation-api'
+import { PreviewAutomationResource }        from '@monstrs/k8s-preview-automation-api'
+import { PreviewAutomationDomain }          from '@monstrs/k8s-preview-automation-api'
+import { PreviewVersionApi }                from '@monstrs/k8s-preview-automation-api'
+import { PreviewVersionSpec }               from '@monstrs/k8s-preview-automation-api'
 import { OperatorLogger }                   from '@monstrs/k8s-operator-logger'
+import { ImagePolicyResource }              from '@monstrs/k8s-flux-toolkit-api'
+import { ImagePolicyDomain }                from '@monstrs/k8s-flux-toolkit-api'
+import { ImagePolicyResourceVersion }       from '@monstrs/k8s-flux-toolkit-api'
+import { ImagePolicyResourceGroup }         from '@monstrs/k8s-flux-toolkit-api'
 
 import { PreviewAutomationsRegistry }       from './preview-automations.registry'
-import { ImagePolicyResource }              from './image-policy.interfaces'
 
 export class PreviewImageReflectorOperator extends Operator {
-  public static DOMAIN_GROUP = 'preview.monstrs.tech'
-
   private readonly log = new Logger(PreviewImageReflectorOperator.name)
 
-  private readonly k8sCustomObjectsApi: CustomObjectsApi
-
   private readonly automationRegistry = new PreviewAutomationsRegistry()
+
+  private readonly previewVersionApi: PreviewVersionApi
 
   constructor() {
     super(new OperatorLogger(PreviewImageReflectorOperator.name))
 
-    this.k8sCustomObjectsApi = this.kubeConfig.makeApiClient(CustomObjectsApi)
+    this.previewVersionApi = new PreviewVersionApi(this.kubeConfig)
   }
 
-  private async getPreviewVersion(
-    namespace: string,
-    name: string
-  ): Promise<PreviewVersionResource | null> {
-    try {
-      const { body } = await this.k8sCustomObjectsApi.getNamespacedCustomObject(
-        PreviewImageReflectorOperator.DOMAIN_GROUP,
-        PreviewVersionResourceVersion.v1alpha1,
-        namespace,
-        kind2Plural(PreviewVersionResourceGroup.PreviewVersion),
-        name
-      )
+  private parseTag(tag: string) {
+    const [context, hash] = tag.split('-')
 
-      return body as PreviewVersionResource
-    } catch {
-      return null
+    return {
+      context,
+      hash,
     }
   }
 
-  private async patchPreviewVersion(namespace: string, name: string, spec) {
-    return this.k8sCustomObjectsApi.patchNamespacedCustomObject(
-      PreviewImageReflectorOperator.DOMAIN_GROUP,
-      PreviewVersionResourceVersion.v1alpha1,
-      namespace,
-      kind2Plural(PreviewVersionResourceGroup.PreviewVersion),
-      name,
-      [
-        {
-          op: 'replace',
-          path: '/spec',
-          value: spec,
-        },
-      ],
-      undefined,
-      undefined,
-      undefined,
-      {
-        headers: { 'Content-Type': 'application/json-patch+json' },
-      }
-    )
-  }
-
-  private async createPreviewVersion(namespace: string, name: string, spec) {
-    return this.k8sCustomObjectsApi.createNamespacedCustomObject(
-      PreviewImageReflectorOperator.DOMAIN_GROUP,
-      PreviewVersionResourceVersion.v1alpha1,
-      namespace,
-      kind2Plural(PreviewVersionResourceGroup.PreviewVersion),
-      {
-        apiVersion: 'preview.monstrs.tech/v1alpha1',
-        kind: 'PreviewVersion',
-        metadata: {
-          name,
-        },
-        spec,
-      }
-    )
-  }
-
-  private async resourceModified(event) {
-    const resource = event.object as ImagePolicyResource
-
+  private async resourceModified(resource) {
     const automation = this.automationRegistry.getByImagePolicy(resource)
 
-    if (automation) {
-      const { filterTags } = resource.spec
+    if (!automation) {
+      return
+    }
 
-      if (filterTags.pattern === '^[a-f0-9]+-[a-f0-9]+-(?P<ts>[0-9]+)') {
-        const { latestImage } = resource.status
+    const { filterTags } = resource.spec
 
-        if (latestImage) {
-          const { tag } = parseDockerImage(latestImage)
+    if (filterTags.pattern !== '^[a-f0-9]+-[a-f0-9]+-(?P<ts>[0-9]+)') {
+      return
+    }
 
-          if (tag) {
-            const [contextNumber] = tag.split('-')
-            const name = `${automation.metadata!.name}-${contextNumber}`
+    const { latestImage } = resource.status
 
-            const spec = {
-              previewAutomationRef: {
-                name: automation.metadata!.name,
-              },
-              tag,
-              context: {
-                kind: 'GitHubPullRequest',
-                number: contextNumber,
-              },
-            }
+    if (!latestImage) {
+      return
+    }
 
-            if (await this.getPreviewVersion(automation.metadata!.namespace!, name)) {
-              await this.patchPreviewVersion(automation.metadata!.namespace!, name, spec)
-            } else {
-              await this.createPreviewVersion(automation.metadata!.namespace!, name, spec)
-            }
-          }
-        }
+    const { tag } = parseDockerImage(latestImage)
+    const { context } = this.parseTag(tag)
+
+    const name = `${automation.metadata!.name}-${context}`
+
+    const spec: PreviewVersionSpec = {
+      previewAutomationRef: {
+        name: automation.metadata!.name!,
+      },
+      context: {
+        kind: 'GitHubPullRequest',
+        number: context,
+      },
+      tag,
+    }
+
+    try {
+      const previewVersion = await this.previewVersionApi.getPreviewVersion(
+        automation.metadata!.namespace!,
+        name
+      )
+
+      if (!deepEqual(previewVersion.spec, spec)) {
+        await this.previewVersionApi.patchPreviewVersion(automation.metadata!.namespace!, name, [
+          {
+            op: 'replace',
+            path: '/spec',
+            value: spec,
+          },
+        ])
+      }
+    } catch (error) {
+      if (error.body?.code === 404) {
+        await this.previewVersionApi.createPreviewVersion(
+          automation.metadata!.namespace!,
+          name,
+          spec
+        )
+      } else {
+        throw error
       }
     }
   }
 
   protected async init() {
     await this.watchResource(
-      PreviewImageReflectorOperator.DOMAIN_GROUP,
+      PreviewAutomationDomain.Group,
       PreviewAutomationResourceVersion.v1alpha1,
       kind2Plural(PreviewAutomationResourceGroup.PreviewAutomation),
       async (event) => {
@@ -145,12 +119,16 @@ export class PreviewImageReflectorOperator extends Operator {
     )
 
     await this.watchResource(
-      'image.toolkit.fluxcd.io',
-      'v1alpha1',
-      'imagepolicies',
+      ImagePolicyDomain.Group,
+      ImagePolicyResourceVersion.v1alpha1,
+      kind2Plural(ImagePolicyResourceGroup.ImagePolicy),
       async (event) => {
         if (event.type === ResourceEventType.Modified) {
-          this.resourceModified(event)
+          try {
+            await this.resourceModified(event.object as ImagePolicyResource)
+          } catch (error) {
+            this.log.error(error.body || error)
+          }
         }
       }
     )

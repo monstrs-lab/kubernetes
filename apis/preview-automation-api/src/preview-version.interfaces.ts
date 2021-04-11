@@ -18,7 +18,7 @@ export interface PreviewVersionStatus {
 
 export interface PreviewVersionSpecAutomationRef {
   name: string
-  namespace: string
+  namespace?: string
 }
 
 export interface PreviewVersionSpecContext {
