@@ -15,7 +15,7 @@ jest.setTimeout(30000)
 
 describe('preview-automation.operator', () => {
   let previewVersionApi: PreviewVersionApi
-  let automationOperator: PreviewAutomationOperator
+  let operator: PreviewAutomationOperator
 
   beforeAll(async () => {
     const kubeConfig = new KubeConfig()
@@ -30,13 +30,13 @@ describe('preview-automation.operator', () => {
   })
 
   beforeEach(async () => {
-    automationOperator = new PreviewAutomationOperator()
+    operator = new PreviewAutomationOperator()
 
-    await automationOperator.start()
+    await operator.start()
   })
 
   afterEach(async () => {
-    await automationOperator.stop()
+    await operator.stop()
   })
 
   it('create and delete preview version', async () => {
