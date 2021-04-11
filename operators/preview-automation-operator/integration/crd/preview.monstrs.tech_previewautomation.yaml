@@ -19,6 +19,13 @@ spec:
           properties:
             spec:
               properties:
+                endpointRef:
+                  properties:
+                    name:
+                      type: string
+                    namespace:
+                      type: string
+                  type: object
                 imageRepositoryRef:
                   properties:
                     name:

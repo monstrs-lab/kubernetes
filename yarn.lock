@@ -1106,9 +1106,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@monstrs/k8s-preview-pull-request-sync-operator@workspace:0.0.1, @monstrs/k8s-preview-pull-request-sync-operator@workspace:operators/preview-github-sync-operator":
+"@monstrs/k8s-preview-pull-request-sync-operator@workspace:0.0.1, @monstrs/k8s-preview-pull-request-sync-operator@workspace:operators/preview-pull-request-sync-operator":
   version: 0.0.0-use.local
-  resolution: "@monstrs/k8s-preview-pull-request-sync-operator@workspace:operators/preview-github-sync-operator"
+  resolution: "@monstrs/k8s-preview-pull-request-sync-operator@workspace:operators/preview-pull-request-sync-operator"
   dependencies:
     "@dot-i/k8s-operator": ^1.1.1
     "@kubernetes/client-node": ^0.14.2

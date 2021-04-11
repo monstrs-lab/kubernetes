@@ -9,6 +9,7 @@ import { PreviewVersionResourceVersion } from '@monstrs/k8s-preview-automation-a
 import { PreviewVersionResourceGroup }   from '@monstrs/k8s-preview-automation-api'
 import { PreviewVersionStatusPhase }     from '@monstrs/k8s-preview-automation-api'
 import { PreviewVersionResource }        from '@monstrs/k8s-preview-automation-api'
+import { PreviewEndpointApi }            from '@monstrs/k8s-preview-automation-api'
 import { ImageRepositoryApi }            from '@monstrs/k8s-flux-toolkit-api'
 import { SourceApi }                     from '@monstrs/k8s-flux-toolkit-api'
 
@@ -22,6 +23,8 @@ export class PreviewAutomationOperator extends Operator {
 
   private readonly previewAutomationApi: PreviewAutomationApi
 
+  private readonly previewEndpointApi: PreviewEndpointApi
+
   private readonly previewVersionApi: PreviewVersionApi
 
   private readonly imageRepositoryApi: ImageRepositoryApi
@@ -32,6 +35,7 @@ export class PreviewAutomationOperator extends Operator {
     super(new OperatorLogger(PreviewAutomationOperator.name))
 
     this.previewAutomationApi = new PreviewAutomationApi(this.kubeConfig)
+    this.previewEndpointApi = new PreviewEndpointApi(this.kubeConfig)
     this.previewVersionApi = new PreviewVersionApi(this.kubeConfig)
     this.imageRepositoryApi = new ImageRepositoryApi(this.kubeConfig)
     this.sourceApi = new SourceApi(this.kubeConfig)
@@ -44,6 +48,13 @@ export class PreviewAutomationOperator extends Operator {
         'default',
       previewVersion.spec.previewAutomationRef.name
     )
+
+    const endpoint = automation.spec.endpointRef
+      ? await this.previewEndpointApi.getPreviewEndpoint(
+          automation.spec.endpointRef.namespace || automation.metadata?.namespace || 'default',
+          automation.spec.endpointRef.name
+        )
+      : null
 
     const imageRepository = await this.imageRepositoryApi.getImageRepository(
       automation.spec.imageRepositoryRef.namespace || automation.metadata?.namespace || 'default',
@@ -72,9 +83,7 @@ export class PreviewAutomationOperator extends Operator {
       commonAnnotations: {
         'preview.monstrs.tech/automation': JSON.stringify({
           name: automation.metadata!.name,
-          host: `${automation.metadata!.name}-${previewVersion.spec.context.number}.${
-            automation.spec.endpoint.domain
-          }`,
+          endpoint: endpoint ? endpoint.spec : null,
           context: previewVersion.spec.context,
           source: {
             kind: source.kind,
