@@ -12,7 +12,7 @@ import { ImagePolicyApi }                from '@monstrs/k8s-flux-toolkit-api'
 
 import { PreviewImageReflectorOperator } from '../src'
 
-jest.setTimeout(30000)
+jest.setTimeout(120000)
 
 describe('preview-image-reflector.operator', () => {
   let previewVersionApi: PreviewVersionApi
@@ -40,7 +40,9 @@ describe('preview-image-reflector.operator', () => {
     await retry(
       async () => {
         // @ts-ignore
-        if (!operator.automationRegistry.automations.has('test-flux-system')) {
+        const { automations } = operator.automationRegistry
+
+        if (!automations.has('preview-image-reflector-operator-test-flux-system')) {
           throw new Error('Automation not added')
         }
       },
@@ -55,7 +57,7 @@ describe('preview-image-reflector.operator', () => {
   })
 
   it('trigger create preview version', async () => {
-    await imagePolicyApi.patchImagePolicy('flux-system', 'test', [
+    await imagePolicyApi.patchImagePolicy('flux-system', 'preview-image-reflector-operator-test', [
       {
         op: 'replace',
         path: '/status',
@@ -66,9 +68,10 @@ describe('preview-image-reflector.operator', () => {
     ])
 
     const previewVersion = await retry(
-      async () => previewVersionApi.getPreviewVersion('default', 'test-14'),
+      async () =>
+        previewVersionApi.getPreviewVersion('default', 'preview-image-reflector-operator-test-14'),
       {
-        retries: 5,
+        retries: 20,
       }
     )
 

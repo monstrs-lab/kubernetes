@@ -183,16 +183,20 @@ export class PreviewAutomationOperator extends Operator {
         } catch (error) {
           this.log.error(error.body || error)
 
-          await this.previewVersionApi.updatePreviewVersionStatus(
-            event.object.metadata?.namespace || 'default',
-            event.object.metadata!.name!,
-            {
-              observedGeneration: event.object.metadata?.generation,
-              message: error.message?.toString() || '',
-              phase: PreviewVersionStatusPhase.Failed,
-              ready: false,
-            }
-          )
+          try {
+            await this.previewVersionApi.updatePreviewVersionStatus(
+              event.object.metadata?.namespace || 'default',
+              event.object.metadata!.name!,
+              {
+                observedGeneration: event.object.metadata?.generation,
+                message: error.message?.toString() || '',
+                phase: PreviewVersionStatusPhase.Failed,
+                ready: false,
+              }
+            )
+          } catch (statusError) {
+            this.log.error(statusError.body || statusError)
+          }
         }
       }
     )

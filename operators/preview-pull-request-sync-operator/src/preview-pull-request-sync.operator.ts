@@ -1,18 +1,19 @@
 import Operator                                  from '@dot-i/k8s-operator'
 import { ResourceEventType }                     from '@dot-i/k8s-operator'
-import { CustomObjectsApi }                      from '@kubernetes/client-node'
 import { Logger }                                from '@monstrs/logger'
 import { Octokit }                               from '@octokit/rest'
 
 import { kind2Plural }                           from '@monstrs/k8s-resource-utils'
 import { OperatorLogger }                        from '@monstrs/k8s-operator-logger'
-import { PreviewAutomationResourceGroup }        from '@monstrs/k8s-preview-automation-operator'
-import { PreviewAutomationResourceVersion }      from '@monstrs/k8s-preview-automation-operator'
-import { PreviewVersionResourceVersion }         from '@monstrs/k8s-preview-automation-operator'
-import { PreviewVersionResourceGroup }           from '@monstrs/k8s-preview-automation-operator'
-import { PreviewVersionResource }                from '@monstrs/k8s-preview-automation-operator'
-import { PreviewAutomationResource }             from '@monstrs/k8s-preview-automation-operator'
-import { GitRepositoryResource }                 from '@monstrs/k8s-preview-automation-operator'
+import { PreviewVersionResourceVersion }         from '@monstrs/k8s-preview-automation-api'
+import { PreviewVersionResourceGroup }           from '@monstrs/k8s-preview-automation-api'
+import { PreviewVersionResource }                from '@monstrs/k8s-preview-automation-api'
+import { PreviewAutomationResource }             from '@monstrs/k8s-preview-automation-api'
+import { PreviewVersionApi }                     from '@monstrs/k8s-preview-automation-api'
+import { PreviewAutomationApi }                  from '@monstrs/k8s-preview-automation-api'
+import { PreviewAutomationDomain }               from '@monstrs/k8s-preview-automation-api'
+import { GitRepositoryResource }                 from '@monstrs/k8s-flux-toolkit-api'
+import { SourceApi }                             from '@monstrs/k8s-flux-toolkit-api'
 
 import { PreviewPullRequestSyncOperatorOptions } from './preview-pull-request-sync.interfaces'
 
@@ -23,11 +24,13 @@ export interface Task {
 }
 
 export class PreviewPullRequestSyncOperator extends Operator {
-  public static DOMAIN_GROUP = 'preview.monstrs.tech'
-
   private readonly log = new Logger(PreviewPullRequestSyncOperator.name)
 
-  private readonly k8sCustomObjectsApi: CustomObjectsApi
+  private readonly previewAutomationApi: PreviewAutomationApi
+
+  private readonly previewVersionApi: PreviewVersionApi
+
+  private readonly sourceApi: SourceApi
 
   private readonly octokit: Octokit
 
@@ -35,7 +38,7 @@ export class PreviewPullRequestSyncOperator extends Operator {
 
   private schedule
 
-  constructor(options: PreviewPullRequestSyncOperatorOptions) {
+  constructor(private readonly options: PreviewPullRequestSyncOperatorOptions) {
     super(new OperatorLogger(PreviewPullRequestSyncOperator.name))
 
     if (!options.token) {
@@ -46,17 +49,9 @@ export class PreviewPullRequestSyncOperator extends Operator {
       auth: options.token,
     })
 
-    this.k8sCustomObjectsApi = this.kubeConfig.makeApiClient(CustomObjectsApi)
-  }
-
-  private async deletePreviewVersion(previewVersion: PreviewVersionResource) {
-    return this.k8sCustomObjectsApi.deleteNamespacedCustomObject(
-      PreviewPullRequestSyncOperator.DOMAIN_GROUP,
-      PreviewVersionResourceVersion.v1alpha1,
-      previewVersion.metadata?.namespace || 'default',
-      kind2Plural(PreviewVersionResourceGroup.PreviewVersion),
-      previewVersion.metadata!.name!
-    )
+    this.previewAutomationApi = new PreviewAutomationApi(this.kubeConfig)
+    this.previewVersionApi = new PreviewVersionApi(this.kubeConfig)
+    this.sourceApi = new SourceApi(this.kubeConfig)
   }
 
   private async checkPreviewResources() {
@@ -75,7 +70,10 @@ export class PreviewPullRequestSyncOperator extends Operator {
           })
 
           if (data.state === 'closed') {
-            await this.deletePreviewVersion(task.version)
+            await this.previewVersionApi.deletePreviewVersion(
+              task.version.metadata?.namespace || 'default',
+              task.version.metadata!.name!
+            )
           }
         })
       )
@@ -84,42 +82,23 @@ export class PreviewPullRequestSyncOperator extends Operator {
     }
   }
 
-  private async getPreviewAutomation(
-    previewVersion: PreviewVersionResource
-  ): Promise<PreviewAutomationResource> {
-    const { body } = await this.k8sCustomObjectsApi.getNamespacedCustomObject(
-      PreviewPullRequestSyncOperator.DOMAIN_GROUP,
-      PreviewAutomationResourceVersion.v1alpha1,
-      previewVersion.spec.previewAutomationRef.namespace ||
-        previewVersion.metadata?.namespace ||
-        'default',
-      kind2Plural(PreviewAutomationResourceGroup.PreviewAutomation),
-      previewVersion.spec.previewAutomationRef.name
-    )
-
-    return body as PreviewAutomationResource
-  }
-
-  private async getSource(automation: PreviewAutomationResource): Promise<GitRepositoryResource> {
-    const { body } = await this.k8sCustomObjectsApi.getNamespacedCustomObject(
-      'source.toolkit.fluxcd.io',
-      'v1beta1',
-      automation.spec.sourceRef.namespace || automation.metadata?.namespace || 'default',
-      'gitrepositories',
-      automation.spec.sourceRef.name
-    )
-
-    return body as GitRepositoryResource
-  }
-
   private async resourceModified(previewVersion: PreviewVersionResource) {
     const key = `${previewVersion.metadata?.namespace || 'default'}.${
       previewVersion.metadata!.name
     }`
 
     if (!this.tasks.has(key)) {
-      const automation = await this.getPreviewAutomation(previewVersion)
-      const source = await this.getSource(automation)
+      const automation = await this.previewAutomationApi.getPreviewAutomation(
+        previewVersion.spec.previewAutomationRef.namespace ||
+          previewVersion.metadata?.namespace ||
+          'default',
+        previewVersion.spec.previewAutomationRef.name
+      )
+
+      const source = await this.sourceApi.getGitRepository(
+        automation.spec.sourceRef.namespace || automation.metadata?.namespace || 'default',
+        automation.spec.sourceRef.name
+      )
 
       this.tasks.set(key, {
         version: previewVersion,
@@ -141,7 +120,7 @@ export class PreviewPullRequestSyncOperator extends Operator {
 
   protected async init() {
     await this.watchResource(
-      PreviewPullRequestSyncOperator.DOMAIN_GROUP,
+      PreviewAutomationDomain.Group,
       PreviewVersionResourceVersion.v1alpha1,
       kind2Plural(PreviewVersionResourceGroup.PreviewVersion),
       async (event) => {
@@ -163,7 +142,7 @@ export class PreviewPullRequestSyncOperator extends Operator {
       } catch (error) {
         this.log.error(error.body || error)
       }
-    }, 1000 * 60)
+    }, this.options.schedule?.interval || 1000 * 60)
   }
 
   public stop(): void {

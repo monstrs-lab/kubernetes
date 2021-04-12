@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: preview-operator-test
+  name: preview-image-reflector-operator-test
   labels:
-    app: preview-operator-test
+    app: preview-image-reflector-operator-test
 spec:
   ports:
     - name: http
       port: 80
       targetPort: http
   selector:
-    app: preview-operator-test
+    app: preview-image-reflector-operator-test

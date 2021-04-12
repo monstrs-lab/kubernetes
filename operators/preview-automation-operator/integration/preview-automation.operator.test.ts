@@ -11,7 +11,7 @@ import { PreviewVersionApi }         from '@monstrs/k8s-preview-automation-api'
 
 import { PreviewAutomationOperator } from '../src'
 
-jest.setTimeout(30000)
+jest.setTimeout(120000)
 
 describe('preview-automation.operator', () => {
   let previewVersionApi: PreviewVersionApi
