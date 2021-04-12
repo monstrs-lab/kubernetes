@@ -1,41 +1,25 @@
-import Operator                           from '@dot-i/k8s-operator'
-import { ResourceEventType }              from '@dot-i/k8s-operator'
-import { Logger }                         from '@monstrs/logger'
-import deepEqual                          from 'deep-equal'
+import Operator                        from '@dot-i/k8s-operator'
+import { ResourceEventType }           from '@dot-i/k8s-operator'
+import { Logger }                      from '@monstrs/logger'
+import deepEqual                       from 'deep-equal'
 
-import { PreviewAutomationDomain }        from '@monstrs/k8s-preview-automation-api'
-import { PreviewEndpointResourceVersion } from '@monstrs/k8s-preview-automation-api'
-import { PreviewEndpointResourceGroup }   from '@monstrs/k8s-preview-automation-api'
-import { PreviewEndpointResource }        from '@monstrs/k8s-preview-automation-api'
-import { GatewayApi }                     from '@monstrs/k8s-istio-api'
-import { VirtualServiceApi }              from '@monstrs/k8s-istio-api'
-import { CertificateApi }                 from '@monstrs/k8s-cert-manager-api'
-import { kind2Plural }                    from '@monstrs/k8s-resource-utils'
-import { OperatorLogger }                 from '@monstrs/k8s-operator-logger'
+import { PreviewAutomationAnnotation } from '@monstrs/k8s-preview-automation-api'
 
-import { EndpointRegistry }               from './endpoint.registry'
+import { VirtualServiceApi }           from '@monstrs/k8s-istio-api'
+import { OperatorLogger }              from '@monstrs/k8s-operator-logger'
 
 export class PreviewRouterOperator extends Operator {
   private readonly log = new Logger(PreviewRouterOperator.name)
 
-  private readonly endpointRegistry: EndpointRegistry
-
   private readonly virtualServiceApi: VirtualServiceApi
-
-  private readonly gatewayApi: GatewayApi
-
-  private readonly certificateApi: CertificateApi
 
   constructor() {
     super(new OperatorLogger(PreviewRouterOperator.name))
 
     this.virtualServiceApi = new VirtualServiceApi(this.kubeConfig)
-    this.gatewayApi = new GatewayApi(this.kubeConfig)
-    this.certificateApi = new CertificateApi(this.kubeConfig)
-    this.endpointRegistry = new EndpointRegistry(this.certificateApi, this.gatewayApi)
   }
 
-  private parseAnnotations(annotation?: string) {
+  private parseAnnotations(annotation?: string): null | PreviewAutomationAnnotation {
     try {
       return annotation ? JSON.parse(annotation) : null
     } catch {
@@ -48,22 +32,17 @@ export class PreviewRouterOperator extends Operator {
       resource.metadata?.annotations?.['preview.monstrs.tech/automation']
     )
 
-    if (!automation.endpoint) {
+    if (!automation?.endpoint) {
       return
     }
 
-    const endpoint = await this.endpointRegistry.getEndpoint(automation.endpoint.name)
-
-    if (!endpoint?.gateway) {
-      return
-    }
-
+    const namespace = automation.endpoint.namespace || 'istio-system'
     const name = `preview-${resource.metadata!.namespace || 'default'}-${resource.metadata!.name!}`
     const port = resource.spec.ports.find((item) => item.name === 'http') || resource.spec.ports[0]
 
     const spec = {
-      hosts: [`${automation.name}-${automation.context.number}.${automation.endpoint.url}`],
-      gateways: [endpoint.gateway],
+      hosts: automation.endpoint.hosts,
+      gateways: [automation.endpoint.name],
       http: [
         {
           route: [
@@ -81,13 +60,12 @@ export class PreviewRouterOperator extends Operator {
     }
 
     try {
-      const virtualService = await this.virtualServiceApi.getVirtualService(
-        automation.metadata!.namespace!,
-        name
-      )
+      const virtualService = await this.virtualServiceApi.getVirtualService(namespace, name)
 
       if (!deepEqual(virtualService.spec, spec)) {
-        await this.virtualServiceApi.patchVirtualService(automation.metadata!.namespace!, name, [
+        this.log.info(`Patching virtual service ${name}.${namespace}`)
+
+        await this.virtualServiceApi.patchVirtualService(namespace, name, [
           {
             op: 'replace',
             path: '/spec',
@@ -97,7 +75,9 @@ export class PreviewRouterOperator extends Operator {
       }
     } catch (error) {
       if (error.body?.code === 404) {
-        await this.virtualServiceApi.createVirtualService('istio-system', name, spec)
+        this.log.info(`Creating virtual service ${name}.${namespace}`)
+
+        await this.virtualServiceApi.createVirtualService(namespace, name, spec)
       } else {
         throw error
       }
@@ -105,10 +85,19 @@ export class PreviewRouterOperator extends Operator {
   }
 
   private async resourceDeleted(resource) {
-    await this.virtualServiceApi.deleteVirtualService(
-      'istio-system',
-      `preview-${resource.metadata!.namespace || 'default'}-${resource.metadata!.name!}`
+    const automation = this.parseAnnotations(
+      resource.metadata?.annotations?.['preview.monstrs.tech/automation']
     )
+
+    if (automation?.endpoint) {
+      const namespace = automation.endpoint.namespace || 'istio-system'
+      const name = `preview-${resource.metadata!.namespace || 'default'}-${resource.metadata!
+        .name!}`
+
+      this.log.info(`Deleting virtual service ${name}.${namespace}`)
+
+      await this.virtualServiceApi.deleteVirtualService(namespace, name)
+    }
   }
 
   protected async init() {
@@ -125,22 +114,5 @@ export class PreviewRouterOperator extends Operator {
         }
       }
     })
-
-    await this.watchResource(
-      PreviewAutomationDomain.Group,
-      PreviewEndpointResourceVersion.v1alpha1,
-      kind2Plural(PreviewEndpointResourceGroup.PreviewEndpoint),
-      async (event) => {
-        try {
-          if (event.type === ResourceEventType.Added || event.type === ResourceEventType.Modified) {
-            await this.endpointRegistry.addEndpoint(event.object as PreviewEndpointResource)
-          } else if (event.type === ResourceEventType.Deleted) {
-            await this.endpointRegistry.deleteEndpoint(event.object as PreviewEndpointResource)
-          }
-        } catch (error) {
-          this.log.error(error.body || error)
-        }
-      }
-    )
   }
 }

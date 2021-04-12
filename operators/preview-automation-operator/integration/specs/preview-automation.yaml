@@ -3,9 +3,6 @@ kind: PreviewAutomation
 metadata:
   name: test
 spec:
-  endpoint:
-    domain: test.localhost
-
   imageRepositoryRef:
     namespace: flux-system
     name: test

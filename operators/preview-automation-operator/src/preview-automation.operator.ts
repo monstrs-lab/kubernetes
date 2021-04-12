@@ -9,7 +9,8 @@ import { PreviewVersionResourceVersion } from '@monstrs/k8s-preview-automation-a
 import { PreviewVersionResourceGroup }   from '@monstrs/k8s-preview-automation-api'
 import { PreviewVersionStatusPhase }     from '@monstrs/k8s-preview-automation-api'
 import { PreviewVersionResource }        from '@monstrs/k8s-preview-automation-api'
-import { PreviewEndpointApi }            from '@monstrs/k8s-preview-automation-api'
+import { PreviewAutomationAnnotation }   from '@monstrs/k8s-preview-automation-api'
+import { GatewayApi }                    from '@monstrs/k8s-istio-api'
 import { ImageRepositoryApi }            from '@monstrs/k8s-flux-toolkit-api'
 import { SourceApi }                     from '@monstrs/k8s-flux-toolkit-api'
 import { kustomize }                     from '@monstrs/k8s-kustomize-tool'
@@ -22,11 +23,11 @@ export class PreviewAutomationOperator extends Operator {
 
   private readonly previewAutomationApi: PreviewAutomationApi
 
-  private readonly previewEndpointApi: PreviewEndpointApi
-
   private readonly previewVersionApi: PreviewVersionApi
 
   private readonly imageRepositoryApi: ImageRepositoryApi
+
+  private readonly gatewayApi: GatewayApi
 
   private readonly sourceApi: SourceApi
 
@@ -34,9 +35,9 @@ export class PreviewAutomationOperator extends Operator {
     super(new OperatorLogger(PreviewAutomationOperator.name))
 
     this.previewAutomationApi = new PreviewAutomationApi(this.kubeConfig)
-    this.previewEndpointApi = new PreviewEndpointApi(this.kubeConfig)
     this.previewVersionApi = new PreviewVersionApi(this.kubeConfig)
     this.imageRepositoryApi = new ImageRepositoryApi(this.kubeConfig)
+    this.gatewayApi = new GatewayApi(this.kubeConfig)
     this.sourceApi = new SourceApi(this.kubeConfig)
   }
 
@@ -48,10 +49,10 @@ export class PreviewAutomationOperator extends Operator {
       previewVersion.spec.previewAutomationRef.name
     )
 
-    const endpoint = automation.spec.endpointRef
-      ? await this.previewEndpointApi.getPreviewEndpoint(
-          automation.spec.endpointRef.namespace || automation.metadata?.namespace || 'default',
-          automation.spec.endpointRef.name
+    const gateway = automation.spec.gatewayRef
+      ? await this.gatewayApi.getGateway(
+          automation.spec.gatewayRef.namespace || automation.metadata?.namespace || 'default',
+          automation.spec.gatewayRef.name
         )
       : null
 
@@ -67,6 +68,31 @@ export class PreviewAutomationOperator extends Operator {
 
     const resources = await this.previewAutomationApi.getPreviewAutomationResources(automation)
 
+    const annotation: PreviewAutomationAnnotation = {
+      name: automation.metadata!.name!,
+      endpoint: gateway
+        ? {
+            name: gateway.metadata!.name!,
+            namespace: gateway.metadata?.namespace || 'default',
+            hosts: gateway.spec.servers
+              .map((server) => server.hosts)
+              .flat()
+              .filter((host) => host.startsWith('*.'))
+              .map((host) =>
+                host.replace(
+                  '*.',
+                  `${automation.metadata!.name}-${previewVersion.spec.context.number}`
+                )
+              ),
+          }
+        : undefined,
+      context: previewVersion.spec.context,
+      source: {
+        kind: source.kind!,
+        url: source.spec.url,
+      },
+    }
+
     const transformations = {
       images: [
         {
@@ -80,20 +106,7 @@ export class PreviewAutomationOperator extends Operator {
         app: `preview-${previewVersion.metadata!.name}-${previewVersion.spec.context.number}`,
       },
       commonAnnotations: {
-        'preview.monstrs.tech/automation': JSON.stringify({
-          name: automation.metadata!.name,
-          endpoint: endpoint
-            ? {
-                name: endpoint.metadata!.name,
-                url: endpoint.spec.url,
-              }
-            : null,
-          context: previewVersion.spec.context,
-          source: {
-            kind: source.kind,
-            url: source.spec.url,
-          },
-        }),
+        'preview.monstrs.tech/automation': JSON.stringify(annotation),
       },
     }
 

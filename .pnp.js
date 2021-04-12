@@ -1414,6 +1414,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@dot-i/k8s-operator", "npm:1.1.1"],
             ["@kubernetes/client-node", "npm:0.14.2"],
             ["@monstrs/k8s-flux-toolkit-api", "workspace:apis/flux-toolkit-api"],
+            ["@monstrs/k8s-istio-api", "workspace:apis/istio-api"],
             ["@monstrs/k8s-kubectl-tool", "workspace:tools/kubectl"],
             ["@monstrs/k8s-kustomize-tool", "workspace:tools/kustomize"],
             ["@monstrs/k8s-operator-logger", "workspace:utils/operator-logger"],
@@ -1503,13 +1504,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@monstrs/k8s-preview-router-operator", "workspace:operators/preview-router-operator"],
             ["@dot-i/k8s-operator", "npm:1.1.1"],
-            ["@monstrs/k8s-cert-manager-api", "workspace:apis/cert-manager-api"],
+            ["@kubernetes/client-node", "npm:0.14.2"],
             ["@monstrs/k8s-istio-api", "workspace:apis/istio-api"],
+            ["@monstrs/k8s-kubectl-tool", "workspace:tools/kubectl"],
             ["@monstrs/k8s-operator-logger", "workspace:utils/operator-logger"],
             ["@monstrs/k8s-preview-automation-api", "workspace:apis/preview-automation-api"],
             ["@monstrs/k8s-resource-utils", "workspace:utils/resource-utils"],
             ["@monstrs/logger", "npm:0.0.4"],
-            ["deep-equal", "npm:2.0.5"]
+            ["deep-equal", "npm:2.0.5"],
+            ["retry-ignore-abort", "npm:2.2.15"]
           ],
           "linkType": "SOFT",
         }]

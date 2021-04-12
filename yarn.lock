@@ -972,7 +972,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@monstrs/k8s-cert-manager-api@workspace:0.0.1, @monstrs/k8s-cert-manager-api@workspace:apis/cert-manager-api":
+"@monstrs/k8s-cert-manager-api@workspace:apis/cert-manager-api":
   version: 0.0.0-use.local
   resolution: "@monstrs/k8s-cert-manager-api@workspace:apis/cert-manager-api"
   dependencies:
@@ -1053,6 +1053,7 @@ __metadata:
     "@dot-i/k8s-operator": ^1.1.1
     "@kubernetes/client-node": ^0.14.2
     "@monstrs/k8s-flux-toolkit-api": "workspace:0.0.1"
+    "@monstrs/k8s-istio-api": "workspace:0.0.1"
     "@monstrs/k8s-kubectl-tool": "workspace:0.0.1"
     "@monstrs/k8s-kustomize-tool": "workspace:0.0.1"
     "@monstrs/k8s-operator-logger": "workspace:0.0.1"
@@ -1132,13 +1133,15 @@ __metadata:
   resolution: "@monstrs/k8s-preview-router-operator@workspace:operators/preview-router-operator"
   dependencies:
     "@dot-i/k8s-operator": ^1.1.1
-    "@monstrs/k8s-cert-manager-api": "workspace:0.0.1"
+    "@kubernetes/client-node": ^0.14.2
     "@monstrs/k8s-istio-api": "workspace:0.0.1"
+    "@monstrs/k8s-kubectl-tool": "workspace:0.0.1"
     "@monstrs/k8s-operator-logger": "workspace:0.0.1"
     "@monstrs/k8s-preview-automation-api": "workspace:0.0.1"
     "@monstrs/k8s-resource-utils": "workspace:0.0.1"
     "@monstrs/logger": ^0.0.4
     deep-equal: ^2.0.5
+    retry-ignore-abort: ^2.2.15
   languageName: unknown
   linkType: soft
 

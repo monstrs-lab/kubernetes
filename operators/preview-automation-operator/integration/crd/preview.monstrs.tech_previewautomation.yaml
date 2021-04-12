@@ -19,7 +19,7 @@ spec:
           properties:
             spec:
               properties:
-                endpointRef:
+                gatewayRef:
                   properties:
                     name:
                       type: string
@@ -40,11 +40,6 @@ spec:
                     name:
                       type: string
                     namespace:
-                      type: string
-                  type: object
-                endpoint:
-                  properties:
-                    domain:
                       type: string
                   type: object
                 resources:
