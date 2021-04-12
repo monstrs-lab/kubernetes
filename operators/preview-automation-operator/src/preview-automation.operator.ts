@@ -81,7 +81,7 @@ export class PreviewAutomationOperator extends Operator {
               .map((host) =>
                 host.replace(
                   '*.',
-                  `${automation.metadata!.name}-${previewVersion.spec.context.number}`
+                  `${automation.metadata!.name}-${previewVersion.spec.context.number}.`
                 )
               ),
           }
