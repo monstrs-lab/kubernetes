@@ -145,16 +145,9 @@ export class PreviewAutomationOperator extends Operator {
 
   protected async resourceDeleted(resource: PreviewVersionResource) {
     try {
-      const output = await kubectl.run([
-        'delete',
-        'service,deployment',
-        '-n',
-        resource.metadata?.namespace || 'default',
-        '-l',
-        `app=preview-${resource.metadata!.name}-${resource.spec.context.number}`,
-      ])
+      const preview = await this.buildPreview(resource)
 
-      this.log.info(output)
+      await kubectl.delete(preview)
     } catch (error) {
       this.log.error(error.body || error)
     }
