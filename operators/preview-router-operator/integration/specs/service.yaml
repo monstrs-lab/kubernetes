@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: preview-router-test
+  labels:
+    app: preview-router-test
+  annotations:
+    'preview.monstrs.tech/automation': '{"name":"preview-router-test","endpoint":{"name":"preview-router-test","namespace":"default","hosts":["preview-router-test-11.preview.svc.cluster.local"]},"context":{"kind":"GitHubPullRequest","number":11},"source":{"kind":"GitRepository","url":"https://github.com/monstrs-lab/kubernetes"}}'
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+  selector:
+    app: preview-router-test
