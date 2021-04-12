@@ -9,7 +9,6 @@ const bootstrap = async () => {
   const imageReflectorOperator = new PreviewImageReflectorOperator()
   const routerOperator = new PreviewRouterOperator()
   const notificationOperator = new PreviewNotificationOperator({
-    type: 'github',
     token: process.env.GITHUB_TOKEN!,
   })
   const pullRequestSyncOperator = new PreviewPullRequestSyncOperator({

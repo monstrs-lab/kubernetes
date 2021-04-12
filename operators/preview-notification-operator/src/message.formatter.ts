@@ -1,13 +1,13 @@
 export class MessageFormatter {
-  formatPullRequestDeployed(name, host) {
+  formatPullRequestDeployed(name, hosts: Array<string>) {
     return `This pull request for workspace **${name}** is being automatically deployed.
                   
-✅ Preview: [https://${host}](https://${host})`
+✅ Preview: ${hosts.map((host) => `[https://${host}](https://${host}) `)}`
   }
 
-  formatPullRequestUndeployed(name, host) {
+  formatPullRequestUndeployed(name, hosts: Array<string>) {
     return `This pull request for workspace **${name}** is being undeployed.
                   
-✅ Preview: [https://${host}](https://${host})`
+✅ Preview: ${hosts.map((host) => `[https://${host}](https://${host}) `)}`
   }
 }
