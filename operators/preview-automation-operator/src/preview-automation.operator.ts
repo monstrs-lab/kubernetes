@@ -147,7 +147,7 @@ export class PreviewAutomationOperator extends Operator {
     try {
       const output = await kubectl.run([
         'delete',
-        'all',
+        'service,deployment',
         '-n',
         resource.metadata?.namespace || 'default',
         '-l',
