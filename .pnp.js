@@ -1456,10 +1456,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/k8s-kubectl-tool", "workspace:tools/kubectl"],
             ["@monstrs/k8s-kustomize-tool", "workspace:tools/kustomize"],
             ["@monstrs/k8s-operator-logger", "workspace:utils/operator-logger"],
-            ["@monstrs/k8s-preview-automation-operator", "workspace:operators/preview-automation-operator"],
+            ["@monstrs/k8s-preview-automation-api", "workspace:apis/preview-automation-api"],
             ["@monstrs/k8s-resource-utils", "workspace:utils/resource-utils"],
             ["@monstrs/logger", "npm:0.0.4"],
-            ["@octokit/rest", "npm:18.5.2"]
+            ["@octokit/rest", "npm:18.5.2"],
+            ["retry-ignore-abort", "npm:2.2.15"]
           ],
           "linkType": "SOFT",
         }]
