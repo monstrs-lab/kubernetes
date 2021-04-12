@@ -12,7 +12,6 @@ const bootstrap = async () => {
     token: process.env.GITHUB_TOKEN!,
   })
   const pullRequestSyncOperator = new PreviewPullRequestSyncOperator({
-    provider: 'github',
     token: process.env.GITHUB_TOKEN!,
   })
 

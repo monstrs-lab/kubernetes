@@ -2,13 +2,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: preview-image-reflector-operator-test
-  name: preview-image-reflector-operator-test
+    app: preview-pull-request-sync-operator-test
+  name: preview-pull-request-sync-operator-test
   namespace: default
 spec:
   selector:
     matchLabels:
-      app: preview-image-reflector-operator-test
+      app: preview-pull-request-sync-operator-test
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -17,7 +17,7 @@ spec:
   template:
     metadata:
       labels:
-        app: preview-image-reflector-operator-test
+        app: preview-pull-request-sync-operator-test
     spec:
       containers:
         - image: monstrs/preview-operator-test-image:latest

@@ -19,8 +19,6 @@
   "dependencies": {
     "@dot-i/k8s-operator": "^1.1.1",
     "@kubernetes/client-node": "^0.14.2",
-    "@monstrs/k8s-kubectl-tool": "workspace:0.0.1",
-    "@monstrs/k8s-kustomize-tool": "workspace:0.0.1",
     "@monstrs/k8s-operator-logger": "workspace:0.0.1",
     "@monstrs/k8s-preview-automation-api": "workspace:0.0.1",
     "@monstrs/k8s-resource-utils": "workspace:0.0.1",

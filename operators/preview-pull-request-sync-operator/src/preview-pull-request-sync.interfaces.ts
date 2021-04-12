@@ -1,4 +1,7 @@
+export interface PreviewPullRequestSyncOperatorScheduleOptions {
+  interval: number
+}
 export interface PreviewPullRequestSyncOperatorOptions {
-  provider: 'github'
   token: string
+  schedule?: PreviewPullRequestSyncOperatorScheduleOptions
 }
