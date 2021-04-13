@@ -22,6 +22,10 @@ describe('preview-router.operator', () => {
 
     kubeConfig.loadFromDefault()
 
+    if (!kubeConfig.getCurrentContext().includes('test')) {
+      throw new Error('Require test kube config context.')
+    }
+
     virtualServiceApi = new VirtualServiceApi(kubeConfig)
 
     // TODO: run only on ci
