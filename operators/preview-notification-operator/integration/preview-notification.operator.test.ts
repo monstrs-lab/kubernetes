@@ -31,6 +31,10 @@ describe('preview-notification.operator', () => {
 
     kubeConfig.loadFromDefault()
 
+    if (!kubeConfig.getCurrentContext().includes('test')) {
+      throw new Error('Require test kube config context.')
+    }
+
     appsApi = kubeConfig.makeApiClient(AppsV1Api)
 
     await operator.start()

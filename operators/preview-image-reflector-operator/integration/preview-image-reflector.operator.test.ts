@@ -24,6 +24,10 @@ describe('preview-image-reflector.operator', () => {
 
     kubeConfig.loadFromDefault()
 
+    if (!kubeConfig.getCurrentContext().includes('test')) {
+      throw new Error('Require test kube config context.')
+    }
+
     previewVersionApi = new PreviewVersionApi(kubeConfig)
     imagePolicyApi = new ImagePolicyApi(kubeConfig)
 
