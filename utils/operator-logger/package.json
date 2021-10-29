@@ -8,7 +8,7 @@
     "dist/"
   ],
   "dependencies": {
-    "@dot-i/k8s-operator": "^1.1.1",
-    "@monstrs/logger": "^0.0.4"
+    "@dot-i/k8s-operator": "^1.1.7",
+    "@monstrs/logger": "^0.0.6"
   }
 }

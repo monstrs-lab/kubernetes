@@ -1,0 +1,13 @@
+{
+  "name": "@monstrs/k8s-k3d-tool",
+  "version": "0.0.1",
+  "license": "MIT",
+  "private": true,
+  "main": "src/index.ts",
+  "files": [
+    "dist/"
+  ],
+  "dependencies": {
+    "execa": "^5.1.1"
+  }
+}

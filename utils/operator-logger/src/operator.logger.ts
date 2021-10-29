@@ -21,6 +21,7 @@ export class OperatorLogger implements BaseOperatorLogger {
   }
 
   error(message: string) {
+    console.log(message)
     this.logger.error(message)
   }
 }

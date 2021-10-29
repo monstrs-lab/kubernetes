@@ -12,8 +12,8 @@
     "prepack": "yarn run build"
   },
   "dependencies": {
-    "@kubernetes/client-node": "^0.14.2",
+    "@kubernetes/client-node": "^0.15.1",
     "@monstrs/k8s-resource-utils": "workspace:0.0.1",
-    "@monstrs/logger": "^0.0.4"
+    "@monstrs/logger": "^0.0.6"
   }
 }

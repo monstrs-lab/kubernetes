@@ -1,60 +1,65 @@
-import { KubernetesObject }  from '@kubernetes/client-node'
-import execa                 from 'execa'
-import tempy                 from 'tempy'
-import { promises as fs }    from 'fs'
-
-import { resourcesToString } from '@monstrs/k8s-resource-utils'
-import { Logger }            from '@monstrs/logger'
+import { KubeConfig }          from '@kubernetes/client-node'
+import { KubernetesObjectApi } from '@kubernetes/client-node'
+import { KubernetesObject }    from '@kubernetes/client-node'
+import { HttpError }    from '@kubernetes/client-node'
+import { Logger } from '@monstrs/logger'
+import { loadAll }             from 'js-yaml'
+import { readdir }             from 'node:fs/promises'
+import { readFile }            from 'node:fs/promises'
+import { extname }             from 'node:path'
+import { join }                from 'node:path'
 
 export class KubeCtl {
   private readonly logger = new Logger(KubeCtl.name)
 
-  private async exec(
-    action: 'apply' | 'delete',
-    resources: Array<KubernetesObject>
-  ): Promise<void> {
-    const target = tempy.file({ extension: 'yaml' })
+  #kubeConfig: KubeConfig
 
-    await fs.writeFile(target, resourcesToString(resources))
+  #client: KubernetesObjectApi
 
-    const { stdout, stderr, exitCode } = await execa('kubectl', [action, '-f', target])
+  constructor(kubeConfig: KubeConfig) {
+    this.#kubeConfig = kubeConfig
+    this.#client = KubernetesObjectApi.makeApiClient(kubeConfig)
+  }
 
-    if (stderr) {
-      this.logger.error(stderr)
-    }
+  async applyFolder(specPath: string) {
+    const files = (await readdir(specPath)).filter((file) =>
+      ['.yaml', '.yml'].includes(extname(file))
+    )
+    const specs: Array<any> = (
+      await Promise.all(files.map((file) => readFile(join(specPath, file), 'utf8')))
+    )
+      .map((content) => loadAll(content))
+      .flat()
 
-    if (stdout) {
-      this.logger.info(stdout)
-    }
+    await this.apply(specs)
+  }
 
-    if (exitCode !== 0) {
-      throw new Error(`Error kubectl ${action}: ${stderr}`)
+  async apply(specs: Array<KubernetesObject>) {
+    const validSpecs = specs.filter((spec: any) => spec?.kind && spec?.metadata)
+
+    for (const spec of validSpecs) {
+      spec.metadata = spec.metadata || {}
+      spec.metadata.annotations = spec.metadata.annotations || {}
+      delete spec.metadata.annotations['kubectl.kubernetes.io/last-applied-configuration']
+      spec.metadata.annotations['kubectl.kubernetes.io/last-applied-configuration'] =
+        JSON.stringify(spec)
+
+      try {
+        await this.#client.read(spec)
+        await this.#client.patch(spec, undefined, undefined, undefined, undefined, { headers: { 'content-type': 'application/merge-patch+json' } })
+      } catch (error) {
+        if ((error as HttpError).body.code !== 404) {
+          this.logger.error((error as HttpError).body)
+        }
+
+        await this.#client.create(spec)
+      }
     }
   }
 
-  async apply(resources: Array<KubernetesObject>): Promise<void> {
-    return this.exec('apply', resources)
-  }
+  async delete(spec: KubernetesObject | Array<KubernetesObject>) {
+    const specs = Array.isArray(spec) ? spec : [spec]
 
-  async delete(resources: Array<KubernetesObject>): Promise<void> {
-    return this.exec('delete', resources)
-  }
-
-  async run(args: Array<string>, options?): Promise<string> {
-    const { stdout, stderr, exitCode } = await execa('kubectl', args, options)
-
-    if (stderr) {
-      this.logger.error(stderr)
-    }
-
-    if (stdout) {
-      this.logger.info(stdout)
-    }
-
-    if (exitCode !== 0) {
-      throw new Error(`Error kubectl ${args.join(' ')}: ${stderr}`)
-    }
-
-    return stdout
+    return Promise.all(specs.map((s) => this.#client.delete(s)))
   }
 }

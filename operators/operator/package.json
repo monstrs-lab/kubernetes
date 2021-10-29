@@ -1,0 +1,20 @@
+{
+    "name": "@monstrs/k8s-operator",
+    "version": "0.0.1",
+    "license": "MIT",
+    "main": "src/index.ts",
+    "files": [
+        "dist/"
+    ],
+    "scripts": {
+        "build": "yarn app library build",
+        "postpack": "rm -rf dist",
+        "prepack": "yarn run build"
+    },
+    "dependencies": {
+        "@kubernetes/client-node": "^0.15.1",
+        "@monstrs/logger": "^0.0.6",
+        "async": "^3.2.1",
+        "axios": "^0.21.4"
+    }
+}

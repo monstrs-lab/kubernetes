@@ -9,8 +9,10 @@ import { deploymentResourceToSpec }         from '@monstrs/k8s-resource-utils'
 import { serviceResourceToSpec }            from '@monstrs/k8s-resource-utils'
 
 import { PreviewAutomationResource }        from './preview-automation.interfaces'
+import { PreviewAutomationSpec }            from './preview-automation.interfaces'
 import { PreviewAutomationResourceVersion } from './preview-automation.types'
 import { PreviewAutomationResourceGroup }   from './preview-automation.types'
+import { PreviewAutomationResourceKind }    from './preview-automation.types'
 import { PreviewAutomationDomain }          from './preview-domain.types'
 
 export class PreviewAutomationApi {
@@ -62,6 +64,24 @@ export class PreviewAutomationApi {
           return deploymentResourceToSpec(deployment.body)
         }
       })
+    )
+  }
+
+  async createPreviewAutomation(namespace: string, name: string, spec: Partial<PreviewAutomationSpec>) {
+    return this.customObjectsApi.createNamespacedCustomObject(
+      PreviewAutomationDomain.Group,
+      PreviewAutomationResourceVersion.v1alpha1,
+      namespace,
+      kind2Plural(PreviewAutomationResourceGroup.PreviewAutomation),
+      {
+        apiVersion: `${PreviewAutomationDomain.Group}/${PreviewAutomationResourceVersion.v1alpha1}`,
+        kind: PreviewAutomationResourceKind.PreviewAutomation,
+        metadata: {
+          namespace,
+          name,
+        },
+        spec,
+      }
     )
   }
 }

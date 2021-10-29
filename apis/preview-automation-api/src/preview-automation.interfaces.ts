@@ -4,6 +4,7 @@ export interface PreviewAutomationResourceSpec {
   kind: string
   name: string
   namespace?: string
+  version?: string
 }
 
 export interface PreviewAutomationImageRepositoryRef {
