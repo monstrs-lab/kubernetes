@@ -496,18 +496,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dot-i/k8s-operator@npm:^1.1.7":
-  version: 1.1.7
-  resolution: "@dot-i/k8s-operator@npm:1.1.7"
-  dependencies:
-    "@kubernetes/client-node": ^0.15.1
-    async: ^3.2.1
-    axios: ^0.21.4
-    serialize-error: ^8.1.0
-  checksum: 40717d25a54f73e72dad9c9217200491e672b6f2c4d3dbbb4eb29ec944909e91e16f3e42fe4ece5f1f4f4f3969d27219a6985b2fb830a7abc6d35ea5b3170092
-  languageName: node
-  linkType: hard
-
 "@emotion/css-prettifier@npm:^1.0.0":
   version: 1.0.0
   resolution: "@emotion/css-prettifier@npm:1.0.0"
@@ -917,9 +905,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@monstrs/code-lint@npm:0.0.101":
-  version: 0.0.101
-  resolution: "@monstrs/code-lint@npm:0.0.101"
+"@monstrs/code-lint@npm:0.0.102":
+  version: 0.0.102
+  resolution: "@monstrs/code-lint@npm:0.0.102"
   dependencies:
     "@monstrs/code-format": 0.0.89
     "@typescript-eslint/eslint-plugin": ^5.2.0
@@ -947,7 +935,7 @@ __metadata:
       optional: true
     typescript:
       optional: true
-  checksum: c13f2658ab66b3f426337e4f9ae3f39f760b44a07cb9b7317cbe6f831c887053af8d556c142575fa2714484df60834b5a12375862c661828ea70cbe15b792302
+  checksum: 0fca53ee12a1e8cf9177377df7494fb85e082c4e7554b0f227d77c31c8b93b300aa01bed76dc3993a973e7f90157ef31960daa1ca780e189e8a539e7d52c2da5
   languageName: node
   linkType: hard
 
@@ -999,121 +987,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@monstrs/k8s-cert-manager-api@workspace:apis/cert-manager-api":
+"@monstrs/k8s-k3d@workspace:0.0.1, @monstrs/k8s-k3d@workspace:tools/k3d":
   version: 0.0.0-use.local
-  resolution: "@monstrs/k8s-cert-manager-api@workspace:apis/cert-manager-api"
-  dependencies:
-    "@kubernetes/client-node": ^0.15.1
-    "@monstrs/k8s-resource-utils": "workspace:0.0.1"
-    "@monstrs/logger": ^0.0.6
-  languageName: unknown
-  linkType: soft
-
-"@monstrs/k8s-flux-toolkit-api@workspace:0.0.1, @monstrs/k8s-flux-toolkit-api@workspace:apis/flux-toolkit-api":
-  version: 0.0.0-use.local
-  resolution: "@monstrs/k8s-flux-toolkit-api@workspace:apis/flux-toolkit-api"
-  dependencies:
-    "@kubernetes/client-node": ^0.15.1
-    "@monstrs/k8s-resource-utils": "workspace:0.0.1"
-    "@monstrs/logger": ^0.0.6
-  languageName: unknown
-  linkType: soft
-
-"@monstrs/k8s-istio-api@workspace:0.0.1, @monstrs/k8s-istio-api@workspace:apis/istio-api":
-  version: 0.0.0-use.local
-  resolution: "@monstrs/k8s-istio-api@workspace:apis/istio-api"
-  dependencies:
-    "@kubernetes/client-node": ^0.15.1
-    "@monstrs/k8s-resource-utils": "workspace:0.0.1"
-    "@monstrs/logger": ^0.0.6
-  languageName: unknown
-  linkType: soft
-
-"@monstrs/k8s-k3d-tool@workspace:0.0.1, @monstrs/k8s-k3d-tool@workspace:tools/k3d":
-  version: 0.0.0-use.local
-  resolution: "@monstrs/k8s-k3d-tool@workspace:tools/k3d"
+  resolution: "@monstrs/k8s-k3d@workspace:tools/k3d"
   dependencies:
     execa: ^5.1.1
   languageName: unknown
   linkType: soft
 
-"@monstrs/k8s-kubectl-tool@workspace:0.0.1, @monstrs/k8s-kubectl-tool@workspace:tools/kubectl":
+"@monstrs/k8s-kustomize@workspace:tools/kustomize":
   version: 0.0.0-use.local
-  resolution: "@monstrs/k8s-kubectl-tool@workspace:tools/kubectl"
-  dependencies:
-    "@kubernetes/client-node": ^0.15.1
-    "@monstrs/k8s-resource-utils": "workspace:0.0.1"
-    "@monstrs/logger": ^0.0.6
-    execa: ^5.1.1
-    js-yaml: ^4.1.0
-    tempy: ^1.0.1
-    yaml: ^1.10.2
-  languageName: unknown
-  linkType: soft
-
-"@monstrs/k8s-kustomize-tool@workspace:0.0.1, @monstrs/k8s-kustomize-tool@workspace:tools/kustomize":
-  version: 0.0.0-use.local
-  resolution: "@monstrs/k8s-kustomize-tool@workspace:tools/kustomize"
+  resolution: "@monstrs/k8s-kustomize@workspace:tools/kustomize"
   dependencies:
     "@kubernetes/client-node": ^0.15.1
     "@monstrs/k8s-resource-utils": "workspace:0.0.1"
     execa: ^5.1.1
     tempy: ^1.0.1
-    yaml: ^1.10.2
-  languageName: unknown
-  linkType: soft
-
-"@monstrs/k8s-operator-logger@workspace:0.0.1, @monstrs/k8s-operator-logger@workspace:utils/operator-logger":
-  version: 0.0.0-use.local
-  resolution: "@monstrs/k8s-operator-logger@workspace:utils/operator-logger"
-  dependencies:
-    "@dot-i/k8s-operator": ^1.1.7
-    "@monstrs/logger": ^0.0.6
-  languageName: unknown
-  linkType: soft
-
-"@monstrs/k8s-operator@workspace:0.0.1, @monstrs/k8s-operator@workspace:operators/operator":
-  version: 0.0.0-use.local
-  resolution: "@monstrs/k8s-operator@workspace:operators/operator"
-  dependencies:
-    "@kubernetes/client-node": ^0.15.1
-    "@monstrs/logger": ^0.0.6
-    async: ^3.2.1
-    axios: ^0.21.4
-  languageName: unknown
-  linkType: soft
-
-"@monstrs/k8s-preview-automation-api@workspace:0.0.1, @monstrs/k8s-preview-automation-api@workspace:apis/preview-automation-api":
-  version: 0.0.0-use.local
-  resolution: "@monstrs/k8s-preview-automation-api@workspace:apis/preview-automation-api"
-  dependencies:
-    "@kubernetes/client-node": ^0.15.1
-    "@monstrs/k8s-resource-utils": "workspace:0.0.1"
-    "@monstrs/logger": ^0.0.6
-  languageName: unknown
-  linkType: soft
-
-"@monstrs/k8s-preview-automation-operator@workspace:operators/preview-automation-operator":
-  version: 0.0.0-use.local
-  resolution: "@monstrs/k8s-preview-automation-operator@workspace:operators/preview-automation-operator"
-  dependencies:
-    "@dot-i/k8s-operator": ^1.1.7
-    "@kubernetes/client-node": ^0.15.1
-    "@monstrs/k8s-flux-toolkit-api": "workspace:0.0.1"
-    "@monstrs/k8s-istio-api": "workspace:0.0.1"
-    "@monstrs/k8s-kubectl-tool": "workspace:0.0.1"
-    "@monstrs/k8s-kustomize-tool": "workspace:0.0.1"
-    "@monstrs/k8s-operator": "workspace:0.0.1"
-    "@monstrs/k8s-operator-logger": "workspace:0.0.1"
-    "@monstrs/k8s-preview-automation-api": "workspace:0.0.1"
-    "@monstrs/k8s-resource-utils": "workspace:0.0.1"
-    "@monstrs/k8s-test-utils": "workspace:0.0.1"
-    "@monstrs/logger": ^0.0.6
-    "@types/faker": ^5
-    axios: ^0.21.4
-    faker: ^5.5.3
-    jest-mock-process: ^1.4.1
-    retry-ignore-abort: ^2.2.27
   languageName: unknown
   linkType: soft
 
@@ -1132,13 +1021,10 @@ __metadata:
   resolution: "@monstrs/k8s-test-utils@workspace:utils/test-utils"
   dependencies:
     "@kubernetes/client-node": ^0.15.1
-    "@monstrs/k8s-k3d-tool": "workspace:0.0.1"
-    "@monstrs/k8s-kubectl-tool": "workspace:0.0.1"
-    "@types/js-yaml": ^4
-    "@types/request": ^2
-    js-yaml: ^4.1.0
-    node-fetch: ^2.6.5
-    yaml: ^1.10.2
+    "@monstrs/k8s-k3d": "workspace:0.0.1"
+    "@monstrs/logger": ^0.0.6
+    "@types/faker": ^5
+    faker: ^5.5.3
   languageName: unknown
   linkType: soft
 
@@ -1151,14 +1037,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@monstrs/mctl-cli@npm:^0.2.119":
-  version: 0.2.119
-  resolution: "@monstrs/mctl-cli@npm:0.2.119"
+"@monstrs/mctl-cli@npm:^0.2.120":
+  version: 0.2.120
+  resolution: "@monstrs/mctl-cli@npm:0.2.120"
   dependencies:
     "@monstrs/mctl-commit": 0.2.93
     "@monstrs/mctl-format": 0.2.92
     "@monstrs/mctl-library": 0.2.87
-    "@monstrs/mctl-lint": 0.2.95
+    "@monstrs/mctl-lint": 0.2.96
     "@monstrs/mctl-renderer": 0.2.101
     "@monstrs/mctl-service": 0.2.97
     "@monstrs/mctl-test": 0.2.98
@@ -1171,7 +1057,7 @@ __metadata:
       optional: true
   bin:
     mctl: ./bin/run
-  checksum: 9ebc69b9a6591c67a6a060f3668e906bacf8ec6bec34ef23cff4670a79ca453c05e55067c09170e204e61f01eeca5275c7d35456bb4db29bdbeb0a96ffcf7db9
+  checksum: 7258f1bb72bb398b77c3d4a3da79d5d4fb66077b2eda05336f3a2cb630feb1bde3e5f4f506f12d3c11d5a2213a6b27982719bd52eaab227d1b9cb0420427d003
   languageName: node
   linkType: hard
 
@@ -1218,11 +1104,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@monstrs/mctl-lint@npm:0.2.95":
-  version: 0.2.95
-  resolution: "@monstrs/mctl-lint@npm:0.2.95"
+"@monstrs/mctl-lint@npm:0.2.96":
+  version: 0.2.96
+  resolution: "@monstrs/mctl-lint@npm:0.2.96"
   dependencies:
-    "@monstrs/code-lint": 0.0.101
+    "@monstrs/code-lint": 0.0.102
     clipanion: ^3.0.1
     typescript: "*"
   peerDependencies:
@@ -1230,7 +1116,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 8d8fbdbbb1c521d9a18f26596240ade7c522be9c5503a450ba674285d1ef531e77f98b96dc8727bb51b9c9a51c83d64dcbf53f307ec2761e58f467a5b790feff
+  checksum: caa5c6051a30941d0f76f0859a58f85c1a09fbb795a8851e2b6628829853cef3b161eb42c892af16cc848ca1195ebdce6d5188daaf3f36aa48dff04857d9a401
   languageName: node
   linkType: hard
 
@@ -1613,7 +1499,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/js-yaml@npm:^4, @types/js-yaml@npm:^4.0.1":
+"@types/js-yaml@npm:^4.0.1":
   version: 4.0.4
   resolution: "@types/js-yaml@npm:4.0.4"
   checksum: de38075a6bde3efdd27415714f3bfd2fe43b62bb655cb1d6b89976557c18db3f468d33767857c9627b29bf185c575093e535c9a6e3b215559b715a9dc520f878
@@ -1705,18 +1591,6 @@ __metadata:
   version: 2.4.1
   resolution: "@types/prettier@npm:2.4.1"
   checksum: df330c2d6fe7c282839b0f17701e069a9c6c96d2ff54704e933a1b3c1b98844d963a7cb00c5629d173604892ceee802312bbaeb8a97f5da21e13db8f653b519e
-  languageName: node
-  linkType: hard
-
-"@types/request@npm:^2":
-  version: 2.48.7
-  resolution: "@types/request@npm:2.48.7"
-  dependencies:
-    "@types/caseless": "*"
-    "@types/node": "*"
-    "@types/tough-cookie": "*"
-    form-data: ^2.5.0
-  checksum: 83c2b682b19a74c7a507f5295a80b3ee85f0b64bc078cdc692ea9c1748ca9452cc739050889d2161f141f7ddac1b01790944ad05e08a6d4d9367fe7473cc6a87
   languageName: node
   linkType: hard
 
@@ -2888,13 +2762,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async@npm:^3.2.1":
-  version: 3.2.1
-  resolution: "async@npm:3.2.1"
-  checksum: fcd6dc73d36bdb0e5bf978ea27832136cc8116cef15e0a2dc9a5c63f362c5f82363996a349bf3046d590587b7f30614ac340a4f3db6d48780a07f40f81941e0c
-  languageName: node
-  linkType: hard
-
 "asynckit@npm:^0.4.0":
   version: 0.4.0
   resolution: "asynckit@npm:0.4.0"
@@ -2937,7 +2804,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:0.21.4, axios@npm:^0.21.4":
+"axios@npm:0.21.4":
   version: 0.21.4
   resolution: "axios@npm:0.21.4"
   dependencies:
@@ -3918,13 +3785,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"defekt@npm:7.3.3":
-  version: 7.3.3
-  resolution: "defekt@npm:7.3.3"
-  checksum: 8b4a852e2acaf2986c97081229c39b8b3498ff5fcca772d7beb3a7712fc84b3807c38b39b77447a93416b661f825c59255a0cd5bcddbb7f37b6dc2255a666676
-  languageName: node
-  linkType: hard
-
 "defer-to-connect@npm:^2.0.0":
   version: 2.0.1
   resolution: "defer-to-connect@npm:2.0.1"
@@ -4305,7 +4165,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-import-resolver-node@npm:^0.3.6":
+"eslint-import-resolver-node@npm:*, eslint-import-resolver-node@npm:^0.3.6":
   version: 0.3.6
   resolution: "eslint-import-resolver-node@npm:0.3.6"
   dependencies:
@@ -6315,15 +6175,6 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"jest-mock-process@npm:^1.4.1":
-  version: 1.4.1
-  resolution: "jest-mock-process@npm:1.4.1"
-  peerDependencies:
-    jest: ">=23.4 <28"
-  checksum: 710ff4fb23fae27e1e447df3b5aa056d9d97103adfd35dc49bdd5a83d79b1776a4deca42107146ad7336fd6d62c5dc9c2c393a297f1cd0f8db3bcb977c7ccfc6
-  languageName: node
-  linkType: hard
-
 "jest-mock@npm:^27.3.0":
   version: 27.3.0
   resolution: "jest-mock@npm:27.3.0"
@@ -6823,17 +6674,12 @@ fsevents@^2.3.2:
   version: 0.0.0-use.local
   resolution: "kubernetes@workspace:."
   dependencies:
-    "@monstrs/k8s-k3d-tool": "workspace:0.0.1"
-    "@monstrs/k8s-kubectl-tool": "workspace:0.0.1"
     "@monstrs/k8s-test-utils": "workspace:0.0.1"
-    "@monstrs/mctl-cli": ^0.2.119
+    "@monstrs/mctl-cli": ^0.2.120
     "@types/jest": ^27.0.2
     "@types/node": ^16.11.6
     husky: ^7.0.4
     typescript: ^4.4.4
-  dependenciesMeta:
-    "@kubernetes/client-node@0.15.1":
-      unplugged: true
   languageName: unknown
   linkType: soft
 
@@ -7325,15 +7171,6 @@ fsevents@^2.3.2:
   version: 2.6.2
   resolution: "neo-async@npm:2.6.2"
   checksum: deac9f8d00eda7b2e5cd1b2549e26e10a0faa70adaa6fdadca701cc55f49ee9018e427f424bac0c790b7c7e2d3068db97f3093f1093975f2acb8f8818b936ed9
-  languageName: node
-  linkType: hard
-
-"node-fetch@npm:^2.6.5":
-  version: 2.6.5
-  resolution: "node-fetch@npm:2.6.5"
-  dependencies:
-    whatwg-url: ^5.0.0
-  checksum: 4e83db450718e70762882f00d96f647a7f2f3170035225934ddd5450cb1d91ef339ceb180d3687bcb0a6ed78c3fa5636ce8d3e44ec81ab59e0224ebf8965f65f
   languageName: node
   linkType: hard
 
@@ -8556,15 +8393,6 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"retry-ignore-abort@npm:^2.2.27":
-  version: 2.2.27
-  resolution: "retry-ignore-abort@npm:2.2.27"
-  dependencies:
-    defekt: 7.3.3
-  checksum: b6dadd5b9ae1304b1d1bbc346f1f28114f4cae7fdc03a351b4d12e8dac1aeb7098b09faeb3a902d64889f4b1660cc1fbdc8750d3ead3d5dac5ebf0d89edfb324
-  languageName: node
-  linkType: hard
-
 "reusify@npm:^1.0.4":
   version: 1.0.4
   resolution: "reusify@npm:1.0.4"
@@ -8719,15 +8547,6 @@ resolve@^2.0.0-next.3:
   bin:
     semver: ./bin/semver.js
   checksum: 1b26ecf6db9e8292dd90df4e781d91875c0dcc1b1909e70f5d12959a23c7eebb8f01ea581c00783bbee72ceeaad9505797c381756326073850dc36ed284b21b9
-  languageName: node
-  linkType: hard
-
-"serialize-error@npm:^8.1.0":
-  version: 8.1.0
-  resolution: "serialize-error@npm:8.1.0"
-  dependencies:
-    type-fest: ^0.20.2
-  checksum: 2eef236d50edd2d7926e602c14fb500dc3a125ee52e9f08f67033181b8e0be5d1122498bdf7c23c80683cddcad083a27974e9e7111ce23165f4d3bcdd6d65102
   languageName: node
   linkType: hard
 
@@ -9506,13 +9325,6 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tr46@npm:~0.0.3":
-  version: 0.0.3
-  resolution: "tr46@npm:0.0.3"
-  checksum: 726321c5eaf41b5002e17ffbd1fb7245999a073e8979085dacd47c4b4e8068ff5777142fc6726d6ca1fd2ff16921b48788b87225cbc57c72636f6efa8efbffe3
-  languageName: node
-  linkType: hard
-
 "treeify@npm:^1.1.0":
   version: 1.1.0
   resolution: "treeify@npm:1.1.0"
@@ -9730,7 +9542,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.4.4":
+"typescript@*, typescript@^4.4.2, typescript@^4.4.4":
   version: 4.4.4
   resolution: "typescript@npm:4.4.4"
   bin:
@@ -9740,13 +9552,33 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A4.4.4#~builtin<compat/typescript>":
+typescript@^3.2.4:
+  version: 3.9.10
+  resolution: "typescript@npm:3.9.10"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 46c842e2cd4797b88b66ef06c9c41dd21da48b95787072ccf39d5f2aa3124361bc4c966aa1c7f709fae0509614d76751455b5231b12dbb72eb97a31369e1ff92
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@*#~builtin<compat/typescript>, typescript@patch:typescript@^4.4.2#~builtin<compat/typescript>, typescript@patch:typescript@^4.4.4#~builtin<compat/typescript>":
   version: 4.4.4
   resolution: "typescript@patch:typescript@npm%3A4.4.4#~builtin<compat/typescript>::version=4.4.4&hash=ddd1e8"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: bd629ad0da4a15d79aaad56baf3ee7d96f6a181760d430ae77f8c5325df7bffd9edee57544a3970e3651e8b796fe03a5838a7eb39c6d46cc3866c0b23d36a0dd
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^3.2.4#~builtin<compat/typescript>":
+  version: 3.9.10
+  resolution: "typescript@patch:typescript@npm%3A3.9.10#~builtin<compat/typescript>::version=3.9.10&hash=ddd1e8"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: dc7141ab555b23a8650a6787f98845fc11692063d02b75ff49433091b3af2fe3d773650dea18389d7c21f47d620fb3b110ea363dab4ab039417a6ccbbaf96fc2
   languageName: node
   linkType: hard
 
@@ -9921,13 +9753,6 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"webidl-conversions@npm:^3.0.0":
-  version: 3.0.1
-  resolution: "webidl-conversions@npm:3.0.1"
-  checksum: c92a0a6ab95314bde9c32e1d0a6dfac83b578f8fa5f21e675bc2706ed6981bc26b7eb7e6a1fab158e5ce4adf9caa4a0aee49a52505d4d13c7be545f15021b17c
-  languageName: node
-  linkType: hard
-
 "webidl-conversions@npm:^5.0.0":
   version: 5.0.0
   resolution: "webidl-conversions@npm:5.0.0"
@@ -10009,16 +9834,6 @@ resolve@^2.0.0-next.3:
   version: 2.3.0
   resolution: "whatwg-mimetype@npm:2.3.0"
   checksum: 23eb885940bcbcca4ff841c40a78e9cbb893ec42743993a42bf7aed16085b048b44b06f3402018931687153550f9a32d259dfa524e4f03577ab898b6965e5383
-  languageName: node
-  linkType: hard
-
-"whatwg-url@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "whatwg-url@npm:5.0.0"
-  dependencies:
-    tr46: ~0.0.3
-    webidl-conversions: ^3.0.0
-  checksum: b8daed4ad3356cc4899048a15b2c143a9aed0dfae1f611ebd55073310c7b910f522ad75d727346ad64203d7e6c79ef25eafd465f4d12775ca44b90fa82ed9e2c
   languageName: node
   linkType: hard
 

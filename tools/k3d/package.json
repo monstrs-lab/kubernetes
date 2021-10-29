@@ -1,5 +1,5 @@
 {
-  "name": "@monstrs/k8s-k3d-tool",
+  "name": "@monstrs/k8s-k3d",
   "version": "0.0.1",
   "license": "MIT",
   "private": true,

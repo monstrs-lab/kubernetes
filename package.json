@@ -2,10 +2,8 @@
   "name": "kubernetes",
   "private": true,
   "devDependencies": {
-    "@monstrs/k8s-k3d-tool": "workspace:0.0.1",
-    "@monstrs/k8s-kubectl-tool": "workspace:0.0.1",
     "@monstrs/k8s-test-utils": "workspace:0.0.1",
-    "@monstrs/mctl-cli": "^0.2.119",
+    "@monstrs/mctl-cli": "^0.2.120",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.6",
     "husky": "^7.0.4",
@@ -16,13 +14,5 @@
     "utils/*",
     "tools/*",
     "apis/*"
-  ],
-  "resolutions": {
-    "typescript": "4.4.4"
-  },
-  "dependenciesMeta": {
-    "@kubernetes/client-node@0.15.1": {
-      "unplugged": true
-    }
-  }
+  ]
 }

@@ -1,12 +1,12 @@
-import { KubernetesObject }         from '@kubernetes/client-node'
+import { join }                     from 'node:path'
+import { promises as fs }           from 'node:fs'
+import { createHash }               from 'node:crypto'
+
+import type { KubernetesObject }    from '@kubernetes/client-node'
+import { loadAllYaml }              from '@kubernetes/client-node'
+import { dumpYaml }                 from '@kubernetes/client-node'
 import execa                        from 'execa'
 import tempy                        from 'tempy'
-import YAML                         from 'yaml'
-import { join }                     from 'path'
-import { promises as fs }           from 'fs'
-import { createHash }               from 'crypto'
-
-import { stringToResources }        from '@monstrs/k8s-resource-utils'
 
 import { KustomizeTransformations } from './kustomize.interfaces'
 
@@ -34,13 +34,13 @@ export class Kustomize {
 
     const resourcesFiles = resources.map((resource: KubernetesObject) => ({
       name: `${resource?.metadata?.name}-${resource.kind!.toLowerCase()}.yaml`,
-      content: YAML.stringify(resource),
+      content: dumpYaml(resource),
     }))
 
     const files = resourcesFiles.concat([
       {
         name: 'kustomization.yaml',
-        content: YAML.stringify({
+        content: dumpYaml({
           ...transformations,
           resources: resourcesFiles.map((file) => file.name),
         }),
@@ -56,7 +56,7 @@ export class Kustomize {
       cwd: target,
     })
 
-    const result = stringToResources(stdout)
+    const result = loadAllYaml(stdout)
 
     this.cache.set(cacheKey, result)
 

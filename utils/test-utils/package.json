@@ -9,14 +9,11 @@
   ],
   "dependencies": {
     "@kubernetes/client-node": "^0.15.1",
-    "@monstrs/k8s-k3d-tool": "workspace:0.0.1",
-    "@monstrs/k8s-kubectl-tool": "workspace:0.0.1",
-    "js-yaml": "^4.1.0",
-    "node-fetch": "^2.6.5",
-    "yaml": "^1.10.2"
+    "@monstrs/k8s-k3d": "workspace:0.0.1",
+    "@monstrs/logger": "^0.0.6"
   },
   "devDependencies": {
-    "@types/js-yaml": "^4",
-    "@types/request": "^2"
+    "@types/faker": "^5",
+    "faker": "^5.5.3"
   }
 }
