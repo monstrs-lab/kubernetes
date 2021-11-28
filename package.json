@@ -1,18 +1,19 @@
 {
   "name": "kubernetes",
   "private": true,
+  "workspaces": [
+    "operators/*",
+    "utils/*",
+    "tools/*",
+    "apis/*"
+  ],
   "devDependencies": {
+    "@monstrs/code-runtime": "file://Users/andreylinko/workspace/lab/tools/code/code-runtime/package.tgz",
     "@monstrs/k8s-test-utils": "workspace:0.0.1",
     "@monstrs/mctl-cli": "^0.2.120",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.6",
     "husky": "^7.0.4",
     "typescript": "^4.4.4"
-  },
-  "workspaces": [
-    "operators/*",
-    "utils/*",
-    "tools/*",
-    "apis/*"
-  ]
+  }
 }

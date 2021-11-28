@@ -6,9 +6,9 @@ import { join }                from 'node:path'
 import { KubernetesObjectApi } from '@kubernetes/client-node'
 import { KubeConfig }          from '@kubernetes/client-node'
 import { KubernetesObject }    from '@kubernetes/client-node'
-import { loadAllYaml }         from '@kubernetes/client-node'
 import { HttpError }           from '@kubernetes/client-node'
 import { Logger }              from '@monstrs/logger'
+import { loadAllYaml }         from '@kubernetes/client-node'
 
 import { k3d }                 from '@monstrs/k8s-k3d'
 
@@ -52,8 +52,7 @@ export class TestCluster {
 
   async apply(specPath: string) {
     const files = (await readdir(specPath)).filter((file) =>
-      ['.yaml', '.yml'].includes(extname(file))
-    )
+      ['.yaml', '.yml'].includes(extname(file)))
     const specs: Array<KubernetesObject> = (
       await Promise.all(files.map((file) => readFile(join(specPath, file), 'utf8')))
     )

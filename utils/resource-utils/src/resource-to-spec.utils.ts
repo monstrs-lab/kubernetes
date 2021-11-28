@@ -46,8 +46,7 @@ export const cleanEmptyFields = (resource) =>
       return {
         ...result,
         [key]: resource[key].map((nested) =>
-          isObject(nested) ? cleanEmptyFields(nested) : nested
-        ),
+          isObject(nested) ? cleanEmptyFields(nested) : nested),
       }
     }
 

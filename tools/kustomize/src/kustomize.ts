@@ -1,10 +1,11 @@
-import { join }                     from 'node:path'
-import { promises as fs }           from 'node:fs'
 import { createHash }               from 'node:crypto'
+import { promises as fs }           from 'node:fs'
+import { join }                     from 'node:path'
 
 import type { KubernetesObject }    from '@kubernetes/client-node'
 import { loadAllYaml }              from '@kubernetes/client-node'
 import { dumpYaml }                 from '@kubernetes/client-node'
+
 import execa                        from 'execa'
 import tempy                        from 'tempy'
 
