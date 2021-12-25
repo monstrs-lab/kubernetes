@@ -1,0 +1,19 @@
+{
+  "name": "@monstrs/k8s-flux-toolkit-api",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "yarn app library build",
+    "prepack": "yarn run build",
+    "postpack": "rm -rf dist"
+  },
+  "dependencies": {
+    "@kubernetes/client-node": "^0.15.1",
+    "@monstrs/k8s-resource-utils": "workspace:0.0.1",
+    "@monstrs/logger": "^0.0.6"
+  }
+}

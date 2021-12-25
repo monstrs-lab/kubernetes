@@ -1,0 +1,21 @@
+apiVersion: preview.monstrs.tech/v1alpha1
+kind: PreviewAutomation
+metadata:
+  name: test
+spec:
+  imageRepositoryRef:
+    namespace: flux-system
+    name: test
+
+  sourceRef:
+    kind: GitRepository
+    namespace: flux-system
+    name: test
+
+  resources:
+    - name: preview-operator-test
+      kind: Deployment
+      version: apps/v1
+    - name: preview-operator-test
+      kind: Service
+      version: v1

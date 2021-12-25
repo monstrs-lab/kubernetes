@@ -2,18 +2,30 @@
   "name": "kubernetes",
   "private": true,
   "workspaces": [
+    "kubernetes/*",
     "operators/*",
-    "utils/*",
-    "tools/*",
     "apis/*"
   ],
   "devDependencies": {
-    "@monstrs/code-runtime": "file://Users/andreylinko/workspace/lab/tools/code/code-runtime/package.tgz",
+    "@jest/core": "^27.4.5",
+    "@monstrs/code-runtime": "^0.0.5",
+    "@monstrs/config-jest": "^0.0.10",
     "@monstrs/k8s-test-utils": "workspace:0.0.1",
     "@monstrs/mctl-cli": "^0.2.120",
+    "@types/eslint": "^8",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.6",
+    "eslint": "^8.5.0",
     "husky": "^7.0.4",
     "typescript": "^4.4.4"
-  }
+  },
+  "dependenciesMeta": {
+    "@monstrs/prettier-typescript-plugin@0.0.2": {
+      "unplugged": true
+    },
+    "prettier-plugin-packagejson@2.2.15": {
+      "unplugged": true
+    }
+  },
+  "packageManager": "yarn@3.1.1"
 }

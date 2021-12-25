@@ -1,0 +1,8 @@
+apiVersion: image.toolkit.fluxcd.io/v1alpha1
+kind: ImageRepository
+metadata:
+  name: test
+  namespace: flux-system
+spec:
+  image: eu.gcr.io/the-mesh-254617/k8s-renderer-site
+  interval: 1m0s

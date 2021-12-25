@@ -1,0 +1,20 @@
+{
+  "name": "@monstrs/k8s-test-utils",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "main": "src/index.ts",
+  "files": [
+    "dist/"
+  ],
+  "dependencies": {
+    "@kubernetes/client-node": "^0.15.1",
+    "@monstrs/k8s-k3d": "workspace:0.0.1",
+    "@monstrs/k8s-object-utils": "workspace:0.0.1",
+    "@monstrs/logger": "^0.0.6"
+  },
+  "devDependencies": {
+    "@types/faker": "^5",
+    "faker": "^5.5.3"
+  }
+}
