@@ -21,8 +21,8 @@
     "resolveJsonModule": true,
     "strict": true,
     "sourceMap": false,
-    "target": "es2019",
+    "target": "es2017",
     "jsx": "react"
   },
-  "include": ["operators/**/*"]
+  "include": ["operators/**/*", "kubernetes/**/*", "apis/**/*"]
 }

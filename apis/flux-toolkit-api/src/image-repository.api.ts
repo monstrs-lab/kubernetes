@@ -15,7 +15,10 @@ export class ImageRepositoryApi {
     this.customObjectsApi = this.kubeConfig.makeApiClient(CustomObjectsApi)
   }
 
-  async getImageRepository(namespace: string, name: string): Promise<ImageRepositoryResource> {
+  async getImageRepository(
+    name: string,
+    namespace: string = 'default'
+  ): Promise<ImageRepositoryResource> {
     const { body } = await this.customObjectsApi.getNamespacedCustomObject(
       ImageRepositoryDomain.Group,
       ImageRepositoryResourceVersion.v1alpha1,

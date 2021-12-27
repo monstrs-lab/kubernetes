@@ -1,0 +1,17 @@
+{
+  "name": "@monstrs/k8s-resource-utils",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "main": "src/index.ts",
+  "files": [
+    "dist/"
+  ],
+  "dependencies": {
+    "pluralize": "^8.0.0",
+    "yaml": "^1.10.2"
+  },
+  "devDependencies": {
+    "@kubernetes/client-node": "^0.16.1"
+  }
+}

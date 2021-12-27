@@ -1,10 +1,9 @@
-/**
- * @jest-environment node
- */
-
 import { KubeConfig }                  from '@kubernetes/client-node'
 import { AppsV1Api }                   from '@kubernetes/client-node'
+
 import { retry }                       from 'retry-ignore-abort'
+
+import { cluster }                     from '@monstrs/k8s-test-utils'
 
 import { PreviewNotificationOperator } from '../src'
 
@@ -21,30 +20,33 @@ jest.mock('@octokit/rest', () => ({
 }))
 
 describe('preview-notification.operator', () => {
-  const operator = new PreviewNotificationOperator({
-    token: 'mock',
-  })
-  let appsApi: AppsV1Api
+  let operator: PreviewNotificationOperator
+  let kubeConfig: KubeConfig
 
   beforeAll(async () => {
-    const kubeConfig = new KubeConfig()
-
-    kubeConfig.loadFromDefault()
-
-    if (!kubeConfig.getCurrentContext().includes('test')) {
-      throw new Error('Require test kube config context.')
-    }
-
-    appsApi = kubeConfig.makeApiClient(AppsV1Api)
-
-    await operator.start()
+    kubeConfig = await cluster.getKubeConfig()
   })
 
-  afterAll(async () => {
-    await operator.stop()
+  beforeEach(async () => {
+    operator = new PreviewNotificationOperator(
+      {
+        token: 'mock',
+      },
+      kubeConfig
+    )
+
+    operator.start()
+  })
+
+  afterEach(async () => {
+    if (operator) {
+      operator.stop()
+    }
   })
 
   it('trigger notification', async () => {
+    const appsApi = kubeConfig.makeApiClient(AppsV1Api)
+
     await appsApi.createNamespacedDeployment('default', {
       apiVersion: 'apps/v1',
       kind: 'Deployment',

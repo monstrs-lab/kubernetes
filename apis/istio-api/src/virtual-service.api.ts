@@ -17,7 +17,10 @@ export class VirtualServiceApi {
     this.customObjectsApi = this.kubeConfig.makeApiClient(CustomObjectsApi)
   }
 
-  async getVirtualService(namespace: string, name: string): Promise<VirtualServiceResource> {
+  async getVirtualService(
+    name: string,
+    namespace: string = 'default'
+  ): Promise<VirtualServiceResource> {
     const { body } = await this.customObjectsApi.getNamespacedCustomObject(
       VirtualServiceDomain.Group,
       VirtualServiceResourceVersion.v1alpha2,
@@ -29,7 +32,11 @@ export class VirtualServiceApi {
     return body as VirtualServiceResource
   }
 
-  async createVirtualService(namespace: string, name: string, spec: VirtualServiceSpec) {
+  async createVirtualService(
+    name: string,
+    spec: VirtualServiceSpec,
+    namespace: string = 'default'
+  ) {
     return this.customObjectsApi.createNamespacedCustomObject(
       VirtualServiceDomain.Group,
       VirtualServiceResourceVersion.v1alpha2,
@@ -47,7 +54,7 @@ export class VirtualServiceApi {
     )
   }
 
-  async patchVirtualService(namespace: string, name: string, body: object) {
+  async patchVirtualService(name: string, body: object, namespace: string = 'default') {
     return this.customObjectsApi.patchNamespacedCustomObjectStatus(
       VirtualServiceDomain.Group,
       VirtualServiceResourceVersion.v1alpha2,
@@ -64,7 +71,7 @@ export class VirtualServiceApi {
     )
   }
 
-  async deleteVirtualService(namespace: string, name: string) {
+  async deleteVirtualService(name: string, namespace: string = 'default') {
     return this.customObjectsApi.deleteNamespacedCustomObject(
       VirtualServiceDomain.Group,
       VirtualServiceResourceVersion.v1alpha2,

@@ -17,7 +17,7 @@ export class GatewayApi {
     this.customObjectsApi = this.kubeConfig.makeApiClient(CustomObjectsApi)
   }
 
-  async getGateway(namespace: string, name: string): Promise<GatewayResource> {
+  async getGateway(name: string, namespace: string = 'default'): Promise<GatewayResource> {
     const { body } = await this.customObjectsApi.getNamespacedCustomObject(
       GatewayDomain.Group,
       GatewayResourceVersion.v1alpha2,
@@ -29,7 +29,7 @@ export class GatewayApi {
     return body as GatewayResource
   }
 
-  async createGateway(namespace: string, name: string, spec: GatewaySpec) {
+  async createGateway(name: string, spec: GatewaySpec, namespace: string = 'default') {
     return this.customObjectsApi.createNamespacedCustomObject(
       GatewayDomain.Group,
       GatewayResourceVersion.v1alpha2,
@@ -47,7 +47,7 @@ export class GatewayApi {
     )
   }
 
-  async patchGateway(namespace: string, name: string, body: object) {
+  async patchGateway(name: string, body: object, namespace: string = 'default') {
     return this.customObjectsApi.patchNamespacedCustomObjectStatus(
       GatewayDomain.Group,
       GatewayResourceVersion.v1alpha2,
@@ -64,7 +64,7 @@ export class GatewayApi {
     )
   }
 
-  async deleteGateway(namespace: string, name: string) {
+  async deleteGateway(name: string, namespace: string = 'default') {
     return this.customObjectsApi.deleteNamespacedCustomObject(
       GatewayDomain.Group,
       GatewayResourceVersion.v1alpha2,

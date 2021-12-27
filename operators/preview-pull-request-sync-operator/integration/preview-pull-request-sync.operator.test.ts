@@ -1,13 +1,11 @@
-/**
- * @jest-environment node
- */
-
 import { KubeConfig }                     from '@kubernetes/client-node'
-import { retry }                          from 'retry-ignore-abort'
-import { join }                           from 'path'
+import { HttpError }                      from '@kubernetes/client-node'
 
-import { kubectl }                        from '@monstrs/k8s-kubectl-tool'
+import { join }                           from 'path'
+import { retry }                          from 'retry-ignore-abort'
+
 import { PreviewVersionApi }              from '@monstrs/k8s-preview-automation-api'
+import { cluster }                        from '@monstrs/k8s-test-utils'
 
 import { PreviewPullRequestSyncOperator } from '../src'
 
@@ -26,34 +24,27 @@ jest.mock('@octokit/rest', () => ({
 }))
 
 describe('preview-pull-request-sync.operator', () => {
-  let previewVersionApi: PreviewVersionApi
   let operator: PreviewPullRequestSyncOperator
+  let kubeConfig: KubeConfig
 
   beforeAll(async () => {
-    const kubeConfig = new KubeConfig()
+    kubeConfig = await cluster.getKubeConfig()
 
-    kubeConfig.loadFromDefault()
-
-    if (!kubeConfig.getCurrentContext().includes('test')) {
-      throw new Error('Require test kube config context.')
-    }
-
-    previewVersionApi = new PreviewVersionApi(kubeConfig)
-
-    // TODO: run only on ci
-    await kubectl.run(['apply', '-f', join(__dirname, 'crd'), '--recursive'])
-    await kubectl.run(['apply', '-f', join(__dirname, 'specs'), '--recursive'])
+    await cluster.apply(join(__dirname, 'specs'))
   })
 
   beforeEach(async () => {
-    operator = new PreviewPullRequestSyncOperator({
-      token: 'mock',
-      schedule: {
-        interval: 1000,
+    operator = new PreviewPullRequestSyncOperator(
+      {
+        token: 'mock',
+        schedule: {
+          interval: 1000,
+        },
       },
-    })
+      kubeConfig
+    )
 
-    await operator.start()
+    operator.start()
   })
 
   afterEach(async () => {
@@ -61,19 +52,18 @@ describe('preview-pull-request-sync.operator', () => {
   })
 
   it('delete preview version on closed pull', async () => {
+    const previewVersionApi = new PreviewVersionApi(kubeConfig)
+
     const deleted = await retry(
       async () => {
         try {
           if (
-            await previewVersionApi.getPreviewVersion(
-              'default',
-              'preview-pull-request-sync-operator-test-99'
-            )
+            await previewVersionApi.getPreviewVersion('preview-pull-request-sync-operator-test-99')
           ) {
             throw new Error('Preview version exist')
           }
         } catch (error) {
-          if (error.body?.code !== 404) {
+          if ((error as HttpError).body?.code !== 404) {
             throw new Error('Preview version exist')
           }
         }

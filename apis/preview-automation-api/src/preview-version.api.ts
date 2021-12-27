@@ -3,13 +3,13 @@ import { KubeConfig }                    from '@kubernetes/client-node'
 
 import { kind2Plural }                   from '@monstrs/k8s-resource-utils'
 
+import { PreviewAutomationDomain }       from './preview-domain.types'
 import { PreviewVersionResource }        from './preview-version.interfaces'
 import { PreviewVersionStatus }          from './preview-version.interfaces'
 import { PreviewVersionSpec }            from './preview-version.interfaces'
 import { PreviewVersionResourceVersion } from './preview-version.types'
 import { PreviewVersionResourceGroup }   from './preview-version.types'
 import { PreviewVersionResourceKind }    from './preview-version.types'
-import { PreviewAutomationDomain }       from './preview-domain.types'
 
 export class PreviewVersionApi {
   private readonly customObjectsApi: CustomObjectsApi
@@ -18,7 +18,10 @@ export class PreviewVersionApi {
     this.customObjectsApi = this.kubeConfig.makeApiClient(CustomObjectsApi)
   }
 
-  async getPreviewVersion(namespace: string, name: string): Promise<PreviewVersionResource> {
+  async getPreviewVersion(
+    name: string,
+    namespace: string = 'default'
+  ): Promise<PreviewVersionResource> {
     const { body } = await this.customObjectsApi.getNamespacedCustomObject(
       PreviewAutomationDomain.Group,
       PreviewVersionResourceVersion.v1alpha1,
@@ -30,7 +33,11 @@ export class PreviewVersionApi {
     return body as PreviewVersionResource
   }
 
-  async createPreviewVersion(namespace: string, name: string, spec: PreviewVersionSpec) {
+  async createPreviewVersion(
+    name: string,
+    spec: PreviewVersionSpec,
+    namespace: string = 'default'
+  ) {
     return this.customObjectsApi.createNamespacedCustomObject(
       PreviewAutomationDomain.Group,
       PreviewVersionResourceVersion.v1alpha1,
@@ -48,7 +55,7 @@ export class PreviewVersionApi {
     )
   }
 
-  async patchPreviewVersion(namespace: string, name: string, body: object) {
+  patchPreviewVersion(name: string, body: object, namespace: string = 'default') {
     return this.customObjectsApi.patchNamespacedCustomObjectStatus(
       PreviewAutomationDomain.Group,
       PreviewVersionResourceVersion.v1alpha1,
@@ -65,7 +72,7 @@ export class PreviewVersionApi {
     )
   }
 
-  async deletePreviewVersion(namespace: string, name: string) {
+  deletePreviewVersion(name: string, namespace: string = 'default') {
     return this.customObjectsApi.deleteNamespacedCustomObject(
       PreviewAutomationDomain.Group,
       PreviewVersionResourceVersion.v1alpha1,
@@ -75,13 +82,21 @@ export class PreviewVersionApi {
     )
   }
 
-  async updatePreviewVersionStatus(namespace: string, name: string, status: PreviewVersionStatus) {
-    return this.patchPreviewVersion(namespace, name, [
-      {
-        op: 'replace',
-        path: '/status',
-        value: status,
-      },
-    ])
+  updatePreviewVersionStatus(
+    name: string,
+    status: PreviewVersionStatus,
+    namespace: string = 'default'
+  ) {
+    return this.patchPreviewVersion(
+      name,
+      [
+        {
+          op: 'replace',
+          path: '/status',
+          value: status,
+        },
+      ],
+      namespace
+    )
   }
 }

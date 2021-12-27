@@ -1,64 +1,85 @@
-/**
- * @jest-environment node
- */
-
 import { KubeConfig }                from '@kubernetes/client-node'
-import { retry }                     from 'retry-ignore-abort'
-import { join }                      from 'path'
+import { HttpError }                 from '@kubernetes/client-node'
 
-import { kubectl }                   from '@monstrs/k8s-kubectl-tool'
+import faker                         from 'faker'
+import { join }                      from 'path'
+import { retry }                     from 'retry-ignore-abort'
+
 import { PreviewVersionApi }         from '@monstrs/k8s-preview-automation-api'
+import { PreviewAutomationApi }      from '@monstrs/k8s-preview-automation-api'
+import { cluster }                   from '@monstrs/k8s-test-utils'
 
 import { PreviewAutomationOperator } from '../src'
 
-jest.setTimeout(120000)
+jest.setTimeout(30000)
 
 describe('preview-automation.operator', () => {
+  let previewAutomationApi: PreviewAutomationApi
   let previewVersionApi: PreviewVersionApi
   let operator: PreviewAutomationOperator
+  let kubeConfig: KubeConfig
 
   beforeAll(async () => {
-    const kubeConfig = new KubeConfig()
-
-    kubeConfig.loadFromDefault()
-
-    if (!kubeConfig.getCurrentContext().includes('test')) {
-      throw new Error('Require test kube config context.')
-    }
+    kubeConfig = await cluster.getKubeConfig()
 
     previewVersionApi = new PreviewVersionApi(kubeConfig)
+    previewAutomationApi = new PreviewAutomationApi(kubeConfig)
 
-    // TODO: run only on ci
-    await kubectl.run(['apply', '-f', join(__dirname, 'crd'), '--recursive'])
-    await kubectl.run(['apply', '-f', join(__dirname, 'specs'), '--recursive'])
+    await cluster.apply(join(__dirname, 'specs'))
   })
 
   beforeEach(async () => {
-    operator = new PreviewAutomationOperator()
+    operator = new PreviewAutomationOperator(kubeConfig)
 
-    await operator.start()
+    operator.start()
   })
 
   afterEach(async () => {
-    await operator.stop()
+    if (operator) {
+      operator.stop()
+    }
   })
 
   it('create and delete preview version', async () => {
-    await previewVersionApi.createPreviewVersion('default', 'test', {
-      previewAutomationRef: {
-        namespace: 'default',
+    const resource = faker.random.word().toLowerCase()
+
+    await previewAutomationApi.createPreviewAutomation(resource, {
+      imageRepositoryRef: {
+        namespace: 'flux-system',
         name: 'test',
       },
-      tag: 'test',
+      sourceRef: {
+        kind: 'GitRepository',
+        namespace: 'flux-system',
+        name: 'test',
+      },
+      resources: [
+        {
+          name: 'preview-operator-test',
+          kind: 'Deployment',
+        },
+        {
+          name: 'preview-operator-test',
+          kind: 'Service',
+        },
+      ],
+    })
+
+    await previewVersionApi.createPreviewVersion(resource, {
+      previewAutomationRef: {
+        namespace: 'default',
+        name: resource,
+      },
+      tag: resource,
       context: {
         kind: 'GitPullRequest',
-        number: 'test',
+        number: resource,
       },
     })
 
     const previewVersion = await retry(
       async () => {
-        const version = await previewVersionApi.getPreviewVersion('default', 'test')
+        const version = await previewVersionApi.getPreviewVersion(resource)
 
         if (!version.status.ready) {
           throw new Error('Preview version not ready')
@@ -73,16 +94,16 @@ describe('preview-automation.operator', () => {
 
     expect(previewVersion).toBeDefined()
 
-    await previewVersionApi.deletePreviewVersion('default', 'test')
+    await previewVersionApi.deletePreviewVersion(resource)
 
     const deleted = await retry(
       async () => {
         try {
-          if (await previewVersionApi.getPreviewVersion('default', 'test')) {
+          if (await previewVersionApi.getPreviewVersion(resource)) {
             throw new Error('Preview version exist')
           }
         } catch (error) {
-          if (error.body?.code !== 404) {
+          if ((error as HttpError).statusCode !== 404) {
             throw new Error('Preview version exist')
           }
         }

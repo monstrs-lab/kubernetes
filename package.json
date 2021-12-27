@@ -1,20 +1,22 @@
 {
   "name": "kubernetes",
   "private": true,
-  "devDependencies": {
-    "@monstrs/mctl-cli": "^0.2.101",
-    "@types/jest": "^26.0.22",
-    "@types/node": "^14.14.37",
-    "husky": "^6.0.0",
-    "typescript": "^4.2.4"
-  },
   "workspaces": [
+    "kubernetes/*",
     "operators/*",
-    "utils/*",
-    "tools/*",
     "apis/*"
   ],
-  "resolutions": {
-    "@kubernetes/client-node": "0.14.2"
-  }
+  "devDependencies": {
+    "@jest/core": "^27.4.5",
+    "@monstrs/code-service": "^0.0.110",
+    "@monstrs/config-jest": "^0.0.10",
+    "@monstrs/k8s-test-utils": "workspace:0.0.1",
+    "@types/eslint": "^8.2.1",
+    "@types/jest": "^27.0.3",
+    "@types/node": "^17.0.4",
+    "eslint": "^8.5.0",
+    "husky": "^7.0.4",
+    "typescript": "^4.5.4"
+  },
+  "packageManager": "yarn@3.1.1"
 }

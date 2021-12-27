@@ -1,10 +1,12 @@
-import Operator                                  from '@dot-i/k8s-operator'
-import { ResourceEventType }                     from '@dot-i/k8s-operator'
+import { KubeConfig }                            from '@kubernetes/client-node'
+import { HttpError }                             from '@kubernetes/client-node'
 import { Logger }                                from '@monstrs/logger'
 import { Octokit }                               from '@octokit/rest'
 
-import { kind2Plural }                           from '@monstrs/k8s-resource-utils'
-import { OperatorLogger }                        from '@monstrs/k8s-operator-logger'
+import { GitRepositoryResource }                 from '@monstrs/k8s-flux-toolkit-api'
+import { SourceApi }                             from '@monstrs/k8s-flux-toolkit-api'
+import { Operator }                              from '@monstrs/k8s-operator'
+import { ResourceEventType }                     from '@monstrs/k8s-operator'
 import { PreviewVersionResourceVersion }         from '@monstrs/k8s-preview-automation-api'
 import { PreviewVersionResourceGroup }           from '@monstrs/k8s-preview-automation-api'
 import { PreviewVersionResource }                from '@monstrs/k8s-preview-automation-api'
@@ -12,8 +14,7 @@ import { PreviewAutomationResource }             from '@monstrs/k8s-preview-auto
 import { PreviewVersionApi }                     from '@monstrs/k8s-preview-automation-api'
 import { PreviewAutomationApi }                  from '@monstrs/k8s-preview-automation-api'
 import { PreviewAutomationDomain }               from '@monstrs/k8s-preview-automation-api'
-import { GitRepositoryResource }                 from '@monstrs/k8s-flux-toolkit-api'
-import { SourceApi }                             from '@monstrs/k8s-flux-toolkit-api'
+import { kind2Plural }                           from '@monstrs/k8s-resource-utils'
 
 import { PreviewPullRequestSyncOperatorOptions } from './preview-pull-request-sync.interfaces'
 
@@ -38,8 +39,11 @@ export class PreviewPullRequestSyncOperator extends Operator {
 
   private schedule
 
-  constructor(private readonly options: PreviewPullRequestSyncOperatorOptions) {
-    super(new OperatorLogger(PreviewPullRequestSyncOperator.name))
+  constructor(
+    private readonly options: PreviewPullRequestSyncOperatorOptions,
+    kubeConfig?: KubeConfig
+  ) {
+    super(kubeConfig)
 
     if (!options.token) {
       throw new Error('GitHub token config required')
@@ -71,8 +75,8 @@ export class PreviewPullRequestSyncOperator extends Operator {
 
           if (data.state === 'closed') {
             await this.previewVersionApi.deletePreviewVersion(
-              task.version.metadata?.namespace || 'default',
-              task.version.metadata!.name!
+              task.version.metadata!.name!,
+              task.version.metadata?.namespace
             )
           }
         })
@@ -89,15 +93,13 @@ export class PreviewPullRequestSyncOperator extends Operator {
 
     if (!this.tasks.has(key)) {
       const automation = await this.previewAutomationApi.getPreviewAutomation(
-        previewVersion.spec.previewAutomationRef.namespace ||
-          previewVersion.metadata?.namespace ||
-          'default',
-        previewVersion.spec.previewAutomationRef.name
+        previewVersion.spec.previewAutomationRef.name,
+        previewVersion.spec.previewAutomationRef.namespace || previewVersion.metadata?.namespace
       )
 
       const source = await this.sourceApi.getGitRepository(
-        automation.spec.sourceRef.namespace || automation.metadata?.namespace || 'default',
-        automation.spec.sourceRef.name
+        automation.spec.sourceRef.name,
+        automation.spec.sourceRef.namespace || automation.metadata?.namespace
       )
 
       this.tasks.set(key, {
@@ -119,6 +121,14 @@ export class PreviewPullRequestSyncOperator extends Operator {
   }
 
   protected async init() {
+    this.schedule = setInterval(async () => {
+      try {
+        await this.checkPreviewResources()
+      } catch (error) {
+        this.log.error((error as HttpError).body)
+      }
+    }, this.options.schedule?.interval || 1000 * 60)
+
     await this.watchResource(
       PreviewAutomationDomain.Group,
       PreviewVersionResourceVersion.v1alpha1,
@@ -131,18 +141,10 @@ export class PreviewPullRequestSyncOperator extends Operator {
             await this.resourceDeleted(event.object as PreviewVersionResource)
           }
         } catch (error) {
-          this.log.error(error.body || error)
+          this.log.error((error as HttpError).body)
         }
       }
     )
-
-    this.schedule = setInterval(async () => {
-      try {
-        await this.checkPreviewResources()
-      } catch (error) {
-        this.log.error(error.body || error)
-      }
-    }, this.options.schedule?.interval || 1000 * 60)
   }
 
   public stop(): void {

@@ -11,6 +11,14 @@ export class PreviewAutomationsRegistry {
     }`
   }
 
+  getByKey(key: string) {
+    return this.automations.get(key)
+  }
+
+  hasByKey(key: string) {
+    return this.automations.has(key)
+  }
+
   add(automation: PreviewAutomationResource) {
     this.automations.set(this.getImageRegistryKey(automation), automation)
   }

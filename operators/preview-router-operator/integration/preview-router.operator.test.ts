@@ -1,48 +1,42 @@
-/**
- * @jest-environment node
- */
-
 import { KubeConfig }            from '@kubernetes/client-node'
-import { retry }                 from 'retry-ignore-abort'
-import { join }                  from 'path'
 
-import { kubectl }               from '@monstrs/k8s-kubectl-tool'
+import { join }                  from 'path'
+import { retry }                 from 'retry-ignore-abort'
+
 import { VirtualServiceApi }     from '@monstrs/k8s-istio-api'
+import { cluster }               from '@monstrs/k8s-test-utils'
 
 import { PreviewRouterOperator } from '../src'
 
 jest.setTimeout(120000)
 
 describe('preview-router.operator', () => {
-  const operator = new PreviewRouterOperator()
-  let virtualServiceApi: VirtualServiceApi
+  let operator: PreviewRouterOperator
+  let kubeConfig: KubeConfig
 
   beforeAll(async () => {
-    const kubeConfig = new KubeConfig()
+    kubeConfig = await cluster.getKubeConfig()
 
-    kubeConfig.loadFromDefault()
-
-    if (!kubeConfig.getCurrentContext().includes('test')) {
-      throw new Error('Require test kube config context.')
-    }
-
-    virtualServiceApi = new VirtualServiceApi(kubeConfig)
-
-    // TODO: run only on ci
-    await kubectl.run(['apply', '-f', join(__dirname, 'crd'), '--recursive'])
-    await kubectl.run(['apply', '-f', join(__dirname, 'specs'), '--recursive'])
-
-    await operator.start()
+    await cluster.apply(join(__dirname, 'specs'))
   })
 
-  afterAll(async () => {
-    await operator.stop()
+  beforeEach(async () => {
+    operator = new PreviewRouterOperator(kubeConfig)
+
+    operator.start()
+  })
+
+  afterEach(async () => {
+    if (operator) {
+      operator.stop()
+    }
   })
 
   it('create virtual service', async () => {
+    const virtualServiceApi = new VirtualServiceApi(kubeConfig)
+
     const virtualService = await retry(
-      async () =>
-        virtualServiceApi.getVirtualService('default', 'preview-default-preview-router-test'),
+      async () => virtualServiceApi.getVirtualService('preview-default-preview-router-test'),
       {
         retries: 5,
       }

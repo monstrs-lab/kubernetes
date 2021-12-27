@@ -1,20 +1,18 @@
-import Operator                               from '@dot-i/k8s-operator'
-import { ResourceEventType }                  from '@dot-i/k8s-operator'
-import { Logger }                             from '@monstrs/logger'
+import { KubeConfig }                         from '@kubernetes/client-node'
+import { HttpError }                          from '@kubernetes/client-node'
 
-import { OperatorLogger }                     from '@monstrs/k8s-operator-logger'
+import { Operator }                           from '@monstrs/k8s-operator'
+import { ResourceEventType }                  from '@monstrs/k8s-operator'
 import { PreviewAutomationAnnotation }        from '@monstrs/k8s-preview-automation-api'
 
+import { GitHubNotificationProvider }         from './github-notification.provider'
+import { MessageFormatter }                   from './message.formatter'
+import { NotificationProvider }               from './notification-provider.intefaces'
 import { NotificationResourceTracker }        from './notification-resource.tracker'
 import { PreviewNotificationOperatorOptions } from './preview-notification.interfaces'
-import { GitHubNotificationProvider }         from './github-notification.provider'
-import { NotificationProvider }               from './notification-provider.intefaces'
-import { MessageFormatter }                   from './message.formatter'
 
 export class PreviewNotificationOperator extends Operator {
   public static DOMAIN_GROUP = 'preview.monstrs.tech'
-
-  private readonly log = new Logger(PreviewNotificationOperator.name)
 
   private readonly resourceTracker = new NotificationResourceTracker()
 
@@ -22,8 +20,8 @@ export class PreviewNotificationOperator extends Operator {
 
   private readonly provider: NotificationProvider
 
-  constructor(options: PreviewNotificationOperatorOptions) {
-    super(new OperatorLogger(PreviewNotificationOperator.name))
+  constructor(options: PreviewNotificationOperatorOptions, kubeConfig?: KubeConfig) {
+    super(kubeConfig)
 
     if (!options.token) {
       throw new Error('GitHub token config required')
@@ -99,7 +97,7 @@ export class PreviewNotificationOperator extends Operator {
           this.resourceTracker.add(event.object)
         }
       } catch (error) {
-        this.log.error(error)
+        this.logger.error((error as HttpError).body)
       }
     })
   }

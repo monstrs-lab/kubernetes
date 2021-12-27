@@ -15,7 +15,10 @@ export class SourceApi {
     this.customObjectsApi = this.kubeConfig.makeApiClient(CustomObjectsApi)
   }
 
-  async getGitRepository(namespace: string, name: string): Promise<GitRepositoryResource> {
+  async getGitRepository(
+    name: string,
+    namespace: string = 'default'
+  ): Promise<GitRepositoryResource> {
     const { body } = await this.customObjectsApi.getNamespacedCustomObject(
       SourceDomain.Group,
       GitRepositoryResourceVersion.v1beta1,

@@ -1,8 +1,8 @@
+import { PreviewAutomationOperator }      from '@monstrs/k8s-preview-automation-operator'
 import { PreviewImageReflectorOperator }  from '@monstrs/k8s-preview-image-reflector-operator'
 import { PreviewNotificationOperator }    from '@monstrs/k8s-preview-notification-operator'
-import { PreviewAutomationOperator }      from '@monstrs/k8s-preview-automation-operator'
-import { PreviewRouterOperator }          from '@monstrs/k8s-preview-router-operator'
 import { PreviewPullRequestSyncOperator } from '@monstrs/k8s-preview-pull-request-sync-operator'
+import { PreviewRouterOperator }          from '@monstrs/k8s-preview-router-operator'
 
 const bootstrap = async () => {
   const automationOperator = new PreviewAutomationOperator()

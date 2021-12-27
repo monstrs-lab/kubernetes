@@ -6,10 +6,14 @@
     "dist/"
   ],
   "scripts": {
-    "prepack": "yarn app service build",
-    "dev": "yarn app service dev",
-    "build": "yarn app service build",
+    "build": "yarn service build",
+    "dev": "yarn service dev",
+    "prepack": "yarn service build",
     "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "ffi-napi": "^4.0.3",
+    "ref-napi": "^3.0.2"
   },
   "devDependencies": {
     "@monstrs/k8s-preview-automation-operator": "workspace:0.0.1",
@@ -17,9 +21,5 @@
     "@monstrs/k8s-preview-notification-operator": "workspace:0.0.1",
     "@monstrs/k8s-preview-pull-request-sync-operator": "workspace:0.0.1",
     "@monstrs/k8s-preview-router-operator": "workspace:0.0.1"
-  },
-  "dependencies": {
-    "ffi-napi": "^4.0.3",
-    "ref-napi": "^3.0.2"
   }
 }

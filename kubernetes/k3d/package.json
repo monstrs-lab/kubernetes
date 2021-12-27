@@ -1,0 +1,13 @@
+{
+  "name": "@monstrs/k8s-k3d",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "main": "src/index.ts",
+  "files": [
+    "dist/"
+  ],
+  "dependencies": {
+    "execa": "^5.1.1"
+  }
+}

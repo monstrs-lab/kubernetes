@@ -1,20 +1,18 @@
-import Operator                        from '@dot-i/k8s-operator'
-import { ResourceEventType }           from '@dot-i/k8s-operator'
-import { Logger }                      from '@monstrs/logger'
+import { KubeConfig }                  from '@kubernetes/client-node'
+import { HttpError }                   from '@kubernetes/client-node'
+
 import deepEqual                       from 'deep-equal'
 
+import { VirtualServiceApi }           from '@monstrs/k8s-istio-api'
+import { Operator }                    from '@monstrs/k8s-operator'
+import { ResourceEventType }           from '@monstrs/k8s-operator'
 import { PreviewAutomationAnnotation } from '@monstrs/k8s-preview-automation-api'
 
-import { VirtualServiceApi }           from '@monstrs/k8s-istio-api'
-import { OperatorLogger }              from '@monstrs/k8s-operator-logger'
-
 export class PreviewRouterOperator extends Operator {
-  private readonly log = new Logger(PreviewRouterOperator.name)
-
   private readonly virtualServiceApi: VirtualServiceApi
 
-  constructor() {
-    super(new OperatorLogger(PreviewRouterOperator.name))
+  constructor(kubeConfig?: KubeConfig) {
+    super(kubeConfig)
 
     this.virtualServiceApi = new VirtualServiceApi(this.kubeConfig)
   }
@@ -60,24 +58,28 @@ export class PreviewRouterOperator extends Operator {
     }
 
     try {
-      const virtualService = await this.virtualServiceApi.getVirtualService(namespace, name)
+      const virtualService = await this.virtualServiceApi.getVirtualService(name, namespace)
 
       if (!deepEqual(virtualService.spec, spec)) {
-        this.log.info(`Patching virtual service ${name}.${namespace}`)
+        this.logger.info(`Patching virtual service ${name}.${namespace}`)
 
-        await this.virtualServiceApi.patchVirtualService(namespace, name, [
-          {
-            op: 'replace',
-            path: '/spec',
-            value: spec,
-          },
-        ])
+        await this.virtualServiceApi.patchVirtualService(
+          name,
+          [
+            {
+              op: 'replace',
+              path: '/spec',
+              value: spec,
+            },
+          ],
+          namespace
+        )
       }
     } catch (error) {
-      if (error.body?.code === 404) {
-        this.log.info(`Creating virtual service ${name}.${namespace}`)
+      if ((error as HttpError).body?.code === 404) {
+        this.logger.info(`Creating virtual service ${name}.${namespace}`)
 
-        await this.virtualServiceApi.createVirtualService(namespace, name, spec)
+        await this.virtualServiceApi.createVirtualService(name, spec, namespace)
       } else {
         throw error
       }
@@ -94,9 +96,9 @@ export class PreviewRouterOperator extends Operator {
       const name = `preview-${resource.metadata!.namespace || 'default'}-${resource.metadata!
         .name!}`
 
-      this.log.info(`Deleting virtual service ${name}.${namespace}`)
+      this.logger.info(`Deleting virtual service ${name}.${namespace}`)
 
-      await this.virtualServiceApi.deleteVirtualService(namespace, name)
+      await this.virtualServiceApi.deleteVirtualService(name, namespace)
     }
   }
 
@@ -110,7 +112,7 @@ export class PreviewRouterOperator extends Operator {
             await this.resourceDeleted(event.object)
           }
         } catch (error) {
-          this.log.error(error.body || error)
+          this.logger.error((error as HttpError).body)
         }
       }
     })
