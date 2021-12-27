@@ -12,12 +12,12 @@
     "@monstrs/config-jest": "^0.0.10",
     "@monstrs/k8s-test-utils": "workspace:0.0.1",
     "@monstrs/mctl-cli": "^0.2.120",
-    "@types/eslint": "^8",
-    "@types/jest": "^27.0.2",
-    "@types/node": "^16.11.6",
+    "@types/eslint": "^8.2.1",
+    "@types/jest": "^27.0.3",
+    "@types/node": "^17.0.4",
     "eslint": "^8.5.0",
     "husky": "^7.0.4",
-    "typescript": "^4.4.4"
+    "typescript": "^4.5.4"
   },
   "dependenciesMeta": {
     "@monstrs/prettier-typescript-plugin@0.0.2": {

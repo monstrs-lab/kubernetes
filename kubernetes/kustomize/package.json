@@ -8,7 +8,7 @@
     "dist/"
   ],
   "dependencies": {
-    "@kubernetes/client-node": "^0.15.1",
+    "@kubernetes/client-node": "^0.16.1",
     "@monstrs/k8s-resource-utils": "workspace:0.0.1",
     "execa": "^5.1.1",
     "tempy": "^1.0.1"

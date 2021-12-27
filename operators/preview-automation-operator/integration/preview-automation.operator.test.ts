@@ -25,7 +25,6 @@ describe('preview-automation.operator', () => {
     previewVersionApi = new PreviewVersionApi(kubeConfig)
     previewAutomationApi = new PreviewAutomationApi(kubeConfig)
 
-    await cluster.apply(join(__dirname, 'crd'))
     await cluster.apply(join(__dirname, 'specs'))
   })
 

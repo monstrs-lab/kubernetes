@@ -8,6 +8,6 @@
     "dist/"
   ],
   "devDependencies": {
-    "@kubernetes/client-node": "^0.15.1"
+    "@kubernetes/client-node": "^0.16.1"
   }
 }
