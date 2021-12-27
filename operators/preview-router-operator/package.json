@@ -1,0 +1,27 @@
+{
+  "name": "@monstrs/k8s-preview-router-operator",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "yarn app library build",
+    "prepack": "yarn run build",
+    "postpack": "rm -rf dist"
+  },
+  "dependencies": {
+    "@monstrs/k8s-istio-api": "workspace:0.0.1",
+    "@monstrs/k8s-operator": "workspace:0.0.1",
+    "@monstrs/k8s-preview-automation-api": "workspace:0.0.1",
+    "@monstrs/k8s-resource-utils": "workspace:0.0.1",
+    "@monstrs/logger": "^0.0.4",
+    "deep-equal": "^2.0.5"
+  },
+  "devDependencies": {
+    "@kubernetes/client-node": "^0.16.1",
+    "@monstrs/k8s-test-utils": "workspace:0.0.1",
+    "retry-ignore-abort": "^2.2.15"
+  }
+}

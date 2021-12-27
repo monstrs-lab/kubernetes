@@ -7,4 +7,5 @@ export default async () => {
 
   await cluster.apply(join(__dirname, '../../../manifests/preview-automation'))
   await cluster.apply(join(__dirname, '../../../manifests/flux'))
+  await cluster.apply(join(__dirname, '../../../manifests/istio'))
 }

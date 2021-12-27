@@ -67,6 +67,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       {
         "name": "@monstrs/k8s-preview-image-reflector-operator",
         "reference": "workspace:operators/preview-image-reflector-operator"
+      },
+      {
+        "name": "@monstrs/k8s-preview-router-operator",
+        "reference": "workspace:operators/preview-router-operator"
       }
     ],
     "enableTopLevelFallback": true,
@@ -82,6 +86,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@monstrs/k8s-preview-automation-api", ["workspace:apis/preview-automation-api"]],
       ["@monstrs/k8s-preview-automation-operator", ["workspace:operators/preview-automation-operator"]],
       ["@monstrs/k8s-preview-image-reflector-operator", ["workspace:operators/preview-image-reflector-operator"]],
+      ["@monstrs/k8s-preview-router-operator", ["workspace:operators/preview-router-operator"]],
       ["@monstrs/k8s-resource-utils", ["workspace:kubernetes/resource-utils"]],
       ["@monstrs/k8s-test-utils", ["workspace:kubernetes/test-utils"]],
       ["kubernetes", ["workspace:."]]
@@ -1870,6 +1875,24 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/logger", "npm:0.0.4"],
             ["deep-equal", "npm:2.0.5"],
             ["parse-docker-image-name", "npm:3.0.0"],
+            ["retry-ignore-abort", "npm:2.2.27"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@monstrs/k8s-preview-router-operator", [
+        ["workspace:operators/preview-router-operator", {
+          "packageLocation": "./operators/preview-router-operator/",
+          "packageDependencies": [
+            ["@monstrs/k8s-preview-router-operator", "workspace:operators/preview-router-operator"],
+            ["@kubernetes/client-node", "npm:0.16.1"],
+            ["@monstrs/k8s-istio-api", "workspace:apis/istio-api"],
+            ["@monstrs/k8s-operator", "workspace:kubernetes/operator"],
+            ["@monstrs/k8s-preview-automation-api", "workspace:apis/preview-automation-api"],
+            ["@monstrs/k8s-resource-utils", "workspace:kubernetes/resource-utils"],
+            ["@monstrs/k8s-test-utils", "workspace:kubernetes/test-utils"],
+            ["@monstrs/logger", "npm:0.0.4"],
+            ["deep-equal", "npm:2.0.5"],
             ["retry-ignore-abort", "npm:2.2.27"]
           ],
           "linkType": "SOFT",
