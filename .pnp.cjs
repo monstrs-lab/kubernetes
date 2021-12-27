@@ -73,6 +73,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:operators/preview-notification-operator"
       },
       {
+        "name": "@monstrs/k8s-preview-operator",
+        "reference": "workspace:operators/preview-operator"
+      },
+      {
         "name": "@monstrs/k8s-preview-pull-request-sync-operator",
         "reference": "workspace:operators/preview-pull-request-sync-operator"
       },
@@ -95,6 +99,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@monstrs/k8s-preview-automation-operator", ["workspace:operators/preview-automation-operator"]],
       ["@monstrs/k8s-preview-image-reflector-operator", ["workspace:operators/preview-image-reflector-operator"]],
       ["@monstrs/k8s-preview-notification-operator", ["workspace:operators/preview-notification-operator"]],
+      ["@monstrs/k8s-preview-operator", ["workspace:operators/preview-operator"]],
       ["@monstrs/k8s-preview-pull-request-sync-operator", ["workspace:operators/preview-pull-request-sync-operator"]],
       ["@monstrs/k8s-preview-router-operator", ["workspace:operators/preview-router-operator"]],
       ["@monstrs/k8s-resource-utils", ["workspace:kubernetes/resource-utils"]],
@@ -1904,6 +1909,22 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/logger", "npm:0.0.4"],
             ["@octokit/rest", "npm:18.12.0"],
             ["retry-ignore-abort", "npm:2.2.27"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@monstrs/k8s-preview-operator", [
+        ["workspace:operators/preview-operator", {
+          "packageLocation": "./operators/preview-operator/",
+          "packageDependencies": [
+            ["@monstrs/k8s-preview-operator", "workspace:operators/preview-operator"],
+            ["@monstrs/k8s-preview-automation-operator", "workspace:operators/preview-automation-operator"],
+            ["@monstrs/k8s-preview-image-reflector-operator", "workspace:operators/preview-image-reflector-operator"],
+            ["@monstrs/k8s-preview-notification-operator", "workspace:operators/preview-notification-operator"],
+            ["@monstrs/k8s-preview-pull-request-sync-operator", "workspace:operators/preview-pull-request-sync-operator"],
+            ["@monstrs/k8s-preview-router-operator", "workspace:operators/preview-router-operator"],
+            ["ffi-napi", "npm:4.0.3"],
+            ["ref-napi", "npm:3.0.3"]
           ],
           "linkType": "SOFT",
         }]
@@ -7349,6 +7370,22 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["ffi-napi", [
+        ["npm:4.0.3", {
+          "packageLocation": "./.yarn/unplugged/ffi-napi-npm-4.0.3-fb70453a70/node_modules/ffi-napi/",
+          "packageDependencies": [
+            ["ffi-napi", "npm:4.0.3"],
+            ["debug", "virtual:bd5ac53f2a4d13161e4becd2185852df3b4231ea7460becce6b80faf113589c84e6d5a7592f2b45846dcda321b203d871f080c12cd9638e02938ccdf6bfbd6ee#npm:4.3.2"],
+            ["get-uv-event-loop-napi-h", "npm:1.0.6"],
+            ["node-addon-api", "npm:3.2.1"],
+            ["node-gyp", "npm:7.1.2"],
+            ["node-gyp-build", "npm:4.3.0"],
+            ["ref-napi", "npm:3.0.3"],
+            ["ref-struct-di", "npm:1.1.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["figgy-pudding", [
         ["npm:3.5.2", {
           "packageLocation": "./.yarn/cache/figgy-pudding-npm-3.5.2-2f4e3e1305-4090bd6619.zip/node_modules/figgy-pudding/",
@@ -7758,6 +7795,25 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["get-symbol-description", "npm:1.0.0"],
             ["call-bind", "npm:1.0.2"],
             ["get-intrinsic", "npm:1.1.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["get-symbol-from-current-process-h", [
+        ["npm:1.0.2", {
+          "packageLocation": "./.yarn/unplugged/get-symbol-from-current-process-h-npm-1.0.2-a9cd1ff161/node_modules/get-symbol-from-current-process-h/",
+          "packageDependencies": [
+            ["get-symbol-from-current-process-h", "npm:1.0.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["get-uv-event-loop-napi-h", [
+        ["npm:1.0.6", {
+          "packageLocation": "./.yarn/unplugged/get-uv-event-loop-napi-h-npm-1.0.6-c32d93c5f4/node_modules/get-uv-event-loop-napi-h/",
+          "packageDependencies": [
+            ["get-uv-event-loop-napi-h", "npm:1.0.6"],
+            ["get-symbol-from-current-process-h", "npm:1.0.2"]
           ],
           "linkType": "HARD",
         }]
@@ -10422,6 +10478,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["node-addon-api", [
+        ["npm:3.2.1", {
+          "packageLocation": "./.yarn/unplugged/node-addon-api-npm-3.2.1-a29528f81d/node_modules/node-addon-api/",
+          "packageDependencies": [
+            ["node-addon-api", "npm:3.2.1"],
+            ["node-gyp", "npm:7.1.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["node-fetch", [
         ["npm:2.6.6", {
           "packageLocation": "./.yarn/cache/node-fetch-npm-2.6.6-056db6b778-ee8290626b.zip/node_modules/node-fetch/",
@@ -10456,6 +10522,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/node-gyp-build-npm-4.2.3-051c80c95f-450d7b2016.zip/node_modules/node-gyp-build/",
           "packageDependencies": [
             ["node-gyp-build", "npm:4.2.3"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:4.3.0", {
+          "packageLocation": "./.yarn/cache/node-gyp-build-npm-4.3.0-87bdf5216f-1ecab16d9f.zip/node_modules/node-gyp-build/",
+          "packageDependencies": [
+            ["node-gyp-build", "npm:4.3.0"]
           ],
           "linkType": "HARD",
         }]
@@ -11632,6 +11705,31 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["redent", "npm:3.0.0"],
             ["indent-string", "npm:4.0.0"],
             ["strip-indent", "npm:3.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["ref-napi", [
+        ["npm:3.0.3", {
+          "packageLocation": "./.yarn/unplugged/ref-napi-npm-3.0.3-db72a2b1cd/node_modules/ref-napi/",
+          "packageDependencies": [
+            ["ref-napi", "npm:3.0.3"],
+            ["debug", "virtual:bd5ac53f2a4d13161e4becd2185852df3b4231ea7460becce6b80faf113589c84e6d5a7592f2b45846dcda321b203d871f080c12cd9638e02938ccdf6bfbd6ee#npm:4.3.2"],
+            ["get-symbol-from-current-process-h", "npm:1.0.2"],
+            ["node-addon-api", "npm:3.2.1"],
+            ["node-gyp", "npm:7.1.2"],
+            ["node-gyp-build", "npm:4.3.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["ref-struct-di", [
+        ["npm:1.1.1", {
+          "packageLocation": "./.yarn/cache/ref-struct-di-npm-1.1.1-742ab52b09-787dec1439.zip/node_modules/ref-struct-di/",
+          "packageDependencies": [
+            ["ref-struct-di", "npm:1.1.1"],
+            ["debug", "virtual:d9426786c635bc4b52511d6cc4b56156f50d780a698c0e20fc6caf10d3be51cbf176e79cff882f4d42a23ff4d0f89fe94222849578214e7fbae0f2754c82af02#npm:3.2.7"],
+            ["node-gyp", "npm:7.1.2"]
           ],
           "linkType": "HARD",
         }]
