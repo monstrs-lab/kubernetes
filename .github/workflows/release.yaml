@@ -43,7 +43,7 @@ jobs:
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
         run: |
-          yarn workspaces changed foreach app pack \
+          yarn workspaces changed foreach image pack \
             --registry 'eu.gcr.io/${{ secrets.GCR_PROJECT_ID }}/k8s-' \
             --builder monstrs/builder-operator:buster \
             --tag-policy hash-timestamp \

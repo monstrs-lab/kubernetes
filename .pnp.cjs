@@ -119,7 +119,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/k8s-test-utils", "workspace:kubernetes/test-utils"],
             ["@types/eslint", "npm:8.2.1"],
             ["@types/jest", "npm:27.0.3"],
-            ["@types/node", "npm:17.0.4"],
+            ["@types/node", "npm:17.0.5"],
             ["eslint", "npm:8.5.0"],
             ["husky", "npm:7.0.4"],
             ["typescript", "patch:typescript@npm%3A4.5.4#~builtin<compat/typescript>::version=4.5.4&hash=de8f8a"]
@@ -2214,6 +2214,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-node-npm-17.0.4-bc035da5ec-92e6a25fea.zip/node_modules/@types/node/",
           "packageDependencies": [
             ["@types/node", "npm:17.0.4"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:17.0.5", {
+          "packageLocation": "./.yarn/cache/@types-node-npm-17.0.5-78c23cecdc-105535e787.zip/node_modules/@types/node/",
+          "packageDependencies": [
+            ["@types/node", "npm:17.0.5"]
           ],
           "linkType": "HARD",
         }]
@@ -7218,7 +7225,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/k8s-test-utils", "workspace:kubernetes/test-utils"],
             ["@types/eslint", "npm:8.2.1"],
             ["@types/jest", "npm:27.0.3"],
-            ["@types/node", "npm:17.0.4"],
+            ["@types/node", "npm:17.0.5"],
             ["eslint", "npm:8.5.0"],
             ["husky", "npm:7.0.4"],
             ["typescript", "patch:typescript@npm%3A4.5.4#~builtin<compat/typescript>::version=4.5.4&hash=de8f8a"]
