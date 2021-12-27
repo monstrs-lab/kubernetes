@@ -35,7 +35,7 @@ describe('preview-image-reflector.operator', () => {
   })
 
   beforeEach(async () => {
-    operator = new PreviewImageReflectorOperator()
+    operator = new PreviewImageReflectorOperator(kubeConfig)
 
     operator.start()
 
@@ -50,7 +50,7 @@ describe('preview-image-reflector.operator', () => {
         }
       },
       {
-        retries: 5,
+        retries: 6,
       }
     )
   })

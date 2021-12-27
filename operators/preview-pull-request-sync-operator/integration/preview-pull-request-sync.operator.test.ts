@@ -34,12 +34,15 @@ describe('preview-pull-request-sync.operator', () => {
   })
 
   beforeEach(async () => {
-    operator = new PreviewPullRequestSyncOperator({
-      token: 'mock',
-      schedule: {
-        interval: 1000,
+    operator = new PreviewPullRequestSyncOperator(
+      {
+        token: 'mock',
+        schedule: {
+          interval: 1000,
+        },
       },
-    })
+      kubeConfig
+    )
 
     operator.start()
   })
