@@ -16,6 +16,7 @@
     "@monstrs/logger": "^0.0.6",
     "async": "^3.2.2",
     "axios": "^0.24.0",
+    "byline": "^5.0.0",
     "node-fetch": "^2.6.6"
   },
   "devDependencies": {

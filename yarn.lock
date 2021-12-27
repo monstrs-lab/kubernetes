@@ -1183,6 +1183,7 @@ __metadata:
     "@monstrs/logger": ^0.0.6
     async: ^3.2.2
     axios: ^0.24.0
+    byline: ^5.0.0
     node-fetch: ^2.6.6
     retry-ignore-abort: ^2.2.27
   languageName: unknown

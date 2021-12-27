@@ -3,6 +3,7 @@ import { Agent }      from 'node:https'
 import { KubeConfig } from '@kubernetes/client-node'
 import { Logger }     from '@monstrs/logger'
 
+import byline         from 'byline'
 import fetch          from 'node-fetch'
 
 export class Watch {
@@ -43,11 +44,17 @@ export class Watch {
 
     if (response.ok) {
       try {
-        for await (const chunk of response.body) {
-          this.parseChunk(chunk).forEach((data) => {
+        await new Promise((resolve) => {
+          const stream = byline(response.body)
+
+          stream.on('data', (line) => {
+            const data = JSON.parse(line.toString())
+
             onEvent(data.type, data.object, data)
           })
-        }
+
+          stream.on('end', resolve)
+        })
       } catch (error: any) {
         if (error.type !== 'aborted') {
           throw error
@@ -56,24 +63,5 @@ export class Watch {
     } else if (response.status >= 400) {
       throw new Error(response.statusText)
     }
-  }
-
-  private parseChunk(chunk: Buffer): Array<any> {
-    const lines: Array<string> = chunk
-      .toString()
-      .split(/\r\n|[\n\v\f\r\x85\u2028\u2029]/g)
-      .filter(Boolean)
-
-    const data: Array<any> = []
-
-    lines.forEach((line) => {
-      try {
-        data.push(JSON.parse(line))
-      } catch (error) {
-        this.logger.error(error)
-      }
-    })
-
-    return data
   }
 }

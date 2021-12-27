@@ -1828,6 +1828,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/logger", "npm:0.0.6"],
             ["async", "npm:3.2.2"],
             ["axios", "npm:0.24.0"],
+            ["byline", "npm:5.0.0"],
             ["node-fetch", "npm:2.6.6"],
             ["retry-ignore-abort", "npm:2.2.27"]
           ],
