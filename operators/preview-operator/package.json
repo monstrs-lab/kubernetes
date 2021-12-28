@@ -8,7 +8,6 @@
   "scripts": {
     "build": "yarn service build",
     "dev": "yarn service dev",
-    "prepack": "yarn service build",
     "start": "node dist/index.js"
   },
   "devDependencies": {
