@@ -1,6 +1,5 @@
 import { KubeConfig }                       from '@kubernetes/client-node'
 import { HttpError }                        from '@kubernetes/client-node'
-import { Logger }                           from '@monstrs/logger'
 
 import deepEqual                            from 'deep-equal'
 import parseDockerImage                     from 'parse-docker-image-name'
@@ -22,8 +21,6 @@ import { kind2Plural }                      from '@monstrs/k8s-resource-utils'
 import { PreviewAutomationsRegistry }       from './preview-automations.registry'
 
 export class PreviewImageReflectorOperator extends Operator {
-  private readonly log = new Logger(PreviewImageReflectorOperator.name)
-
   private readonly automationRegistry = new PreviewAutomationsRegistry()
 
   private readonly previewVersionApi: PreviewVersionApi

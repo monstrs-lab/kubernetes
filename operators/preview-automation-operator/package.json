@@ -18,9 +18,7 @@
     "@monstrs/k8s-object-utils": "workspace:0.0.1",
     "@monstrs/k8s-operator": "workspace:0.0.1",
     "@monstrs/k8s-preview-automation-api": "workspace:0.0.1",
-    "@monstrs/k8s-resource-utils": "workspace:0.0.1",
-    "@monstrs/logger": "^0.0.6",
-    "kustomize": "^4.4.1"
+    "@monstrs/k8s-resource-utils": "workspace:0.0.1"
   },
   "devDependencies": {
     "@kubernetes/client-node": "^0.16.1",
