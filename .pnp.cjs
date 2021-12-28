@@ -1033,69 +1033,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
-      ["@install-binary/kustomize-darwin-arm64", [
-        ["npm:4.4.1", {
-          "packageLocation": "./.yarn/unplugged/@install-binary-kustomize-darwin-arm64-npm-4.4.1-cda13ce5a9/node_modules/@install-binary/kustomize-darwin-arm64/",
-          "packageDependencies": [
-            ["@install-binary/kustomize-darwin-arm64", "npm:4.4.1"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["@install-binary/kustomize-darwin-x64", [
-        ["npm:4.4.1", {
-          "packageLocation": "./.yarn/unplugged/@install-binary-kustomize-darwin-x64-npm-4.4.1-79c66c31c9/node_modules/@install-binary/kustomize-darwin-x64/",
-          "packageDependencies": [
-            ["@install-binary/kustomize-darwin-x64", "npm:4.4.1"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["@install-binary/kustomize-linux-arm64", [
-        ["npm:4.4.1", {
-          "packageLocation": "./.yarn/unplugged/@install-binary-kustomize-linux-arm64-npm-4.4.1-3612553cc3/node_modules/@install-binary/kustomize-linux-arm64/",
-          "packageDependencies": [
-            ["@install-binary/kustomize-linux-arm64", "npm:4.4.1"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["@install-binary/kustomize-linux-ppc64le", [
-        ["npm:4.4.1", {
-          "packageLocation": "./.yarn/unplugged/@install-binary-kustomize-linux-ppc64le-npm-4.4.1-f202605645/node_modules/@install-binary/kustomize-linux-ppc64le/",
-          "packageDependencies": [
-            ["@install-binary/kustomize-linux-ppc64le", "npm:4.4.1"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["@install-binary/kustomize-linux-s390x", [
-        ["npm:4.4.1", {
-          "packageLocation": "./.yarn/unplugged/@install-binary-kustomize-linux-s390x-npm-4.4.1-3eae75b0d2/node_modules/@install-binary/kustomize-linux-s390x/",
-          "packageDependencies": [
-            ["@install-binary/kustomize-linux-s390x", "npm:4.4.1"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["@install-binary/kustomize-linux-x64", [
-        ["npm:4.4.1", {
-          "packageLocation": "./.yarn/unplugged/@install-binary-kustomize-linux-x64-npm-4.4.1-0a51edad64/node_modules/@install-binary/kustomize-linux-x64/",
-          "packageDependencies": [
-            ["@install-binary/kustomize-linux-x64", "npm:4.4.1"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["@install-binary/kustomize-win32-x64", [
-        ["npm:4.4.1", {
-          "packageLocation": "./.yarn/unplugged/@install-binary-kustomize-win32-x64-npm-4.4.1-e4dee6aa78/node_modules/@install-binary/kustomize-win32-x64/",
-          "packageDependencies": [
-            ["@install-binary/kustomize-win32-x64", "npm:4.4.1"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
       ["@istanbuljs/load-nyc-config", [
         ["npm:1.1.0", {
           "packageLocation": "./.yarn/cache/@istanbuljs-load-nyc-config-npm-1.1.0-42d17c9cb1-d578da5e2e.zip/node_modules/@istanbuljs/load-nyc-config/",
@@ -1542,12 +1479,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/k8s-preview-automation-api", "workspace:apis/preview-automation-api"],
             ["@monstrs/k8s-resource-utils", "workspace:kubernetes/resource-utils"],
             ["@monstrs/k8s-test-utils", "workspace:kubernetes/test-utils"],
-            ["@monstrs/logger", "npm:0.0.6"],
             ["@types/faker", "npm:5.5.9"],
             ["axios", "npm:0.24.0"],
             ["faker", "npm:5.5.3"],
             ["jest-mock-process", "virtual:0aa0b876b59b650076b77b612411f203f6a4a36f9212d100f501ec345e7fdb79d555367a7c1e6cc79851e36db5bf21d9994f3e14fd3e8af64d295b2424f106f4#npm:1.4.1"],
-            ["kustomize", "npm:4.4.1"],
             ["retry-ignore-abort", "npm:2.2.27"]
           ],
           "linkType": "SOFT",
@@ -1564,7 +1499,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/k8s-preview-automation-api", "workspace:apis/preview-automation-api"],
             ["@monstrs/k8s-resource-utils", "workspace:kubernetes/resource-utils"],
             ["@monstrs/k8s-test-utils", "workspace:kubernetes/test-utils"],
-            ["@monstrs/logger", "npm:0.0.4"],
             ["deep-equal", "npm:2.0.5"],
             ["parse-docker-image-name", "npm:3.0.0"],
             ["retry-ignore-abort", "npm:2.2.27"]
@@ -1582,7 +1516,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/k8s-preview-automation-api", "workspace:apis/preview-automation-api"],
             ["@monstrs/k8s-resource-utils", "workspace:kubernetes/resource-utils"],
             ["@monstrs/k8s-test-utils", "workspace:kubernetes/test-utils"],
-            ["@monstrs/logger", "npm:0.0.4"],
             ["@octokit/rest", "npm:18.12.0"],
             ["retry-ignore-abort", "npm:2.2.27"]
           ],
@@ -1598,9 +1531,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/k8s-preview-image-reflector-operator", "workspace:operators/preview-image-reflector-operator"],
             ["@monstrs/k8s-preview-notification-operator", "workspace:operators/preview-notification-operator"],
             ["@monstrs/k8s-preview-pull-request-sync-operator", "workspace:operators/preview-pull-request-sync-operator"],
-            ["@monstrs/k8s-preview-router-operator", "workspace:operators/preview-router-operator"],
-            ["ffi-napi", "npm:4.0.3"],
-            ["ref-napi", "npm:3.0.3"]
+            ["@monstrs/k8s-preview-router-operator", "workspace:operators/preview-router-operator"]
           ],
           "linkType": "SOFT",
         }]
@@ -1616,7 +1547,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/k8s-preview-automation-api", "workspace:apis/preview-automation-api"],
             ["@monstrs/k8s-resource-utils", "workspace:kubernetes/resource-utils"],
             ["@monstrs/k8s-test-utils", "workspace:kubernetes/test-utils"],
-            ["@monstrs/logger", "npm:0.0.4"],
             ["@octokit/rest", "npm:18.12.0"],
             ["retry-ignore-abort", "npm:2.2.27"]
           ],
@@ -1634,7 +1564,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/k8s-preview-automation-api", "workspace:apis/preview-automation-api"],
             ["@monstrs/k8s-resource-utils", "workspace:kubernetes/resource-utils"],
             ["@monstrs/k8s-test-utils", "workspace:kubernetes/test-utils"],
-            ["@monstrs/logger", "npm:0.0.4"],
             ["deep-equal", "npm:2.0.5"],
             ["retry-ignore-abort", "npm:2.2.27"]
           ],
@@ -1669,14 +1598,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@monstrs/logger", [
-        ["npm:0.0.4", {
-          "packageLocation": "./.yarn/cache/@monstrs-logger-npm-0.0.4-2eac5b59a4-af52e79c1c.zip/node_modules/@monstrs/logger/",
-          "packageDependencies": [
-            ["@monstrs/logger", "npm:0.0.4"],
-            ["pino", "npm:6.13.3"]
-          ],
-          "linkType": "HARD",
-        }],
         ["npm:0.0.6", {
           "packageLocation": "./.yarn/cache/@monstrs-logger-npm-0.0.6-25dbed9509-1e1e45105f.zip/node_modules/@monstrs/logger/",
           "packageDependencies": [
@@ -4408,32 +4329,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["debug", [
-        ["npm:3.2.7", {
-          "packageLocation": "./.yarn/cache/debug-npm-3.2.7-754e818c7a-b3d8c59407.zip/node_modules/debug/",
-          "packageDependencies": [
-            ["debug", "npm:3.2.7"]
-          ],
-          "linkType": "SOFT",
-        }],
         ["npm:4.3.2", {
           "packageLocation": "./.yarn/cache/debug-npm-4.3.2-f0148b6afe-820ea160e2.zip/node_modules/debug/",
           "packageDependencies": [
             ["debug", "npm:4.3.2"]
           ],
           "linkType": "SOFT",
-        }],
-        ["virtual:742ab52b09ed8d0e116f56aadee3313afefeed28c5fbb2876c2437a45dcbf3db919e10cb1add86b4fa5e5e7947bf0cc9aba99ba6079734a236f53b6f67a7884d#npm:3.2.7", {
-          "packageLocation": "./.yarn/__virtual__/debug-virtual-6bb2edb4d1/0/cache/debug-npm-3.2.7-754e818c7a-b3d8c59407.zip/node_modules/debug/",
-          "packageDependencies": [
-            ["debug", "virtual:742ab52b09ed8d0e116f56aadee3313afefeed28c5fbb2876c2437a45dcbf3db919e10cb1add86b4fa5e5e7947bf0cc9aba99ba6079734a236f53b6f67a7884d#npm:3.2.7"],
-            ["@types/supports-color", null],
-            ["ms", "npm:2.1.3"],
-            ["supports-color", "npm:8.1.1"]
-          ],
-          "packagePeers": [
-            "@types/supports-color"
-          ],
-          "linkType": "HARD",
         }],
         ["virtual:bd5ac53f2a4d13161e4becd2185852df3b4231ea7460becce6b80faf113589c84e6d5a7592f2b45846dcda321b203d871f080c12cd9638e02938ccdf6bfbd6ee#npm:4.3.2", {
           "packageLocation": "./.yarn/__virtual__/debug-virtual-aff4753af0/0/cache/debug-npm-4.3.2-f0148b6afe-820ea160e2.zip/node_modules/debug/",
@@ -5242,22 +5143,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
-      ["ffi-napi", [
-        ["npm:4.0.3", {
-          "packageLocation": "./.yarn/unplugged/ffi-napi-npm-4.0.3-fb70453a70/node_modules/ffi-napi/",
-          "packageDependencies": [
-            ["ffi-napi", "npm:4.0.3"],
-            ["debug", "virtual:bd5ac53f2a4d13161e4becd2185852df3b4231ea7460becce6b80faf113589c84e6d5a7592f2b45846dcda321b203d871f080c12cd9638e02938ccdf6bfbd6ee#npm:4.3.2"],
-            ["get-uv-event-loop-napi-h", "npm:1.0.6"],
-            ["node-addon-api", "npm:3.2.1"],
-            ["node-gyp", "npm:7.1.2"],
-            ["node-gyp-build", "npm:4.3.0"],
-            ["ref-napi", "npm:3.0.3"],
-            ["ref-struct-di", "npm:1.1.1"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
       ["figgy-pudding", [
         ["npm:3.5.2", {
           "packageLocation": "./.yarn/cache/figgy-pudding-npm-3.5.2-2f4e3e1305-4090bd6619.zip/node_modules/figgy-pudding/",
@@ -5567,25 +5452,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["get-symbol-description", "npm:1.0.0"],
             ["call-bind", "npm:1.0.2"],
             ["get-intrinsic", "npm:1.1.1"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["get-symbol-from-current-process-h", [
-        ["npm:1.0.2", {
-          "packageLocation": "./.yarn/unplugged/get-symbol-from-current-process-h-npm-1.0.2-a9cd1ff161/node_modules/get-symbol-from-current-process-h/",
-          "packageDependencies": [
-            ["get-symbol-from-current-process-h", "npm:1.0.2"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["get-uv-event-loop-napi-h", [
-        ["npm:1.0.6", {
-          "packageLocation": "./.yarn/unplugged/get-uv-event-loop-napi-h-npm-1.0.6-c32d93c5f4/node_modules/get-uv-event-loop-napi-h/",
-          "packageDependencies": [
-            ["get-uv-event-loop-napi-h", "npm:1.0.6"],
-            ["get-symbol-from-current-process-h", "npm:1.0.2"]
           ],
           "linkType": "HARD",
         }]
@@ -7233,22 +7099,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "SOFT",
         }]
       ]],
-      ["kustomize", [
-        ["npm:4.4.1", {
-          "packageLocation": "./.yarn/cache/kustomize-npm-4.4.1-7a1a16b90f-3d2d05954f.zip/node_modules/kustomize/",
-          "packageDependencies": [
-            ["kustomize", "npm:4.4.1"],
-            ["@install-binary/kustomize-darwin-arm64", "npm:4.4.1"],
-            ["@install-binary/kustomize-darwin-x64", "npm:4.4.1"],
-            ["@install-binary/kustomize-linux-arm64", "npm:4.4.1"],
-            ["@install-binary/kustomize-linux-ppc64le", "npm:4.4.1"],
-            ["@install-binary/kustomize-linux-s390x", "npm:4.4.1"],
-            ["@install-binary/kustomize-linux-x64", "npm:4.4.1"],
-            ["@install-binary/kustomize-win32-x64", "npm:4.4.1"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
       ["leven", [
         ["npm:2.1.0", {
           "packageLocation": "./.yarn/cache/leven-npm-2.1.0-19f0a16606-f7b4a01b15.zip/node_modules/leven/",
@@ -7546,13 +7396,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ms", "npm:2.1.2"]
           ],
           "linkType": "HARD",
-        }],
-        ["npm:2.1.3", {
-          "packageLocation": "./.yarn/cache/ms-npm-2.1.3-81ff3cfac1-aa92de6080.zip/node_modules/ms/",
-          "packageDependencies": [
-            ["ms", "npm:2.1.3"]
-          ],
-          "linkType": "HARD",
         }]
       ]],
       ["nanoclone", [
@@ -7578,16 +7421,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/neo-async-npm-2.6.2-75d6902586-deac9f8d00.zip/node_modules/neo-async/",
           "packageDependencies": [
             ["neo-async", "npm:2.6.2"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["node-addon-api", [
-        ["npm:3.2.1", {
-          "packageLocation": "./.yarn/unplugged/node-addon-api-npm-3.2.1-a29528f81d/node_modules/node-addon-api/",
-          "packageDependencies": [
-            ["node-addon-api", "npm:3.2.1"],
-            ["node-gyp", "npm:7.1.2"]
           ],
           "linkType": "HARD",
         }]
@@ -8429,31 +8262,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["rechoir", "npm:0.6.2"],
             ["resolve", "patch:resolve@npm%3A1.20.0#~builtin<compat/resolve>::version=1.20.0&hash=07638b"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["ref-napi", [
-        ["npm:3.0.3", {
-          "packageLocation": "./.yarn/unplugged/ref-napi-npm-3.0.3-db72a2b1cd/node_modules/ref-napi/",
-          "packageDependencies": [
-            ["ref-napi", "npm:3.0.3"],
-            ["debug", "virtual:bd5ac53f2a4d13161e4becd2185852df3b4231ea7460becce6b80faf113589c84e6d5a7592f2b45846dcda321b203d871f080c12cd9638e02938ccdf6bfbd6ee#npm:4.3.2"],
-            ["get-symbol-from-current-process-h", "npm:1.0.2"],
-            ["node-addon-api", "npm:3.2.1"],
-            ["node-gyp", "npm:7.1.2"],
-            ["node-gyp-build", "npm:4.3.0"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["ref-struct-di", [
-        ["npm:1.1.1", {
-          "packageLocation": "./.yarn/cache/ref-struct-di-npm-1.1.1-742ab52b09-787dec1439.zip/node_modules/ref-struct-di/",
-          "packageDependencies": [
-            ["ref-struct-di", "npm:1.1.1"],
-            ["debug", "virtual:742ab52b09ed8d0e116f56aadee3313afefeed28c5fbb2876c2437a45dcbf3db919e10cb1add86b4fa5e5e7947bf0cc9aba99ba6079734a236f53b6f67a7884d#npm:3.2.7"],
-            ["node-gyp", "npm:7.1.2"]
           ],
           "linkType": "HARD",
         }]

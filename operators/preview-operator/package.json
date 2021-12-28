@@ -11,10 +11,6 @@
     "prepack": "yarn service build",
     "start": "node dist/index.js"
   },
-  "dependencies": {
-    "ffi-napi": "^4.0.3",
-    "ref-napi": "^3.0.2"
-  },
   "devDependencies": {
     "@monstrs/k8s-preview-automation-operator": "workspace:0.0.1",
     "@monstrs/k8s-preview-image-reflector-operator": "workspace:0.0.1",

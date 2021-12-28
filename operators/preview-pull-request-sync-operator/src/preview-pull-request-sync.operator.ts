@@ -1,6 +1,5 @@
 import { KubeConfig }                            from '@kubernetes/client-node'
 import { HttpError }                             from '@kubernetes/client-node'
-import { Logger }                                from '@monstrs/logger'
 import { Octokit }                               from '@octokit/rest'
 
 import { GitRepositoryResource }                 from '@monstrs/k8s-flux-toolkit-api'
@@ -25,8 +24,6 @@ export interface Task {
 }
 
 export class PreviewPullRequestSyncOperator extends Operator {
-  private readonly log = new Logger(PreviewPullRequestSyncOperator.name)
-
   private readonly previewAutomationApi: PreviewAutomationApi
 
   private readonly previewVersionApi: PreviewVersionApi
@@ -82,7 +79,7 @@ export class PreviewPullRequestSyncOperator extends Operator {
         })
       )
     } catch (error) {
-      this.log.error(error)
+      this.logger.error((error as HttpError).body || error)
     }
   }
 
@@ -125,7 +122,7 @@ export class PreviewPullRequestSyncOperator extends Operator {
       try {
         await this.checkPreviewResources()
       } catch (error) {
-        this.log.error((error as HttpError).body)
+        this.logger.error((error as HttpError).body)
       }
     }, this.options.schedule?.interval || 1000 * 60)
 
@@ -141,7 +138,7 @@ export class PreviewPullRequestSyncOperator extends Operator {
             await this.resourceDeleted(event.object as PreviewVersionResource)
           }
         } catch (error) {
-          this.log.error((error as HttpError).body)
+          this.logger.error((error as HttpError).body)
         }
       }
     )
