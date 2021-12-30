@@ -118,7 +118,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/config-jest", "npm:0.0.10"],
             ["@monstrs/k8s-test-utils", "workspace:kubernetes/test-utils"],
             ["@types/eslint", "npm:8.2.1"],
-            ["@types/jest", "npm:27.0.3"],
+            ["@types/jest", "npm:27.4.0"],
             ["@types/node", "npm:17.0.5"],
             ["eslint", "npm:8.5.0"],
             ["husky", "npm:7.0.4"],
@@ -1531,7 +1531,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/k8s-preview-image-reflector-operator", "workspace:operators/preview-image-reflector-operator"],
             ["@monstrs/k8s-preview-notification-operator", "workspace:operators/preview-notification-operator"],
             ["@monstrs/k8s-preview-pull-request-sync-operator", "workspace:operators/preview-pull-request-sync-operator"],
-            ["@monstrs/k8s-preview-router-operator", "workspace:operators/preview-router-operator"]
+            ["@monstrs/k8s-preview-router-operator", "workspace:operators/preview-router-operator"],
+            ["@monstrs/logger", "npm:0.0.6"]
           ],
           "linkType": "SOFT",
         }]
@@ -2059,10 +2060,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@types/jest", [
-        ["npm:27.0.3", {
-          "packageLocation": "./.yarn/cache/@types-jest-npm-27.0.3-c4c49cbce2-3683a99458.zip/node_modules/@types/jest/",
+        ["npm:27.4.0", {
+          "packageLocation": "./.yarn/cache/@types-jest-npm-27.4.0-33755263ec-d2350267f9.zip/node_modules/@types/jest/",
           "packageDependencies": [
-            ["@types/jest", "npm:27.0.3"],
+            ["@types/jest", "npm:27.4.0"],
             ["jest-diff", "npm:27.4.2"],
             ["pretty-format", "npm:27.4.2"]
           ],
@@ -7090,7 +7091,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/config-jest", "npm:0.0.10"],
             ["@monstrs/k8s-test-utils", "workspace:kubernetes/test-utils"],
             ["@types/eslint", "npm:8.2.1"],
-            ["@types/jest", "npm:27.0.3"],
+            ["@types/jest", "npm:27.4.0"],
             ["@types/node", "npm:17.0.5"],
             ["eslint", "npm:8.5.0"],
             ["husky", "npm:7.0.4"],
