@@ -1,8 +1,12 @@
+import { Logger }                         from '@monstrs/logger'
+
 import { PreviewAutomationOperator }      from '@monstrs/k8s-preview-automation-operator'
 import { PreviewImageReflectorOperator }  from '@monstrs/k8s-preview-image-reflector-operator'
 import { PreviewNotificationOperator }    from '@monstrs/k8s-preview-notification-operator'
 import { PreviewPullRequestSyncOperator } from '@monstrs/k8s-preview-pull-request-sync-operator'
 import { PreviewRouterOperator }          from '@monstrs/k8s-preview-router-operator'
+
+const logger = new Logger('PreviewOperator')
 
 const bootstrap = async () => {
   const automationOperator = new PreviewAutomationOperator()
@@ -24,7 +28,7 @@ const bootstrap = async () => {
   ])
 
   const exit = (reason: string) => {
-    console.log(reason) // eslint-disable-line no-console
+    logger.info(reason)
 
     imageReflectorOperator.stop()
     automationOperator.stop()
@@ -38,5 +42,4 @@ const bootstrap = async () => {
   process.on('SIGTERM', () => exit('SIGTERM')).on('SIGINT', () => exit('SIGINT'))
 }
 
-// eslint-disable-next-line no-console
-bootstrap().catch(console.error)
+bootstrap().catch(logger.error)
