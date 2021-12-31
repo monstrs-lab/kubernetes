@@ -33,6 +33,7 @@ export class Watch {
     }
 
     this.kubeConfig.applytoHTTPSOptions(agentOpts)
+    this.kubeConfig.applyToRequest(requestOptions as any)
 
     const agent = new Agent(agentOpts)
 
