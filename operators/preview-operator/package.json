@@ -2,15 +2,15 @@
   "name": "@monstrs/k8s-preview-operator",
   "version": "0.0.1",
   "license": "MIT",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "build": "yarn service build",
     "dev": "yarn service dev",
     "start": "node dist/index.js"
   },
-  "files": [
-    "dist/"
-  ],
-  "dependencies": {
+  "devDependencies": {
     "@monstrs/k8s-preview-automation-operator": "workspace:0.0.1",
     "@monstrs/k8s-preview-image-reflector-operator": "workspace:0.0.1",
     "@monstrs/k8s-preview-notification-operator": "workspace:0.0.1",
