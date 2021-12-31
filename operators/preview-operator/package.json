@@ -6,13 +6,13 @@
     "dist/"
   ],
   "scripts": {
-    "prepack": "run build",
     "build": "yarn service build",
     "dev": "yarn service dev",
+    "prepack": "run build",
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@monstrs/logger": "^0.0.6"
+    "express": "*"
   },
   "devDependencies": {
     "@monstrs/k8s-preview-automation-operator": "workspace:0.0.1",
