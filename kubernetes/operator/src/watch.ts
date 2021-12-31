@@ -44,7 +44,7 @@ export class Watch {
 
     if (response.ok) {
       try {
-        await new Promise((resolve) => {
+        await new Promise((resolve, reject) => {
           const stream = byline(response.body)
 
           stream.on('data', (line) => {
@@ -53,6 +53,7 @@ export class Watch {
             onEvent(data.type, data.object, data)
           })
 
+          stream.on('error', reject)
           stream.on('end', resolve)
         })
       } catch (error: any) {
@@ -61,7 +62,9 @@ export class Watch {
         }
       }
     } else if (response.status >= 400) {
-      throw new Error(response.statusText)
+      const body = await response.json()
+
+      throw new Error(`${response.statusText}: ${url} - ${body.message || 'Watch request error'}`)
     }
   }
 }
