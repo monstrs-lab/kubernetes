@@ -39,5 +39,8 @@ const bootstrap = async () => {
   process.on('SIGTERM', () => exit('SIGTERM')).on('SIGINT', () => exit('SIGINT'))
 }
 
-// eslint-disable-next-line no-console
-bootstrap().catch(console.error)
+bootstrap().catch((error) => {
+  // eslint-disable-next-line no-console
+  console.error(error)
+  process.exit(1)
+})
