@@ -10,12 +10,14 @@
     "dev": "yarn service dev",
     "start": "node dist/index.js"
   },
+  "dependencies": {
+    "@monstrs/logger": "^0.0.6"
+  },
   "devDependencies": {
     "@monstrs/k8s-preview-automation-operator": "workspace:0.0.1",
     "@monstrs/k8s-preview-image-reflector-operator": "workspace:0.0.1",
     "@monstrs/k8s-preview-notification-operator": "workspace:0.0.1",
     "@monstrs/k8s-preview-pull-request-sync-operator": "workspace:0.0.1",
-    "@monstrs/k8s-preview-router-operator": "workspace:0.0.1",
-    "@monstrs/logger": "^0.0.6"
+    "@monstrs/k8s-preview-router-operator": "workspace:0.0.1"
   }
 }
