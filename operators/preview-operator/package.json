@@ -6,6 +6,7 @@
     "dist/"
   ],
   "scripts": {
+    "prepack": "run build",
     "build": "yarn service build",
     "dev": "yarn service dev",
     "start": "node dist/index.js"
