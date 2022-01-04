@@ -124,7 +124,7 @@ export class PreviewImageReflectorOperator extends Operator {
       ),
       this.watchResource(
         ImagePolicyDomain.Group,
-        ImagePolicyResourceVersion.v1alpha1,
+        ImagePolicyResourceVersion.v1beta1,
         kind2Plural(ImagePolicyResourceGroup.ImagePolicy),
         async (event) => {
           if (event.type === ResourceEventType.Modified) {
