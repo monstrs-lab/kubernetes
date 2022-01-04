@@ -187,12 +187,12 @@ export class PreviewAutomationOperator extends Operator {
             }
           }
         } catch (error) {
-          logger.error((error as HttpError).body)
+          logger.error((error as HttpError).body || error)
 
           await this.updatePreviewVersionStatus(
             resource,
             PreviewVersionStatusPhase.Failed,
-            (error as HttpError).body.message?.toString() || ''
+            (error as HttpError).body.message?.toString() || (error as any).message
           )
         }
       }
