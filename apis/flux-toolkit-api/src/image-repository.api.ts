@@ -21,7 +21,7 @@ export class ImageRepositoryApi {
   ): Promise<ImageRepositoryResource> {
     const { body } = await this.customObjectsApi.getNamespacedCustomObject(
       ImageRepositoryDomain.Group,
-      ImageRepositoryResourceVersion.v1alpha1,
+      ImageRepositoryResourceVersion.v1beta1,
       namespace,
       kind2Plural(ImageRepositoryResourceGroup.ImageRepository),
       name

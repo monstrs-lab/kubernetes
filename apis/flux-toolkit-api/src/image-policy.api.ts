@@ -18,7 +18,7 @@ export class ImagePolicyApi {
   async getImagePolicy(namespace: string, name: string): Promise<ImagePolicyResource> {
     const { body } = await this.customObjectsApi.getNamespacedCustomObject(
       ImagePolicyDomain.Group,
-      ImagePolicyResourceVersion.v1alpha1,
+      ImagePolicyResourceVersion.v1beta1,
       namespace,
       kind2Plural(ImagePolicyResourceGroup.ImagePolicy),
       name
@@ -30,7 +30,7 @@ export class ImagePolicyApi {
   async patchImagePolicy(namespace: string, name: string, body: object) {
     return this.customObjectsApi.patchNamespacedCustomObjectStatus(
       ImagePolicyDomain.Group,
-      ImagePolicyResourceVersion.v1alpha1,
+      ImagePolicyResourceVersion.v1beta1,
       namespace,
       kind2Plural(ImagePolicyResourceGroup.ImagePolicy),
       name,

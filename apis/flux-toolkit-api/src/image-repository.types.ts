@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 
 export enum ImageRepositoryResourceVersion {
-  v1alpha1 = 'v1alpha1',
+  v1beta1 = 'v1beta1',
 }
 
 export enum ImageRepositoryResourceKind {
