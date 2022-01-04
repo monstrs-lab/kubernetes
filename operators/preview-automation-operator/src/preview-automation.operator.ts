@@ -150,7 +150,11 @@ export class PreviewAutomationOperator extends Operator {
               for await (const spec of await this.buildPreview(
                 finalizerEvent.object as PreviewVersionResource
               )) {
-                await this.objectApi.delete(spec)
+                try {
+                  await this.objectApi.delete(spec)
+                } catch (error) {
+                  logger.error((error as HttpError).body || error)
+                }
               }
             })
 
