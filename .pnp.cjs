@@ -119,13 +119,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/code-service", "npm:0.0.110"],
             ["@monstrs/config-jest", "npm:0.0.10"],
             ["@monstrs/k8s-test-utils", "workspace:kubernetes/test-utils"],
-            ["@monstrs/schematics", "npm:0.0.15"],
-            ["@types/eslint", "npm:8.2.1"],
+            ["@monstrs/schematics", "npm:0.0.19"],
+            ["@types/eslint", "npm:8.4.1"],
             ["@types/jest", "npm:27.4.0"],
-            ["@types/node", "npm:17.0.5"],
+            ["@types/node", "npm:17.0.12"],
             ["eslint", "npm:8.7.0"],
             ["husky", "npm:7.0.4"],
-            ["typescript", "patch:typescript@npm%3A4.5.4#~builtin<compat/typescript>::version=4.5.4&hash=de8f8a"]
+            ["typescript", "patch:typescript@npm%3A4.5.5#~builtin<compat/typescript>::version=4.5.5&hash=de8f8a"]
           ],
           "linkType": "SOFT",
         }]
@@ -1878,28 +1878,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@monstrs/schematics", [
-        ["npm:0.0.15", {
-          "packageLocation": "./.yarn/cache/@monstrs-schematics-npm-0.0.15-6df713e677-7aed01309f.zip/node_modules/@monstrs/schematics/",
+        ["npm:0.0.19", {
+          "packageLocation": "./.yarn/cache/@monstrs-schematics-npm-0.0.19-69e5247643-3801570a64.zip/node_modules/@monstrs/schematics/",
           "packageDependencies": [
-            ["@monstrs/schematics", "npm:0.0.15"],
+            ["@monstrs/schematics", "npm:0.0.19"],
             ["@angular-devkit/core", "virtual:184b2c54223bca244453cb3eea82279816b2a72ab1a2ab42893a757dd2a9477490b57fcaca5371628f0b2b2e32642bd79567a0f75348c4909f699c7dd696968b#npm:13.1.4"],
             ["@angular-devkit/schematics", "npm:13.1.4"],
             ["@monstrs/config-typescript", "npm:0.0.10"],
-            ["@monstrs/schematics-utils", "npm:0.1.9"]
+            ["@monstrs/schematics-utils", "npm:0.1.11"]
           ],
           "linkType": "HARD",
         }]
       ]],
       ["@monstrs/schematics-utils", [
-        ["npm:0.1.9", {
-          "packageLocation": "./.yarn/cache/@monstrs-schematics-utils-npm-0.1.9-d1e5b13068-f811984e30.zip/node_modules/@monstrs/schematics-utils/",
+        ["npm:0.1.11", {
+          "packageLocation": "./.yarn/cache/@monstrs-schematics-utils-npm-0.1.11-3e36c80c95-6d4fc709b0.zip/node_modules/@monstrs/schematics-utils/",
           "packageDependencies": [
-            ["@monstrs/schematics-utils", "npm:0.1.9"],
+            ["@monstrs/schematics-utils", "npm:0.1.11"],
             ["@angular-devkit/core", "virtual:184b2c54223bca244453cb3eea82279816b2a72ab1a2ab42893a757dd2a9477490b57fcaca5371628f0b2b2e32642bd79567a0f75348c4909f699c7dd696968b#npm:13.1.4"],
             ["@angular-devkit/schematics", "npm:13.1.4"],
+            ["js-yaml", "npm:4.1.0"],
             ["semver", "npm:6.3.0"],
-            ["strip-json-comments", "npm:3.0.1"],
-            ["yaml", "npm:1.10.2"]
+            ["strip-json-comments", "npm:3.0.1"]
           ],
           "linkType": "HARD",
         }]
@@ -2276,6 +2276,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/json-schema", "npm:7.0.9"]
           ],
           "linkType": "HARD",
+        }],
+        ["npm:8.4.1", {
+          "packageLocation": "./.yarn/cache/@types-eslint-npm-8.4.1-014f0ae240-b5790997ee.zip/node_modules/@types/eslint/",
+          "packageDependencies": [
+            ["@types/eslint", "npm:8.4.1"],
+            ["@types/estree", "npm:0.0.50"],
+            ["@types/json-schema", "npm:7.0.9"]
+          ],
+          "linkType": "HARD",
         }]
       ]],
       ["@types/eslint-scope", [
@@ -2428,17 +2437,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "HARD",
         }],
+        ["npm:17.0.12", {
+          "packageLocation": "./.yarn/cache/@types-node-npm-17.0.12-719f3bab17-f7e4c384b7.zip/node_modules/@types/node/",
+          "packageDependencies": [
+            ["@types/node", "npm:17.0.12"]
+          ],
+          "linkType": "HARD",
+        }],
         ["npm:17.0.4", {
           "packageLocation": "./.yarn/cache/@types-node-npm-17.0.4-bc035da5ec-92e6a25fea.zip/node_modules/@types/node/",
           "packageDependencies": [
             ["@types/node", "npm:17.0.4"]
-          ],
-          "linkType": "HARD",
-        }],
-        ["npm:17.0.5", {
-          "packageLocation": "./.yarn/cache/@types-node-npm-17.0.5-78c23cecdc-105535e787.zip/node_modules/@types/node/",
-          "packageDependencies": [
-            ["@types/node", "npm:17.0.5"]
           ],
           "linkType": "HARD",
         }]
@@ -7796,13 +7805,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@monstrs/code-service", "npm:0.0.110"],
             ["@monstrs/config-jest", "npm:0.0.10"],
             ["@monstrs/k8s-test-utils", "workspace:kubernetes/test-utils"],
-            ["@monstrs/schematics", "npm:0.0.15"],
-            ["@types/eslint", "npm:8.2.1"],
+            ["@monstrs/schematics", "npm:0.0.19"],
+            ["@types/eslint", "npm:8.4.1"],
             ["@types/jest", "npm:27.4.0"],
-            ["@types/node", "npm:17.0.5"],
+            ["@types/node", "npm:17.0.12"],
             ["eslint", "npm:8.7.0"],
             ["husky", "npm:7.0.4"],
-            ["typescript", "patch:typescript@npm%3A4.5.4#~builtin<compat/typescript>::version=4.5.4&hash=de8f8a"]
+            ["typescript", "patch:typescript@npm%3A4.5.5#~builtin<compat/typescript>::version=4.5.5&hash=de8f8a"]
           ],
           "linkType": "SOFT",
         }]
@@ -10399,6 +10408,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/typescript-patch-e3eb4157a5-eda87927f9.zip/node_modules/typescript/",
           "packageDependencies": [
             ["typescript", "patch:typescript@npm%3A4.5.4#~builtin<compat/typescript>::version=4.5.4&hash=de8f8a"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["patch:typescript@npm%3A4.5.5#~builtin<compat/typescript>::version=4.5.5&hash=de8f8a", {
+          "packageLocation": "./.yarn/cache/typescript-patch-9606f35981-858c61fa63.zip/node_modules/typescript/",
+          "packageDependencies": [
+            ["typescript", "patch:typescript@npm%3A4.5.5#~builtin<compat/typescript>::version=4.5.5&hash=de8f8a"]
           ],
           "linkType": "HARD",
         }]
